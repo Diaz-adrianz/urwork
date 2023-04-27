@@ -1,0 +1,19 @@
+package com.example.example
+
+import com.google.gson.annotations.SerializedName
+
+
+data class Projects (
+
+  @SerializedName("nama"          ) var nama          : String?                  = null,
+  @SerializedName("deskripsi"     ) var deskripsi     : String?                  = null,
+  @SerializedName("collaborators" ) var collaborators : ArrayList<Users> = arrayListOf(),
+  @SerializedName("tasks"         ) var tasks         : ArrayList<Tasks>         = arrayListOf(),
+  @SerializedName("images"        ) var images        : ArrayList<String>        = arrayListOf(),
+  @SerializedName("tags"          ) var tags          : ArrayList<String>        = arrayListOf(),
+  @SerializedName("is_done"       ) var isDone        : Boolean?                 = null,
+  @SerializedName("done_date"     ) var doneDate      : String?                  = null,
+  @SerializedName("createdAt"     ) var createdAt     : String?                  = null,
+  @SerializedName("updatedAt"     ) var updatedAt     : String?                  = null
+
+)

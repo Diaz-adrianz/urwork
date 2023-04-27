@@ -1,0 +1,12 @@
+package com.example.example
+
+import com.google.gson.annotations.SerializedName
+
+
+data class Tasks (
+
+  @SerializedName("title"         ) var title        : String?     = null,
+  @SerializedName("finished_date" ) var finishedDate : String?     = null,
+  @SerializedName("finished_by"   ) var finishedBy   : Users? = Users()
+
+)

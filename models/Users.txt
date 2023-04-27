@@ -1,0 +1,14 @@
+package com.example.example
+
+import com.google.gson.annotations.SerializedName
+
+
+data class Users (
+
+  @SerializedName("photo"    ) var photo    : String? = null,
+  @SerializedName("username" ) var username : String? = null,
+  @SerializedName("about"    ) var about    : String? = null,
+  @SerializedName("email"    ) var about    : String? = null,
+  @SerializedName("createdAt"    ) var about    : String? = null,
+
+)

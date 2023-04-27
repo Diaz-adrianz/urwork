@@ -1,0 +1,36 @@
+{
+    "nama": "bikin web",
+    "deskripsi": "Lorem IPsum",
+    "collaborators": [
+        {
+            "photo": "hehe.jpg",
+            "username": "alexander",
+            "about": "alexander@gmail.com"
+        },
+        {
+            "photo": "hehe.jpg",
+            "username": "alexander",
+            "about": "alexander@gmail.com"
+        }
+    ],
+    "tasks": [
+        {
+            "title": "Ngerjain web",
+            "finished_date": "2 jan 2023",
+            "finished_by": {
+                "username": "alexander"
+            }
+        },
+        {
+            "title": "Beresin mockup",
+            "finished_date": null,
+            "finished_by": null
+        }
+    ],
+    "images": ["1.png", "2.png"],
+    "tags": ["coding", "design"],
+    "is_done": false,
+    "done_date": "2 jan 2023",
+    "createdAt": "2 jan 2023",
+    "updatedAt": "3 jan 2023"
+}
