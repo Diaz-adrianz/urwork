@@ -1,0 +1,41 @@
+package com.urwork.mobile.services
+
+import android.content.Context
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
+import com.urwork.mobile.Login
+import com.urwork.mobile.models.UserModel
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+object ApiEnqueue {
+    fun <T> enqueue (ctx: Context, call: Call<T>, onResult: (T?, Int?, Throwable?) -> Unit)  {
+        call.enqueue(
+            object: Callback<T> {
+                override fun onFailure(call: Call<T>, t: Throwable) {
+                    Log.e("FETCH ERR", t.toString())
+                    Toast.makeText(ctx, "Something wrong with app", Toast.LENGTH_SHORT).show()
+
+                    onResult(null,400, t)
+                }
+
+                override fun onResponse(call: Call<T>, response: Response<T>) {
+                    if (response.isSuccessful) {
+                        onResult(response.body(), response.code(), null)
+                    }else if (response.code() != 200) {
+                        val errorBody = response.errorBody()?.string()
+                        val msg = errorBody?.let { JSONObject(it).getString("msg") }
+
+                        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+
+                        onResult(null, response.code(), null)
+                    }
+                }
+            }
+        )
+    }
+}

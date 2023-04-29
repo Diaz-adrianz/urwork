@@ -16,4 +16,6 @@
     <color name="yellow">#F3D11F</color>
     <color name="primary_tint">#B0E7C9</color>
 
+    <color name="danger">#FF0000</color>
+
 </resources>

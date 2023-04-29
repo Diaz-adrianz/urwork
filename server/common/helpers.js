@@ -38,11 +38,13 @@ export const handleErrors = (err) => {
 		return {
 			status: 404,
 			msg: (err.lookup || 'Data') + ' not found',
+data: null
 		};
 	} else if (err.name === 'CastError' && err.kind === 'ObjectId') {
 		return {
 			status: 400,
 			msg: 'Invalid identifier',
+data: null
 		};
 	} else if (err.name === 'ValidationError') {
 		let errors = [];
@@ -54,6 +56,7 @@ export const handleErrors = (err) => {
 		return {
 			status: 400,
 			msg: errors[0],
+data: null
 		};
 	} else if (err.name === 'MongoServerError' && err.code === 11000) {
 		let errors = [];
@@ -65,6 +68,7 @@ export const handleErrors = (err) => {
 		return {
 			status: 422,
 			msg: errors[0],
+data: null
 		};
 	} else {
 		console.log(err);
@@ -75,5 +79,6 @@ export const handleErrors = (err) => {
 	return {
 		status: 500,
 		msg: 'Internal server error',
+data: null
 	};
 };

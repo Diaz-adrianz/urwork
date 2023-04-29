@@ -62,7 +62,7 @@ export const Gauth = async (req, res) => {
 
 		res.status(200).json({
 			msg: action + ' with google success',
-			data: token,
+			data: {_id: token},
 		});
 	} catch (error) {
 		let err = handleErrors(error);
@@ -111,10 +111,10 @@ export const Login = async (req, res) => {
 			API = new ApiView(USERS, { email });
 
 		const user = await API.exec(API.detail());
-		if (user.status != 200) return res.status(user.status).json({ msg: user.msg });
+		if (user.status != 200) return res.status(user.status).json({ msg: user.msg, data: {} });
 
 		const passwordOk = await bcrypt.compare(password, user.data.password);
-		if (!passwordOk) return res.status(400).json({ msg: 'Invalid password' });
+		if (!passwordOk) return res.status(400).json({ msg: 'Invalid password', data: {} });
 
 		const token = jwt.sign(
 			{
@@ -134,7 +134,7 @@ export const Login = async (req, res) => {
 
 		return res.status(user.status).json({
 			msg: 'Login success',
-			data: token,
+			data: {_id: token},
 		});
 	} catch (error) {
 		let err = handleErrors(error);

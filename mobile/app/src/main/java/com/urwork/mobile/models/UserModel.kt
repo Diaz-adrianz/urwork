@@ -1,0 +1,31 @@
+package com.urwork.mobile.models
+
+import com.google.gson.annotations.SerializedName
+
+data class UserModel(
+    @SerializedName("msg") var msg: String,
+    @SerializedName("data") var data: UserModelData? = null
+)
+
+data class AuthModel(
+    @SerializedName("msg") var msg: String,
+    @SerializedName("data") var data: String?
+)
+
+data class  UserModelList(
+    @SerializedName("msg") var msg: String,
+    @SerializedName("data") var data: List<UserModelData>?
+)
+
+data class UserModelData(
+    @SerializedName("_id") var Id: String? = "",
+    @SerializedName("first_name") var firstName: String? = "",
+    @SerializedName("last_name") var lastName: String? = "",
+    @SerializedName("email") var email: String? = "",
+    @SerializedName("password") var password: String? = "",
+    @SerializedName("about") var about: String? = "",
+    @SerializedName("photo") var photo: String? = "",
+    @SerializedName("institute") var institute: String? = "",
+    @SerializedName("createdAt") var createdAt: String? = "",
+    @SerializedName("updatedAt") var updatedAt: String? = "",
+)
