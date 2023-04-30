@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_project_toptitle"
+        style="@style/textmini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="8dp"
+        android:text="In Progress"
+        android:textColor="@color/primary" />
+
+    <TextView
+        android:id="@+id/item_project_title"
+        style="@style/textnormal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingHorizontal="8dp"
+        android:text="Bikin Web Bloggin Baru"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/item_project_subtitle"
+        style="@style/textmini"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingHorizontal="8dp"
+        android:text="MERN web for company internal application"
+        android:textColor="@color/gray" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_project_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
+        tools:listitem="@layout/item_tag" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/silver"
+        android:paddingTop="8dp" />
+</LinearLayout>

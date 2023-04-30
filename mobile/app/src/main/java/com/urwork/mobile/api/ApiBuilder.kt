@@ -25,7 +25,7 @@ object ApiBuilder {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.9:5000")
+        .baseUrl("https://urwork.vercel.app")
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

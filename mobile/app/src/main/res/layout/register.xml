@@ -9,106 +9,150 @@
     android:paddingVertical="24dp">
 
     <TextView
-        android:id="@+id/login_title"
+        android:id="@+id/regis_title"
         style="@style/textheader"
         android:layout_width="wrap_content"
-        android:text="Hey, There 👋"
+        android:text="Get Started 🚀"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/login_subtitle"
-        style="@style/textmini"
+        android:id="@+id/regis_subtitle"
+        style="@style/textnormal"
         android:layout_width="wrap_content"
-        android:layout_below="@id/login_title"
+        android:layout_below="@id/regis_title"
         android:layout_marginBottom="32dp"
-        android:text="Let's explore the world full of creativity"
+        android:text="manage and showcase your work"
         android:textColor="@color/gray" />
 
     <ImageView
-        android:id="@+id/login_help_btn"
+        android:id="@+id/regis_help_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_outline_help_outline_24"
         app:tint="@color/gray" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_inputwrap_email"
+    <LinearLayout
+        android:id="@+id/regis_inputwrap_names"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_subtitle"
+        android:layout_below="@+id/regis_subtitle"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/regis_inputwrap_firstname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="outline">
+
+            <EditText
+                android:id="@+id/regis_input_firstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First name"
+                style="@style/textnormal"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/regis_inputwrap_lastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:boxBackgroundMode="outline">
+
+            <EditText
+                android:id="@+id/regis_input_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/textnormal"
+                android:hint="Last name"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/regis_inputwrap_email"
+        android:layout_width="match_parent"
+        android:layout_below="@id/regis_inputwrap_names"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="outline">
 
         <EditText
-            android:id="@+id/login_input_email"
-            style="@style/textnormal"
+            android:id="@+id/regis_input_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/textnormal"
             android:hint="Email"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/login_inputwrap_password"
+        android:id="@+id/regis_inputwrap_password"
         android:layout_width="match_parent"
+        android:layout_below="@id/regis_inputwrap_email"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_inputwrap_email"
         android:layout_marginBottom="16dp"
         app:boxBackgroundColor="@android:color/transparent"
         app:boxBackgroundMode="outline">
 
         <EditText
-            android:id="@+id/login_input_password"
-            style="@style/textnormal"
+            android:id="@+id/regis_input_password"
             android:layout_width="match_parent"
+            style="@style/textnormal"
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
-        android:id="@+id/login_chkbox_rememberme"
-        style="@style/textmini"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/regis_inputwrap_confpassword"
+        android:layout_width="match_parent"
+        android:layout_below="@id/regis_inputwrap_password"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_inputwrap_password"
-        android:layout_marginTop="16dp"
-        android:text="Remember Me"
-        android:textColor="@color/gray" />
+        android:layout_marginBottom="16dp"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxBackgroundMode="outline">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_inputwrap_password"
-        android:layout_alignTop="@id/login_chkbox_rememberme"
-        android:layout_alignBottom="@id/login_chkbox_rememberme"
-        android:layout_alignParentEnd="true"
-        android:gravity="center"
-        android:text="Reset password?"
-        android:textColor="@color/primary" />
+        <EditText
+            android:id="@+id/regis_input_confpassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/textnormal"
+            android:hint="Confirm password"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
-        android:id="@+id/login_btn_go"
+        android:id="@+id/regis_go_btn"
         style="@style/textnormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_chkbox_rememberme"
+        android:layout_below="@id/regis_inputwrap_confpassword"
         android:layout_marginTop="16dp"
-        android:text="Sign In"
+        android:text="Sign Up"
         android:textAllCaps="false" />
 
     <LinearLayout
-        android:id="@+id/login_wrap_donthaveaccount"
+        android:id="@+id/regis_wrap_haveaccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_btn_go"
+        android:layout_below="@id/regis_go_btn"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/login_donthaveaccount"
+            android:id="@+id/regis_haveaccount"
             style="@style/textmini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,12 +161,12 @@
             android:textColor="@color/gray" />
 
         <TextView
-            android:id="@+id/login_btn_donthaveaccount"
+            android:id="@+id/regis_btn_haveaccount"
             style="@style/textmini"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:text="Sign Up "
+            android:text="Sign In"
             android:textColor="@color/primary" />
     </LinearLayout>
 
@@ -131,7 +175,7 @@
         style="@style/textmini"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/login_wrap_donthaveaccount"
+        android:layout_below="@id/regis_wrap_haveaccount"
         android:maxLines="1"
         android:text="---------------- OR ----------------"
         android:textAlignment="center"

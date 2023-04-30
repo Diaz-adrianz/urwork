@@ -9,7 +9,7 @@ data class ProjectModel(
 
 data class ProjectModelList(
     @SerializedName("msg") var msg: String,
-    @SerializedName("data") var data: List<ProjectModel>?
+    @SerializedName("data") var data: ArrayList<ProjectModelData>?
 )
 
 data class ProjectModelData(

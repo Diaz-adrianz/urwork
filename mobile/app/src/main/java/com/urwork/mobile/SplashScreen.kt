@@ -26,9 +26,8 @@ class SplashScreen : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             ApiEnqueue.enqueue(this, AuthServ.userinfo()) { res, code, err ->
-                Log.e("CEK AUTH", res.toString())
-
-                if (code == 200) {
+                if (code == 200 && res != null) {
+                    prefs.putString(R.string.uidname.toString(), res.data?.Id)
                     startActivity(Intent(this@SplashScreen, MainActivity::class.java))
                 } else {
                     startActivity(Intent(this@SplashScreen, Login::class.java))

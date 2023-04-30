@@ -14,7 +14,7 @@ data class AuthModel(
 
 data class  UserModelList(
     @SerializedName("msg") var msg: String,
-    @SerializedName("data") var data: List<UserModelData>?
+    @SerializedName("data") var data: ArrayList<UserModelData>?
 )
 
 data class UserModelData(

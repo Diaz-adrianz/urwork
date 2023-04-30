@@ -30,17 +30,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:text="Profile" />
+            android:text="Profile"
+            android:textColor="@color/white" />
 
         <ImageButton
-            android:id="@+id/logout_btn"
+            android:id="@+id/profil_btn_gosetting"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
             android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_round_logout_24"
-            app:tint="@color/danger" />
+            android:src="@drawable/ic_round_manage_accounts_24"
+            app:tint="@color/white"
+            />
     </LinearLayout>
 
 
@@ -78,8 +79,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
-                    android:textColor="@color/black"
-                    android:text="Alexander Grahambell" />
+                    android:text="Alexander Grahambell"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/profil_about"
@@ -87,8 +88,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:textColor="@color/gray"
-                    android:text="Programmer from SMKn 4 Bdg" />
+                    android:text="Programmer from SMKn 4 Bdg"
+                    android:textColor="@color/gray" />
 
                 <!--                PROFIL STATS -->
                 <LinearLayout
@@ -113,16 +114,16 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center_vertical"
-                            android:textColor="@color/primary"
-                            android:text="100" />
+                            android:text="100"
+                            android:textColor="@color/primary" />
 
                         <TextView
                             style="@style/textmini"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:textColor="@color/gray"
-                            android:text="Projects" />
+                            android:text="Projects"
+                            android:textColor="@color/gray" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -138,16 +139,16 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center_vertical"
-                            android:textColor="@color/primary"
-                            android:text="69" />
+                            android:text="69"
+                            android:textColor="@color/primary" />
 
                         <TextView
                             style="@style/textmini"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:textColor="@color/gray"
-                            android:text="Stars" />
+                            android:text="Stars"
+                            android:textColor="@color/gray" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -162,19 +163,37 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center_vertical"
-                            android:textColor="@color/primary"
-                            android:text="89%" />
+                            android:text="89%"
+                            android:textColor="@color/primary" />
 
                         <TextView
                             style="@style/textmini"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:textColor="@color/gray"
-                            android:text="Perform rate" />
+                            android:text="Perform rate"
+                            android:textColor="@color/gray" />
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/profil_projects"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="32dp"
+                    tools:listitem="@layout/item_project_1" />
+
+                <Button
+                    android:id="@+id/projects_more"
+                    style="@style/textnormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Load More"
+                    android:backgroundTint="@color/silver"
+                    android:textColor="@color/gray"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
         </ScrollView>

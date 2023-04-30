@@ -12,15 +12,16 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface AuthApi {
-//    @POST("/gauth")
+    //    @POST("/gauth")
 //    fun gauth(@Body model: UserModelData ):Call<UserModel>
 //
-//    @POST("/signup")
-//    fun signup(@Body model: UserModelData ):Call<UserModel>
+    @Headers("Content-Type: application/json")
+    @POST("/auth/signup")
+    fun signup(@Body model: UserModelData): Call<UserModel>
 
     @Headers("Content-Type: application/json")
     @POST("/auth/signin")
-    fun signin(@Body model: UserModelData ):Call<UserModel>
+    fun signin(@Body model: UserModelData): Call<UserModel>
 
     @GET("/users/my")
     fun userinfo(): Call<UserModel>

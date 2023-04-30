@@ -9,7 +9,7 @@ data class TaskModel(
 
 data class TaskModelList(
     @SerializedName("msg") var msg: String,
-    @SerializedName("data") var data: List<TaskModelData>?
+    @SerializedName("data") var data: ArrayList<TaskModelData>?
 )
 
 data class TaskModelData (

@@ -13,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object ApiEnqueue {
-    fun <T> enqueue (ctx: Context, call: Call<T>, onResult: (T?, Int?, Throwable?) -> Unit)  {
+    fun <T> enqueue (ctx: Context, call: Call<T>, withSuccessMsg: Boolean = false, onResult: (T?, Int?, Throwable?) -> Unit)  {
         call.enqueue(
             object: Callback<T> {
                 override fun onFailure(call: Call<T>, t: Throwable) {
@@ -26,9 +26,18 @@ object ApiEnqueue {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
                     if (response.isSuccessful) {
                         onResult(response.body(), response.code(), null)
+
+                        if (withSuccessMsg) {
+                            val bodyy = response.body()?.toString()
+                            val msg = bodyy?.let { JSONObject(it).getString("msg") }
+
+                            Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+                        }
                     }else if (response.code() != 200) {
                         val errorBody = response.errorBody()?.string()
-                        val msg = errorBody?.let { JSONObject(it).getString("msg") }
+                        Log.e("ERR", errorBody.toString())
+                        val jsonObject = JSONObject(errorBody)
+                        val msg = jsonObject.getString("msg")
 
                         Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
 
