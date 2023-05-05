@@ -18,12 +18,19 @@ export const ListUser = async (req, res) => {
 			)
 		);
 
-	return res.status(status).json({ msg, data });
+	return res.status(status).json({ msg, ...data });
 };
 
 export const UserInfo = async (req, res) => {
 	const API = new ApiView(USERS, { is_blocked: false, _id: req.user._id }, {}, '-is_blocked -password -role'),
 		{ status, msg, data } = await API.exec(API.detail());
+
+	return res.status(status).json({ msg, data });
+};
+
+export const UpdateProfile = async (req, res) => {
+	const API = new ApiView(USERS, { _id: req.user._id }),
+		{ status, msg, data } = await API.exec(API.update({ ...req.body }));
 
 	return res.status(status).json({ msg, data });
 };

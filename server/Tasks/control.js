@@ -23,7 +23,7 @@ export const ListTask = async (req, res) => {
 		});
 	}
 
-	return res.status(status).json({ msg, data });
+	return res.status(status).json({ msg, ...data });
 };
 
 export const CreateTask = async (req, res) => {

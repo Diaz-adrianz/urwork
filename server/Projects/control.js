@@ -15,10 +15,10 @@ export const ListProj = async (req, res) => {
 	API.addPopulate('collaborators', '_id first_name');
 
 	const { status, msg, data } = await API.exec(
-		API.list(req.query.search, ['title', 'tags'], req.params.start, req.params.end, req.params.page)
+		API.list(req.query.search, ['title', 'tags'], req.query.start, req.query.end, req.query.page)
 	);
 
-	return res.status(status).json({ msg, data });
+	return res.status(status).json({ msg, ...data });
 };
 
 export const DetailProj = async (req, res) => {

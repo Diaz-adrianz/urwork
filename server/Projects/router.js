@@ -5,7 +5,7 @@ import { CreateProj, DeleteProj, DetailProj, ListProj, StarringProj, UpdateProj 
 
 const router = exp.Router();
 
-router.get('/', protect, ListProj);
+router.get('/', ListProj);
 router.get('/my', protect, ListProj);
 
 router.get('/starit/:key/:option', protect, StarringProj);

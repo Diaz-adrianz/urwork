@@ -26,8 +26,12 @@ export default class ApiView {
 	}
 
 	async list(search = '', searchableFields = [], start = '', end = '', page = 1) {
-		if (start) this.filters['createdAt']['$gte'] = moment(start).format();
-		if (end) this.filters['createdAt']['$lte'] = moment(end).format();
+		if (start || end) {
+			this.filters['createdAt'] = {};
+
+			if (start) this.filters['createdAt']['$gte'] = moment(start).format();
+			if (end) this.filters['createdAt']['$lte'] = moment(end).format();
+		}
 
 		if (search) {
 			let pattern = [];
@@ -50,16 +54,17 @@ export default class ApiView {
 			}),
 			docs = data.docs;
 
-		['docs', 'limit', 'offset', 'page', 'hasPrevPage', 'hasNextPage', 'pagingCounter'].forEach(
-			(key) => delete data[key]
-		);
+		// ['docs', 'limit', 'offset', 'page', 'hasPrevPage', 'hasNextPage', 'pagingCounter'].forEach(
+		// 	(key) => delete data[key]
+		// );
+		['docs', 'offset', 'pagingCounter', 'hasPrevPage', 'hasNextPage'].forEach((key) => delete data[key]);
 
 		data['data'] = docs;
 
 		return {
 			status: 200,
 			msg: `${data.totalDocs} ${this.modelName}(s) found`,
-			...data,
+			data,
 		};
 	}
 
