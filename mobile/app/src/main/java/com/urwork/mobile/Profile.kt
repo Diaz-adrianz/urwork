@@ -135,6 +135,9 @@ class Profile : AppCompatActivity() {
                     .error(R.drawable.blank_profilepic)
                     .centerCrop()
                     .into(photo_iv);
+
+                prefs.putString("first_name", res.data?.firstName)
+                prefs.putString("photo", res.data?.photo)
             }
 
             swipe_refresh.isRefreshing = false

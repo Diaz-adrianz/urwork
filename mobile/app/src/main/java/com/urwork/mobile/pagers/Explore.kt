@@ -1,19 +1,35 @@
 package com.urwork.mobile.pagers
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.urwork.mobile.R
+import com.urwork.mobile.adapters.Project1
+import com.urwork.mobile.api.ApiBuilder
+import com.urwork.mobile.api.ProjectApi
+import com.urwork.mobile.models.ProjectModelData
+import com.urwork.mobile.services.ApiEnqueue
+import com.urwork.mobile.services.TinyDB
 
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class Explore : Fragment() {
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -26,22 +42,115 @@ class Explore : Fragment() {
         }
     }
 
+    lateinit var swipe_refresh: SwipeRefreshLayout
+    lateinit var explore_type_rg: RadioGroup
+    lateinit var explore_type_selected_rb: RadioButton
+    lateinit var loadmore_btn: Button
+
+    lateinit var prefs: TinyDB
+    lateinit var ProjServ: ProjectApi
+
+    lateinit var projects_rv: RecyclerView
+    lateinit var projectsAdapter: Project1
+
+    var projects: ArrayList<ProjectModelData> = ArrayList()
+    var search_value: String = ""
+    var search_page: Int = 1
+    var search_hasNextPage: Boolean = false
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
 
-        val actionbar: ActionBar? =  (activity as AppCompatActivity?)!!.supportActionBar
+        val actionbar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
 
         if (actionbar != null) {
             actionbar.show()
             actionbar.title = "Explore"
         }
 
+        val v: View = inflater.inflate(R.layout.explore, container, false)
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.explore, container, false)
+        prefs = TinyDB(requireContext())
+        ProjServ = ApiBuilder.buildService(
+            ProjectApi::class.java,
+            prefs.getString(R.string.tokenname.toString())
+        )
+
+        projectsAdapter = Project1(requireContext(), false, projects)
+
+        swipe_refresh = v.findViewById(R.id.swiperefresh)
+        explore_type_rg = v.findViewById(R.id.explore_type)
+        loadmore_btn = v.findViewById(R.id.projects_more)
+
+        projects_rv = v.findViewById(R.id.projects_result)
+        projects_rv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        projects_rv.setHasFixedSize(true)
+        projects_rv.adapter = projectsAdapter
+
+        projectsAdapter.setOnItemClickListener(object : Project1.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.e("CLICKED", projects.get(position).title.toString())
+            }
+        })
+
+        swipe_refresh.setOnRefreshListener {
+            projects.clear()
+            search_page = 1
+
+            getProjects()
+        }
+
+        loadmore_btn.setOnClickListener {
+            if (search_hasNextPage) {
+                search_page += 1
+                getProjects()
+            }
+        }
+
+        return v
+    }
+
+    @SuppressLint("ResourceAsColor")
+    private fun getProjects() {
+        swipe_refresh.isRefreshing = true
+
+        ApiEnqueue.enqueue(
+            requireContext(),
+            ProjServ.getProjects(search_page, search_value)
+        ) { res, code, err ->
+            if (code == 200 && res != null) {
+                res.data?.forEach { d -> projects.add(d) }
+
+                projectsAdapter.filterList(projects)
+
+                if (res.nextPage != null) {
+                    search_hasNextPage = true
+                    loadmore_btn.setTextColor(R.color.white)
+                    loadmore_btn.setBackgroundTintList(
+                        ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.primary
+                        )
+                    )
+                } else {
+                    search_hasNextPage = false
+                    loadmore_btn.setTextColor(R.color.gray)
+                    loadmore_btn.setBackgroundTintList(
+                        ContextCompat.getColorStateList(
+                            requireContext(),
+                            R.color.silver
+                        )
+                    )
+                }
+            }
+
+            swipe_refresh.isRefreshing = false
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -52,9 +161,13 @@ class Explore : Fragment() {
         return when (item.itemId) {
             R.id.search -> {
                 val searchView = item.actionView as SearchView
-                searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
+                        if (query != null) {
+                            projects.clear()
+                            search_value = query
+                            getProjects()
+                        }
                         return false
                     }
 

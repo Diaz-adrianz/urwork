@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.urwork.mobile.Profile
 import com.urwork.mobile.R
 import com.urwork.mobile.adapters.Project1
@@ -101,6 +102,21 @@ class Home : Fragment() {
 
         getMyTasks()
 
+
+        val name: String? = prefs.getString("first_name")
+        val photo: String? = prefs.getString("photo")
+
+        if (name != null || photo != null) {
+            name_tv.text = name
+
+            Glide
+                .with(requireContext())
+                .load(photo)
+                .placeholder(R.drawable.blank_profilepic)
+                .error(R.drawable.blank_profilepic)
+                .centerCrop()
+                .into(photo_iv);
+        }
 
         photo_iv.setOnClickListener{
             startActivity(Intent(requireContext(), Profile::class.java))

@@ -27,12 +27,8 @@ object ApiEnqueue {
                     if (response.isSuccessful) {
                         onResult(response.body(), response.code(), null)
 
-                        if (withSuccessMsg) {
-                            val bodyy = response.body()?.toString()
-                            val msg = bodyy?.let { JSONObject(it).getString("msg") }
+//                        Log.e("SUCCESS", response.toString())
 
-                            Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
-                        }
                     }else if (response.code() != 200) {
                         try {
                             val errorBody = response.errorBody()?.string()

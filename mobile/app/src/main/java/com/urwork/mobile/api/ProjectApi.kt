@@ -9,4 +9,13 @@ interface ProjectApi {
 
     @GET("/projects/my")
     fun myProjects(@Query("page") page: Int): Call<ProjectModelList>
+
+    @GET("/projects")
+    fun getProjects(
+        @Query("page") page: Int,
+        @Query("search") search: String,
+        @Query("start") start: String = "",
+        @Query("end") end: String = ""
+    ): Call<ProjectModelList>
+
 }

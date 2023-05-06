@@ -1,15 +1,8 @@
 package com.urwork.mobile.api
 
-import com.urwork.mobile.models.AuthModel
-import com.urwork.mobile.models.UserModel
-import com.urwork.mobile.models.UserModelData
-import com.urwork.mobile.models.UserModelList
+import com.urwork.mobile.models.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface AuthApi {
     //    @POST("/gauth")
@@ -25,6 +18,10 @@ interface AuthApi {
 
     @GET("/users/my")
     fun userinfo(): Call<UserModel>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/users/my")
+    fun updateAccount(@Body model: UpdateUserModelData): Call<UserModel>
 
     @DELETE("/auth/signout")
     fun signout(): Call<UserModel>

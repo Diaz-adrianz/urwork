@@ -29,3 +29,10 @@ data class UserModelData(
     @SerializedName("createdAt") var createdAt: String? = "",
     @SerializedName("updatedAt") var updatedAt: String? = "",
 )
+
+data class UpdateUserModelData(
+    @SerializedName("first_name") var firstName: String? = "",
+    @SerializedName("last_name") var lastName: String? = "",
+    @SerializedName("about") var about: String? = "",
+    @SerializedName("institute") var institute: String? = "",
+)

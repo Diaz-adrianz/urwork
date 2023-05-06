@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
+import com.urwork.mobile.models.UpdateUserModelData
+import com.urwork.mobile.models.UserModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
 
@@ -59,6 +62,14 @@ class MyAccount : AppCompatActivity() {
             logout()
         }
 
+        save_btn.setOnClickListener{
+            setProfileData()
+        }
+
+        swipe_refresh.setOnRefreshListener {
+            getProfileData()
+        }
+
         getProfileData()
     }
 
@@ -72,6 +83,30 @@ class MyAccount : AppCompatActivity() {
                 lastname_et.setText(res.data?.lastName)
                 about_et.setText(res.data?.about)
                 institution_et.setText(res.data?.institute)
+
+                prefs.putString("first_name", res.data?.firstName)
+                prefs.putString("photo", res.data?.photo)
+            }
+
+            swipe_refresh.isRefreshing = false
+        }
+    }
+
+    fun setProfileData() {
+        swipe_refresh.isRefreshing = true
+
+        val _firstName = firstname_et.text.toString()
+        val _lastName = lastname_et.text.toString()
+        val _about = about_et.text.toString()
+        val _intitution = institution_et.text.toString()
+
+        val body = UpdateUserModelData(_firstName, _lastName, _about, _intitution)
+
+        ApiEnqueue.enqueue(this@MyAccount, AuthServ.updateAccount(body)) {res, code ,err ->
+            if (res != null && code == 200) {
+                getProfileData()
+
+                Toast.makeText(this@MyAccount, res.msg, Toast.LENGTH_SHORT).show()
             }
 
             swipe_refresh.isRefreshing = false
