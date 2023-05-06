@@ -7,7 +7,7 @@ export const ListTask = async (req, res) => {
 	const filter = req.path == '/my' ? {} : { project_id: req.project?._id },
 		API = new ApiView(TASKS, filter, req.query);
 
-	API.addPopulate('project_id', 'title collaborators author');
+	API.addPopulate('project_id', 'title');
 	API.addPopulate('completed_by', '_id first_name');
 
 	let { status, msg, data } = await API.exec(
