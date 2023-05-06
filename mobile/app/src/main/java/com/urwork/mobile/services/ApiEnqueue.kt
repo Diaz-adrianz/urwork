@@ -34,12 +34,17 @@ object ApiEnqueue {
                             Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
                         }
                     }else if (response.code() != 200) {
-                        val errorBody = response.errorBody()?.string()
-                        Log.e("ERR", response.toString())
-                        val jsonObject = JSONObject(errorBody)
-                        val msg = jsonObject.getString("msg")
+                        try {
+                            val errorBody = response.errorBody()?.string()
+                            Log.e("ERR", response.toString())
+                            val jsonObject = JSONObject(errorBody)
+                            val msg = jsonObject.getString("msg")
 
-                        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
+
+                        } catch (e: Exception) {
+                            Toast.makeText(ctx, "Try again later", Toast.LENGTH_SHORT).show()
+                        }
 
                         onResult(null, response.code(), null)
                     }

@@ -1,5 +1,6 @@
 import PROJECTS from './model.js';
 import ApiView from '../common/apiview.js';
+import TASKS from '../Tasks/model.js';
 
 export const ListProj = async (req, res) => {
 	const filter =
@@ -16,6 +17,24 @@ export const ListProj = async (req, res) => {
 
 	const { status, msg, data } = await API.exec(
 		API.list(req.query.search, ['title', 'tags'], req.query.start, req.query.end, req.query.page)
+	);
+
+	data.data = await Promise.all(
+		data.data.map(async (dat) => {
+			const obj = dat.toObject();
+			const projectTasks = new ApiView(TASKS, { project_id: dat._id, completed_date: { $ne: null } }),
+				completedTasks = await projectTasks.exec(projectTasks.count());
+
+			projectTasks.filters = { project_id: dat._id, completed_date: null };
+			const uncompletedTasks = await projectTasks.exec(projectTasks.count());
+
+			if (uncompletedTasks.status == 200 && completedTasks.status == 200) {
+				const totalTasks = completedTasks.data + uncompletedTasks.data;
+				const percentage = (completedTasks.data / totalTasks) * 100;
+				obj['percentage'] = percentage;
+			}
+			return obj;
+		})
 	);
 
 	return res.status(status).json({ msg, ...data });

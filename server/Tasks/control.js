@@ -21,16 +21,13 @@ export const ListTask = async (req, res) => {
 				(dat.project_id.author == req.user._id || dat.project_id.collaborators.includes(req.user._id))
 			);
 		});
-
-		
 	}
 
-data.data = data.data.map((dat) => {
-			dat.project_id.author = undefined
-			dat.project_id.collaborators = undefined
-			console.log('tes' + dat)
-			return dat
-		});
+	data.data = data.data.map((dat) => {
+		dat.project_id.author = undefined;
+		dat.project_id.collaborators = undefined;
+		return dat;
+	});
 
 	return res.status(status).json({ msg, ...data });
 };

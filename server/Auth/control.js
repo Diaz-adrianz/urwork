@@ -62,7 +62,7 @@ export const Gauth = async (req, res) => {
 
 		res.status(200).json({
 			msg: action + ' with google success',
-			data: {_id: token},
+			data: { _id: token },
 		});
 	} catch (error) {
 		let err = handleErrors(error);
@@ -134,7 +134,7 @@ export const Login = async (req, res) => {
 
 		return res.status(user.status).json({
 			msg: 'Login success',
-			data: {_id: token},
+			data: { _id: token, first_name: user.data.first_name, photo: user.data.photo },
 		});
 	} catch (error) {
 		let err = handleErrors(error);

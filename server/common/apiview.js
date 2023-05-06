@@ -68,6 +68,16 @@ export default class ApiView {
 		};
 	}
 
+	async count() {
+		const countData = await this.MODEL.count(this.filters);
+
+		return {
+			status: 200,
+			msg: `${countData} ${this.modelName}(s) found`,
+			data: countData,
+		};
+	}
+
 	async detail() {
 		const data = await this.MODEL.findOne(this.filters, this.deselects).populate(
 			this.population.length ? this.population : ''

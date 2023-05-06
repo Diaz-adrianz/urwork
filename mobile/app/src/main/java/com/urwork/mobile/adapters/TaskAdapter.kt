@@ -35,7 +35,7 @@ class TaskAdapter (private  val ctx: Context, private  var subtitleIsBy: Boolean
         holder.subtitle.text = if (subtitleIsBy) "Completed by ${item.completedBy?.firstName}" else "Proyek: ${item.projectId?.title}"
 
         if (item.completedDate != "") {
-            holder.title.setTextColor(R.color.silver)
+//            holder.title.setTextColor(R.color.silver)
             holder.subtitle.setTextColor(R.color.silver)
             holder.statusIcon.setColorFilter(R.color.gray)
             holder.statusIcon.setImageResource(R.drawable.ic_round_check_circle_24)
