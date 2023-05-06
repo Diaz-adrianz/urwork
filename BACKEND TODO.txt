@@ -1,0 +1,3 @@
+BACKEND TODO
+1. membuat entitas notif
+2. menambahkan return first name dan profile photo saat LOGIN

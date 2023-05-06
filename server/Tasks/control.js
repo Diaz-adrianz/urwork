@@ -15,7 +15,7 @@ export const ListTask = async (req, res) => {
 	);
 
 	if (req.path == '/my') {
-		data = data.filter((dat) => {
+		data.data = data.data.filter((dat) => {
 			return (
 				(dat.project_id != null || dat.project_id != {}) &&
 				(dat.project_id.author == req.user._id || dat.project_id.collaborators.includes(req.user._id))

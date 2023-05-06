@@ -35,7 +35,7 @@ object ApiEnqueue {
                         }
                     }else if (response.code() != 200) {
                         val errorBody = response.errorBody()?.string()
-                        Log.e("ERR", errorBody.toString())
+                        Log.e("ERR", response.toString())
                         val jsonObject = JSONObject(errorBody)
                         val msg = jsonObject.getString("msg")
 

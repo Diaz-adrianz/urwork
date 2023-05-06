@@ -6,25 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_above="@+id/nav_bar"
-            android:layout_weight="1" />
-
+            android:layout_height="match_parent"
+            android:layout_above="@id/nav_bar" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
             android:paddingVertical="8dp"
             android:scrollIndicators="left"
             app:itemHorizontalTranslationEnabled="true"
@@ -33,15 +30,18 @@
             app:labelVisibilityMode="labeled"
             app:menu="@menu/nav_menu" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ic_round_add_32"
-        app:layout_anchorGravity="center_horizontal"
-        app:layout_anchor="@id/nav_bar" />
+        app:layout_anchor="@id/nav_bar"
+        app:layout_anchorGravity="center_horizontal" />
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

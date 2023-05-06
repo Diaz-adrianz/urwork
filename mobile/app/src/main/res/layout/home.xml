@@ -1,12 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/temp_goto_profile"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Page"
-        style="@style/textheader"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profil_photo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/blank_profilepic"
+                app:shapeAppearanceOverlay="@style/circleImageView" />
+
+            <TextView
+                android:id="@+id/greeting"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@id/profil_photo"
+                android:text="Good Morning"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/textnormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/greeting"
+                android:layout_toRightOf="@id/profil_photo"
+                android:text="Alexander"
+                android:textColor="@color/black" />
+
+            <ImageButton
+                android:id="@+id/goto_notif"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@id/greeting"
+                android:backgroundTint="@android:color/transparent"
+                android:src="@drawable/ic_round_notifications_24"
+                app:tint="@color/gray" />
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="16dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/home_section_project_title"
+                style="@style/textnormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profil_photo"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:text="Ongoing Project"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/home_section_project_seeall"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/profil_photo"
+                android:layout_alignBaseline="@id/home_section_project_title"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:text="See all"
+                android:textColor="@color/primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_section_project_contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_section_project_title"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/home_section_task_title"
+                style="@style/textnormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_section_project_contents"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:text="Today tasks"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/home_section_task_seeall"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/home_section_task_title"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:text="See all"
+                android:textColor="@color/primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_section_task_contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_section_task_title"
+                android:layout_marginTop="16dp"
+                android:paddingHorizontal="24dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportActionBar?.hide();
 
         loadFragment(Home())
         bottomNav = findViewById(R.id.nav_bar) as BottomNavigationView
