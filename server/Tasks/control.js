@@ -7,7 +7,7 @@ export const ListTask = async (req, res) => {
 	const filter = req.path == '/my' ? {} : { project_id: req.project?._id },
 		API = new ApiView(TASKS, filter, req.query);
 
-	API.addPopulate('project_id', 'title');
+	API.addPopulate('project_id', 'title collaborators author');
 	API.addPopulate('completed_by', '_id first_name');
 
 	let { status, msg, data } = await API.exec(
@@ -20,6 +20,12 @@ export const ListTask = async (req, res) => {
 				(dat.project_id != null || dat.project_id != {}) &&
 				(dat.project_id.author == req.user._id || dat.project_id.collaborators.includes(req.user._id))
 			);
+		});
+
+		data.data = data.data.map((dat) => {
+			delete dat.project_id.author
+			delete dat.project_id.collaborators
+			return dat
 		});
 	}
 
