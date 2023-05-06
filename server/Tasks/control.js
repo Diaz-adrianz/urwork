@@ -22,12 +22,15 @@ export const ListTask = async (req, res) => {
 			);
 		});
 
-		data.data = data.data.map((dat) => {
-			delete dat.project_id.author
-			delete dat.project_id.collaborators
+		
+	}
+
+data.data = data.data.map((dat) => {
+			dat.project_id.author = undefined
+			dat.project_id.collaborators = undefined
+			console.log('tes' + dat)
 			return dat
 		});
-	}
 
 	return res.status(status).json({ msg, ...data });
 };
