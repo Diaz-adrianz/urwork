@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { v2 as cloudinary } from 'cloudinary';
 
 import connDB from './db.js';
 import rAuth from './Auth/router.js';
@@ -11,6 +12,12 @@ import rProj from './Projects/router.js';
 import rTasks from './Tasks/router.js';
 
 dotenv.config();
+
+cloudinary.config({
+	cloud_name: `${process.env.CLOUDINARY_CLOUD_NAME}`,
+	api_secret: `${process.env.CLOUDINARY_API_SECRET}`,
+	api_key: `${process.env.CLOUDINARY_API_KEY}`,
+});
 
 const app = exp();
 const port = process.env.PORT || 5000;
