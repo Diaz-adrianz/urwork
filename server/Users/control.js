@@ -38,13 +38,13 @@ export const UpdateProfile = async (req, res) => {
 };
 
 export const UpdatePhotoProfile = async (req, res) => {
-	if (!req.file) return res.status(400).json({ msg: 'Image upload required' });
+	if (!req.file) return res.status(400).json({ msg: 'Image upload required', data: null });
 
 	const API = new ApiView(USERS, { _id: req.user._id }),
 		userData = await API.exec(API.detail());
 
 	if (userData.status != 200) {
-		return res.status(userData.status).json({ msg: userData.msg });
+		return res.status(userData.status).json({ msg: userData.msg, data: null });
 	}
 
 	if (userData.data.photo != '') {
@@ -52,19 +52,32 @@ export const UpdatePhotoProfile = async (req, res) => {
 			oldPhotoUrl = oldPhoto.split('/'),
 			publicId = oldPhotoUrl[oldPhotoUrl.length - 1].split('.')[0];
 
-		await cloudinary.uploader.destroy(publicId);
+		try {
+			await cloudinary.uploader.destroy('urwork/' + publicId);
+		} catch (error) {
+			console.log('SKIP');
+		}
 	}
 
-	cloudinary.uploader
-		.upload_stream({ folder: 'urwork' }, async (err, result) => {
-			if (result) {
-				const { status, msg, data } = await API.exec(API.update({ photo: result.url }));
+	try {
+		cloudinary.uploader
+			.upload_stream({ folder: 'urwork' }, async (err, result) => {
+				if (result) {
+					const { status, msg, data } = await API.exec(API.update({ photo: result.url }));
 
-				return res.status(status).json({ msg });
-			} else {
-				console.log(err);
-				return res.status(500).json({ msg: 'Something wrong with upload to cloud' });
-			}
-		})
-		.end(req.file.buffer);
+					return res.status(status).json({ msg, data });
+				} else {
+					console.log(err);
+					return res.status(500).json({ msg: 'Something wrong with upload to cloud', data: null });
+				}
+			})
+			.end(req.file.buffer);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ msg: 'Something wrong while upload image', data: null });
+	} finally {
+		if (req.file && req.file.buffer) {
+			req.file.buffer = null;
+		}
+	}
 };

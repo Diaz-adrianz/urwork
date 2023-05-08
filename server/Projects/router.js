@@ -1,7 +1,17 @@
 import exp from 'express';
 import { protect } from '../middlewares/auth.js';
+import { fileValidationIsError, UPLOAD } from '../middlewares/memoryStorage.js';
 import { IsAuthor, ProjectCheck } from '../middlewares/projects.js';
-import { CreateProj, DeleteProj, DetailProj, ListProj, StarringProj, UpdateProj } from './control.js';
+import {
+	AddImages,
+	CreateProj,
+	DeleteProj,
+	DetailProj,
+	ListProj,
+	RemoveImage,
+	StarringProj,
+	UpdateProj,
+} from './control.js';
 
 const router = exp.Router();
 
@@ -14,5 +24,8 @@ router.get('/:key', protect, DetailProj);
 router.post('/', protect, CreateProj);
 router.put('/:key', protect, ProjectCheck, IsAuthor, UpdateProj);
 router.delete('/:key', protect, ProjectCheck, IsAuthor, DeleteProj);
+
+router.post('/:key/images', protect, UPLOAD.single('image'), fileValidationIsError, AddImages);
+router.put('/:key/images', protect, RemoveImage);
 
 export default router;
