@@ -64,6 +64,9 @@ class Login : AppCompatActivity() {
         ) { res, code, err ->
             if (res != null && code == 200) {
                 prefs.putString(R.string.tokenname.toString(), res.data?.Id)
+                prefs.putString("first_name", res.data?.firstName)
+                prefs.putString("photo", res.data?.photo)
+
                 startActivity(Intent(this@Login, MainActivity::class.java))
                 finish()
             }

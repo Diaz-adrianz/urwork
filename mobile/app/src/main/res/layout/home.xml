@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/greeting"
                 android:layout_toRightOf="@id/profil_photo"
-                android:text="Alexander"
+                android:text="-"
                 android:textColor="@color/black" />
 
             <ImageButton

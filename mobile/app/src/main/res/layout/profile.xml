@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="8dp"
-                    android:text="Alexander Grahambell"
+                    android:text="-"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Programmer from SMKn 4 Bdg"
+                    android:text="-"
                     android:textColor="@color/gray" />
 
                 <!--                PROFIL STATS -->

@@ -2,6 +2,7 @@ package com.urwork.mobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -60,7 +61,7 @@ class Register : AppCompatActivity() {
         val _password = _password_et.text.toString()
         val _confpass = _confpassword_et.text.toString()
 
-        if (_password !== _confpass) {
+        if (_password != _confpass) {
             Toast.makeText(this@Register, "Recheck your password", Toast.LENGTH_SHORT).show()
             return
         }
@@ -77,6 +78,8 @@ class Register : AppCompatActivity() {
             true
         ) { res, code, err ->
             if (res != null && code == 200) {
+                Toast.makeText(this@Register, res.msg,  Toast.LENGTH_SHORT ).show()
+
                 startActivity(Intent(this@Register, Login::class.java))
                 finish()
             }
