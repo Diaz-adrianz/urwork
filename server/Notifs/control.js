@@ -20,3 +20,10 @@ export const ReadNotif = async (req, res) => {
 
 	return res.status(status).json({ msg, data });
 };
+
+export const CountNotif = async (req, res) => {
+	const API = new ApiView(NOTIFS, { user_id: req.user._id, is_read: false }),
+		{ status, msg, data } = await API.count();
+
+	return res.status(status).json({ msg, data });
+};
