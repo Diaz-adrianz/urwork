@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import PROJECTS from './model.js';
 import ApiView from '../common/apiview.js';
 import TASKS from '../Tasks/model.js';
+import NOTIFS from '../Notifs/model.js';
 
 export const ListProj = async (req, res) => {
 	const filter =
@@ -48,7 +49,23 @@ export const DetailProj = async (req, res) => {
 	API.addPopulate('author', 'first_name last_name about photo');
 	API.addPopulate('collaborators', 'first_name last_name about photo');
 
-	const { status, msg, data } = await API.exec(API.detail());
+	let { status, msg, data } = await API.exec(API.detail());
+
+	if (status == 200) {
+		data = data.toObject();
+
+		const projectTasks = new ApiView(TASKS, { project_id: data._id, completed_date: { $ne: null } }),
+			completedTasks = await projectTasks.exec(projectTasks.count());
+
+		projectTasks.filters = { project_id: data._id, completed_date: null };
+		const uncompletedTasks = await projectTasks.exec(projectTasks.count());
+
+		if (uncompletedTasks.status == 200 && completedTasks.status == 200) {
+			const totalTasks = completedTasks.data + uncompletedTasks.data;
+			const percentage = (completedTasks.data / totalTasks) * 100;
+			data['percentage'] = percentage;
+		}
+	}
 
 	return res.status(status).json({ msg, data });
 };
@@ -62,6 +79,18 @@ export const CreateProj = async (req, res) => {
 		API = new ApiView(PROJECTS);
 
 	const { status, msg, data } = await API.exec(API.create(payload));
+
+	const APInotifs = new ApiView(NOTIFS);
+
+	Promise.all(
+		payload.collaborators.map(async (collaborator) => {
+			await APInotifs.create({
+				user_id: collaborator,
+				title: 'Project invitation',
+				message: `You are added in the '${payload.title}' project!`,
+			});
+		})
+	);
 
 	return res.status(status).json({ msg, data });
 };

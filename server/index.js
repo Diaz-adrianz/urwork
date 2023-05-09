@@ -10,6 +10,7 @@ import rAuth from './Auth/router.js';
 import rUsers from './Users/router.js';
 import rProj from './Projects/router.js';
 import rTasks from './Tasks/router.js';
+import rNotifs from './Notifs/router.js';
 
 dotenv.config();
 
@@ -37,6 +38,8 @@ app.use('/auth', rAuth);
 app.use('/users', rUsers);
 app.use('/projects', rProj);
 app.use('/tasks', rTasks);
+app.use('/notifs', rNotifs);
+
 app.use('*', (req, res) => {
 	return res.status(404).json({
 		msg: 'API path not found',

@@ -15,6 +15,8 @@ const schema = new Schema(
 		images: [String],
 		tags: String,
 		stars: [{ type: Schema.Types.ObjectId, ref: 'users' }],
+		duration_start: { type: Date, default: '' },
+		duration_end: { type: Date, default: '' },
 		completed_date: { type: Date, default: '' },
 		is_blocked: { type: Boolean, default: false },
 	},

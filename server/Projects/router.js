@@ -25,7 +25,7 @@ router.post('/', protect, CreateProj);
 router.put('/:key', protect, ProjectCheck, IsAuthor, UpdateProj);
 router.delete('/:key', protect, ProjectCheck, IsAuthor, DeleteProj);
 
-router.post('/:key/images', protect, UPLOAD.single('image'), fileValidationIsError, AddImages);
-router.put('/:key/images', protect, RemoveImage);
+router.post('/:key/images', protect, ProjectCheck, IsAuthor, UPLOAD.single('image'), fileValidationIsError, AddImages);
+router.put('/:key/images', protect, ProjectCheck, IsAuthor, RemoveImage);
 
 export default router;

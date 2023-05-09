@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import TASKS from './model.js';
 import ApiView from '../common/apiview.js';
+import NOTIFS from '../Notifs/model.js';
 
 export const ListTask = async (req, res) => {
 	const filter = req.path == '/my' ? {} : { project_id: req.project?._id },
@@ -61,15 +62,30 @@ export const CompleteTask = async (req, res) => {
 	const API = new ApiView(TASKS, { _id: req.params.key, project_id: req.project._id });
 
 	API.addPopulate('completed_by', 'first_name');
+	API.addPopulate('project_id', 'duration_start duration_end');
 
 	const detail = await API.exec(API.detail());
 
-	if (detail.status == 200 && (detail.data.completed_by != undefined || detail.data.completed_by != null)) {
+	if (detail.status != 200) {
+		return res.status(detail.status).json({ msg: detail.msg, data: detail.data });
+	}
+
+	if (detail.data.completed_by != undefined || detail.data.completed_by != null) {
 		return res.status(200).json({
 			msg: 'Task has completed by ' + detail.data.completed_by?.first_name,
 		});
 	}
+
+	const today = moment();
+	if (today.isBefore(moment(detail.data.project_id.duration_start, 'YYYY-MM-DD'))) {
+		return res.status(400).json({ msg: 'Project hasnt started yet', data: null });
+	}
+
+	if (today.isAfter(moment(detail.data.project_id.duration_end, 'YYYY-MM-DD'))) {
+		return res.status(400).json({ msg: 'Project has been ended', data: null });
+	}
+
 	const { status, msg, data } = await API.exec(API.update({ completed_by: req.user._id, completed_date: moment() }));
 
-	return res.status(status).json({ msg, data });
+	return res.status(status).json({ msg: 'hehe', data: 1 });
 };
