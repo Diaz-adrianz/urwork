@@ -38,10 +38,30 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/projects_result"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/silver"
+                android:backgroundTint="@color/primary"
                 android:text="Load More"
                 android:textAllCaps="false"
-                android:textColor="@color/gray" />
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/placeholder_image"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/projects_more"
+                android:src="@drawable/blank"/>
+
+            <TextView
+                android:id="@+id/placeholder_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textnormal"
+                android:textColor="@color/black"
+                android:layout_below="@id/placeholder_image"
+                android:layout_centerHorizontal="true"
+                android:text="Here are your projects"/>
         </RelativeLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

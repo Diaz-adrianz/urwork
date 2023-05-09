@@ -11,7 +11,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginVertical="16dp"
-        android:src="@drawable/ic_outline_help_outline_24"
+        android:src="@drawable/ic_round_check_box_outline_blank_24"
         app:tint="@color/primary" />
 
     <TextView

@@ -10,10 +10,10 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp">
+            >
 
             <RadioGroup
                 android:id="@+id/explore_type"
@@ -21,6 +21,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:gravity="center_horizontal"
+                android:background="@color/primary"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -56,19 +59,41 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/explore_type"
                 android:paddingTop="32dp"
-                tools:listitem="@layout/item_project_1" />
+                android:layout_marginHorizontal="16dp" />
+
 
             <Button
                 android:id="@+id/projects_more"
                 style="@style/textnormal"
+                android:layout_marginHorizontal="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/projects_result"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/silver"
+                android:backgroundTint="@color/primary"
                 android:text="Load More"
                 android:textAllCaps="false"
-                android:textColor="@color/gray" />
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/placeholder_image"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/projects_more"
+                android:src="@drawable/blank"/>
+
+            <TextView
+                android:id="@+id/placeholder_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textnormal"
+                android:textColor="@color/black"
+                android:layout_below="@id/placeholder_image"
+                android:layout_centerHorizontal="true"
+                android:text="Explore URWORK world!"/>
         </RelativeLayout>
     </ScrollView>
 

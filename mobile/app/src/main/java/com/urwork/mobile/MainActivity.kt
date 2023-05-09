@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, EditProject::class.java))
         }
 
+        supportActionBar!!.setDisplayShowHomeEnabled(false)
+
+
         loadFragment(Home())
         bottomNav = findViewById(R.id.nav_bar) as BottomNavigationView
         bottomNav.setOnItemSelectedListener {

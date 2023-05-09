@@ -75,6 +75,8 @@ class Schedule : Fragment() {
         if (actionbar != null) {
             actionbar.show()
             actionbar.title = "Schedule"
+            actionbar.setDisplayShowHomeEnabled(false)
+
         }
 
         val v: View = inflater.inflate(R.layout.schedule, container, false)

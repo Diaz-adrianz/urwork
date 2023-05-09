@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.urwork.mobile.R
 import com.urwork.mobile.models.ProjectModelData
@@ -35,10 +36,10 @@ class TaskAdapter (private  val ctx: Context, private  var subtitleIsBy: Boolean
         holder.subtitle.text = if (subtitleIsBy) "Completed by ${item.completedBy?.firstName}" else "Proyek: ${item.projectId?.title}"
 
         if (item.completedDate != "") {
-//            holder.title.setTextColor(R.color.silver)
-            holder.subtitle.setTextColor(R.color.silver)
-            holder.statusIcon.setColorFilter(R.color.gray)
-            holder.statusIcon.setImageResource(R.drawable.ic_round_check_circle_24)
+            holder.title.setTextColor(ContextCompat.getColor(ctx, R.color.silver))
+            holder.subtitle.setTextColor(ContextCompat.getColor(ctx, R.color.silver))
+            holder.statusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.gray))
+            holder.statusIcon.setImageResource(R.drawable.ic_round_check_box_24)
         }
     }
 

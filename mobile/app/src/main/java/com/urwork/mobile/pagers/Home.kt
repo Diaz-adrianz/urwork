@@ -3,14 +3,17 @@ package com.urwork.mobile.pagers
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.menu.MenuView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -45,10 +48,9 @@ class Home : Fragment() {
     lateinit var swipe_refresh: SwipeRefreshLayout
 
     lateinit var photo_iv: ImageView
-    lateinit var name_tv: TextView
-    lateinit var greeting_tv: TextView
 
-    lateinit var go_notif_ib: ImageButton
+    lateinit var notifcount_tv: TextView
+
     lateinit var go_all_projects_tv: TextView
     lateinit var go_all_tasks_tv: TextView
 
@@ -70,7 +72,17 @@ class Home : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (requireActivity() as AppCompatActivity).supportActionBar!!.hide()
+        setHasOptionsMenu(true)
+
+        val actionbar: ActionBar? = (activity as AppCompatActivity?)!!.supportActionBar
+
+        if (actionbar != null) {
+            actionbar.show()
+            actionbar.title = ""
+            actionbar.setIcon(R.drawable.logo_dark_minii)
+
+            actionbar.setDisplayShowHomeEnabled(true)
+        }
 
         val v = inflater.inflate(R.layout.home, container, false)
 
@@ -80,11 +92,7 @@ class Home : Fragment() {
             prefs.getString(R.string.tokenname.toString())
         )
 
-        photo_iv = v.findViewById(R.id.profil_photo)
-        greeting_tv = v.findViewById(R.id.greeting)
-        name_tv = v.findViewById(R.id.name)
 
-        go_notif_ib = v.findViewById(R.id.goto_notif)
         go_all_projects_tv = v.findViewById(R.id.home_section_project_seeall)
         go_all_tasks_tv = v.findViewById(R.id.home_section_task_seeall)
 
@@ -102,30 +110,6 @@ class Home : Fragment() {
 
         getMyTasks()
 
-
-        val name: String? = prefs.getString("first_name")
-        val photo: String? = prefs.getString("photo")
-
-        if (name != null || photo != null) {
-            name_tv.text = name
-
-            Glide
-                .with(requireContext())
-                .load(photo)
-                .placeholder(R.drawable.blank_profilepic)
-                .error(R.drawable.blank_profilepic)
-                .centerCrop()
-                .into(photo_iv);
-        }
-
-        photo_iv.setOnClickListener{
-            startActivity(Intent(requireContext(), Profile::class.java))
-        }
-
-        name_tv.setOnClickListener{
-            startActivity(Intent(requireContext(), Profile::class.java))
-        }
-
         return v
     }
 
@@ -140,6 +124,55 @@ class Home : Fragment() {
             }
 
             swipe_refresh.isRefreshing = false
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_home, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        val menuNotifItem: MenuItem = menu.findItem(R.id.action_notif)
+        val menuNotifItemView: View? = menuNotifItem.actionView
+
+        val menuAccItem: MenuItem = menu.findItem(R.id.action_account)
+        val menuAccItemView: View? = menuAccItem.actionView
+
+        if (menuNotifItemView != null && menuAccItemView != null) {
+            notifcount_tv = menuNotifItemView.findViewById(R.id.notif_badge)
+            photo_iv = menuAccItemView.findViewById(R.id.profil_photo)
+
+            val photo: String? = prefs.getString("photo")
+
+            if (photo != null) {
+                Glide
+                    .with(requireContext())
+                    .load(photo)
+                    .placeholder(R.drawable.blank_profilepic)
+                    .error(R.drawable.blank_profilepic)
+                    .centerCrop()
+                    .into(photo_iv);
+            }
+
+            photo_iv.setOnClickListener{
+                startActivity(Intent(requireContext(), Profile::class.java))
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_notif -> {
+
+                return false
+            }
+            R.id.action_account -> {
+                startActivity(Intent(requireContext(), Profile::class.java))
+                return false
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.media.Image
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.AbsListView.RecyclerListener
 import android.widget.Button
 import android.widget.ImageButton
@@ -26,8 +28,6 @@ import com.urwork.mobile.services.TinyDB
 
 class Profile : AppCompatActivity() {
     lateinit var swipe_refresh: SwipeRefreshLayout
-    lateinit var back_btn: ImageButton
-    lateinit var setting_btn: ImageButton
     lateinit var loadmore_btn: Button
 
     lateinit var name_tv: TextView
@@ -49,7 +49,8 @@ class Profile : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile)
 
-        supportActionBar?.hide();
+        supportActionBar!!.title = "Profile";
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         prefs = TinyDB(this)
         AuthServ = ApiBuilder.buildService(
@@ -66,8 +67,6 @@ class Profile : AppCompatActivity() {
         photo_iv = findViewById(R.id.profil_photo)
 
         swipe_refresh = findViewById(R.id.swiperefresh)
-        back_btn = findViewById(R.id.back_btn)
-        setting_btn = findViewById(R.id.profil_btn_gosetting)
         loadmore_btn = findViewById(R.id.projects_more)
 
         projects_rv = findViewById(R.id.profil_projects)
@@ -83,15 +82,6 @@ class Profile : AppCompatActivity() {
                 Log.e("CLICKED", projects.get(position).title.toString())
             }
         })
-
-        back_btn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-            finish()
-        }
-
-        setting_btn.setOnClickListener {
-            startActivity(Intent(this@Profile, MyAccount::class.java))
-        }
 
         loadmore_btn.isVisible = false
         loadmore_btn.setOnClickListener {
@@ -156,4 +146,25 @@ class Profile : AppCompatActivity() {
             swipe_refresh.isRefreshing = false
         }
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_profile, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_setting -> {
+                startActivity(Intent(this@Profile, MyAccount::class.java))
+                true
+            }
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 }

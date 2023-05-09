@@ -1,146 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_round_arrow_back_ios_24"
-            app:tint="@color/white" />
-
-        <TextView
-            style="@style/textheader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="My Account"
-            android:textColor="@color/white" />
-
-        <ImageButton
-            android:id="@+id/logout_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_round_logout_24"
-            app:tint="@color/danger" />
-    </LinearLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="32dp">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_inputwrap_firstname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="32dp">
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_inputwrap_firstname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:boxBackgroundColor="@android:color/transparent"
-                    app:boxBackgroundMode="outline">
-
-                    <EditText
-                        android:id="@+id/account_input_firstname"
-                        style="@style/textnormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="First name"
-                        android:inputType="text"
-                        android:maxLength="24" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_inputwrap_lastname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:boxBackgroundColor="@android:color/transparent"
-                    app:boxBackgroundMode="outline">
-
-                    <EditText
-                        android:id="@+id/account_input_lastname"
-                        style="@style/textnormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Last name"
-                        android:inputType="text"
-                        android:maxLength="24" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_inputwrap_about"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:boxBackgroundColor="@android:color/transparent"
-                    app:boxBackgroundMode="outline">
-
-                    <EditText
-                        android:id="@+id/account_input_about"
-                        style="@style/textnormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="About"
-                        android:inputType="text"
-                        android:maxLength="64" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/account_inputwrap_institution"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:boxBackgroundColor="@android:color/transparent"
-                    app:boxBackgroundMode="outline">
-
-                    <EditText
-                        android:id="@+id/account_input_institution"
-                        style="@style/textnormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Company / School"
-                        android:inputType="text"
-                        android:maxLength="64" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/account_btn_save"
+                <EditText
+                    android:id="@+id/account_input_firstname"
                     style="@style/textnormal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Save"
-                    android:textAllCaps="false" />
-            </LinearLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    android:hint="First name"
+                    android:inputType="text"
+                    android:maxLength="24" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_inputwrap_lastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline">
+
+                <EditText
+                    android:id="@+id/account_input_lastname"
+                    style="@style/textnormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last name"
+                    android:inputType="text"
+                    android:maxLength="24" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_inputwrap_about"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline">
+
+                <EditText
+                    android:id="@+id/account_input_about"
+                    style="@style/textnormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="About"
+                    android:inputType="text"
+                    android:maxLength="64" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/account_inputwrap_institution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline">
+
+                <EditText
+                    android:id="@+id/account_input_institution"
+                    style="@style/textnormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Company / School"
+                    android:inputType="text"
+                    android:maxLength="64" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/account_btn_save"
+                style="@style/textnormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Save"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+

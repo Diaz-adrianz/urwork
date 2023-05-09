@@ -1,202 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swiperefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/back_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_round_arrow_back_ios_24"
-            app:tint="@color/white" />
-
-        <TextView
-            style="@style/textheader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Profile"
-            android:textColor="@color/white" />
-
-        <ImageButton
-            android:id="@+id/profil_btn_gosetting"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:backgroundTint="@android:color/transparent"
-            android:src="@drawable/ic_round_manage_accounts_24"
-            app:tint="@color/white"
-            />
-    </LinearLayout>
-
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-
-        android:layout_weight="1">
-
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="32dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!--                PHOTO PROPIL -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profil_photo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/blank_profilepic"
+                app:shapeAppearanceOverlay="@style/circleImageView" />
+
+            <TextView
+                android:id="@+id/profil_name"
+                style="@style/textsubheader"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="32dp">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:text="-"
+                android:textColor="@color/black" />
 
-                <!--                PHOTO PROPIL -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/profil_photo"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/blank_profilepic"
-                    app:shapeAppearanceOverlay="@style/circleImageView" />
+            <TextView
+                android:id="@+id/profil_about"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="-"
+                android:textColor="@color/gray" />
 
-                <TextView
-                    android:id="@+id/profil_name"
-                    style="@style/textsubheader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
-                    android:text="-"
-                    android:textColor="@color/black" />
+            <!--                PROFIL STATS -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/border"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
 
-                <TextView
-                    android:id="@+id/profil_about"
-                    style="@style/textmini"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="-"
-                    android:textColor="@color/gray" />
-
-                <!--                PROFIL STATS -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="32dp"
-                    android:background="@drawable/border"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp">
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/profile_projects_count"
+                        style="@style/textheader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:text="100"
+                        android:textColor="@color/primary" />
 
-                        <TextView
-                            android:id="@+id/profile_projects_count"
-                            style="@style/textheader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center_vertical"
-                            android:text="100"
-                            android:textColor="@color/primary" />
-
-                        <TextView
-                            style="@style/textmini"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Projects"
-                            android:textColor="@color/gray" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
+                        style="@style/textmini"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="32dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/profile_stars_count"
-                            style="@style/textheader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center_vertical"
-                            android:text="69"
-                            android:textColor="@color/primary" />
-
-                        <TextView
-                            style="@style/textmini"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Stars"
-                            android:textColor="@color/gray" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/profile_perform_count"
-                            style="@style/textheader"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center_vertical"
-                            android:text="89%"
-                            android:textColor="@color/primary" />
-
-                        <TextView
-                            style="@style/textmini"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Perform rate"
-                            android:textColor="@color/gray" />
-                    </LinearLayout>
-
+                        android:layout_gravity="center"
+                        android:text="Projects"
+                        android:textColor="@color/gray" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/profil_projects"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="32dp"
-                    tools:listitem="@layout/item_project_1" />
+                    android:layout_marginHorizontal="32dp"
+                    android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/projects_more"
-                    style="@style/textnormal"
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/profile_stars_count"
+                        style="@style/textheader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:text="69"
+                        android:textColor="@color/primary" />
+
+                    <TextView
+                        style="@style/textmini"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Stars"
+                        android:textColor="@color/gray" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Load More"
-                    android:backgroundTint="@color/silver"
-                    android:textColor="@color/gray"
-                    android:textAllCaps="false" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/profile_perform_count"
+                        style="@style/textheader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:text="89%"
+                        android:textColor="@color/primary" />
+
+                    <TextView
+                        style="@style/textmini"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Perform rate"
+                        android:textColor="@color/gray" />
+                </LinearLayout>
 
             </LinearLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/profil_projects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="32dp"
+                tools:listitem="@layout/item_project_1" />
+
+            <Button
+                android:id="@+id/projects_more"
+                style="@style/textnormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/primary"
+                android:text="Load More"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+

@@ -3,6 +3,8 @@ package com.urwork.mobile;
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -19,8 +21,6 @@ import com.urwork.mobile.services.TinyDB
 
 class MyAccount : AppCompatActivity() {
     lateinit var swipe_refresh: SwipeRefreshLayout
-    lateinit var back_btn: ImageButton
-    lateinit var logout_btn: ImageButton
     lateinit var save_btn: Button
 
     lateinit var firstname_et: EditText
@@ -35,7 +35,8 @@ class MyAccount : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.myaccount)
 
-        supportActionBar?.hide()
+        supportActionBar!!.title = "Account"
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         prefs = TinyDB(this)
         AuthServ = ApiBuilder.buildService(
@@ -44,23 +45,12 @@ class MyAccount : AppCompatActivity() {
         )
 
         swipe_refresh = findViewById(R.id.swiperefresh)
-        back_btn = findViewById(R.id.back_btn)
-        logout_btn = findViewById(R.id.logout_btn)
         save_btn = findViewById(R.id.account_btn_save)
 
         firstname_et = findViewById(R.id.account_input_firstname)
         lastname_et = findViewById(R.id.account_input_lastname)
         about_et = findViewById(R.id.account_input_about)
         institution_et = findViewById(R.id.account_input_institution)
-
-        back_btn.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-            finish()
-        }
-
-        logout_btn.setOnClickListener {
-            logout()
-        }
 
         save_btn.setOnClickListener{
             setProfileData()
@@ -132,4 +122,23 @@ class MyAccount : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_account, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_logout -> {
+                logout()
+                true
+            }
+            android.R.id.home -> {
+                onBackPressedDispatcher.onBackPressed()
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

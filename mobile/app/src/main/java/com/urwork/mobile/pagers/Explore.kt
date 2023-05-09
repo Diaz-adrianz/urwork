@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -59,6 +61,9 @@ class Explore : Fragment() {
     var search_page: Int = 1
     var search_hasNextPage: Boolean = false
 
+    lateinit var placeholder_iv: ImageView
+    lateinit var placeholder_tv: TextView
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,9 +76,13 @@ class Explore : Fragment() {
         if (actionbar != null) {
             actionbar.show()
             actionbar.title = "Explore"
+            actionbar.setDisplayShowHomeEnabled(false)
         }
 
         val v: View = inflater.inflate(R.layout.explore, container, false)
+
+        placeholder_iv = v.findViewById(R.id.placeholder_image)
+        placeholder_tv = v.findViewById(R.id.placeholder_msg)
 
         prefs = TinyDB(requireContext())
         ProjServ = ApiBuilder.buildService(
@@ -132,6 +141,11 @@ class Explore : Fragment() {
 
                 loadmore_btn.isVisible = res.nextPage != null
                 search_hasNextPage = res.nextPage != null
+
+                if (res.data?.isEmpty() == true){
+                    placeholder_tv.isVisible = false
+                    placeholder_iv.isVisible = false
+                }
             }
 
             swipe_refresh.isRefreshing = false

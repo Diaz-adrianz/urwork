@@ -10,12 +10,52 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:paddingBottom="16dp">
+
+            <RadioGroup
+                android:id="@+id/task_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:gravity="center_horizontal"
+                android:background="@color/primary"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/task_type_done"
+                    style="@style/textnormal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="Done"
+                    android:textColor="@color/radio_flat_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/task_type_ongoing"
+                    style="@style/textnormal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="Ongoing"
+                    android:textColor="@color/radio_flat_text_selector" />
+
+            </RadioGroup>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/task_type"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="32dp"/>
 
             <Button
@@ -25,10 +65,31 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/result"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="@color/silver"
+                android:backgroundTint="@color/primary"
                 android:text="Load More"
                 android:textAllCaps="false"
-                android:textColor="@color/gray" />
+                android:layout_marginHorizontal="16dp"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/placeholder_image"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="32dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/load_more"
+                android:src="@drawable/blank"/>
+
+            <TextView
+                android:id="@+id/placeholder_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/textnormal"
+                android:textColor="@color/black"
+                android:layout_below="@id/placeholder_image"
+                android:layout_centerHorizontal="true"
+                android:text="Here are your tasks"/>
         </RelativeLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

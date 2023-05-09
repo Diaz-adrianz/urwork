@@ -60,6 +60,7 @@ class Tasks : Fragment() {
         if (actionbar != null) {
             actionbar.show()
             actionbar.title = "My Tasks"
+            actionbar.setDisplayShowHomeEnabled(false)
         }
 
         val v: View = inflater.inflate(R.layout.tasks, container, false)
