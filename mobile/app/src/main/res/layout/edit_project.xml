@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swiperefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/project_wrap_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline">
+
+                <EditText
+                    android:id="@+id/project_title"
+                    style="@style/textnormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Title"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/project_wrap_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_wrap_title"
+                android:layout_marginBottom="16dp"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:boxBackgroundMode="outline">
+
+                <EditText
+                    android:id="@+id/project_desc"
+                    style="@style/textnormal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="200dp"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/project_collaborators_title"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_wrap_desc"
+                android:text="Collaborators"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/project_collaborators_add"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_wrap_desc"
+                android:layout_alignParentRight="true"
+                android:text="+ add"
+                android:textColor="@color/primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/project_collaborators"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_collaborators_title"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/project_duration"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_collaborators"
+                android:text="Duration"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/project_duration_start"
+                style="@style/textnormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_duration"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/border"
+                android:drawableLeft="@drawable/ic_round_input_24"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/black"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="dd-MM-yyyy"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/project_duration_end"
+                style="@style/textnormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_duration"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:layout_toRightOf="@id/project_duration_start"
+                android:background="@drawable/border"
+                android:drawableLeft="@drawable/ic_round_output_24"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/black"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="dd-MM-yyyy"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/project_tags_title"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_duration_start"
+                android:text="Tags"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/project_tags_add"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_duration_end"
+                android:layout_alignParentRight="true"
+                android:text="+ add"
+                android:textColor="@color/primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/project_tags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_tags_title"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/project_tasks_title"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_tags"
+                android:text="Tasks"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/project_tasks_add"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_tags"
+                android:layout_alignParentRight="true"
+                android:text="+ add"
+                android:textColor="@color/primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/project_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_tasks_title"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/project_images_title"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_tasks"
+                android:text="Images"
+                android:textColor="@color/gray" />
+
+            <LinearLayout
+
+                android:id="@+id/project_wrap_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_images_title"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/border"
+                android:gravity="start"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/project_images_1"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/blank_profilepic" />
+
+                <ImageView
+                    android:id="@+id/project_images_2"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/blank_profilepic" />
+
+                <ImageView
+                    android:id="@+id/project_images_3"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/blank_profilepic" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -105,6 +106,7 @@ class Explore : Fragment() {
             getProjects()
         }
 
+        loadmore_btn.isVisible = false
         loadmore_btn.setOnClickListener {
             if (search_hasNextPage) {
                 search_page += 1
@@ -128,25 +130,8 @@ class Explore : Fragment() {
 
                 projectsAdapter.filterList(projects)
 
-                if (res.nextPage != null) {
-                    search_hasNextPage = true
-                    loadmore_btn.setTextColor(R.color.white)
-                    loadmore_btn.setBackgroundTintList(
-                        ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.primary
-                        )
-                    )
-                } else {
-                    search_hasNextPage = false
-                    loadmore_btn.setTextColor(R.color.gray)
-                    loadmore_btn.setBackgroundTintList(
-                        ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.silver
-                        )
-                    )
-                }
+                loadmore_btn.isVisible = res.nextPage != null
+                search_hasNextPage = res.nextPage != null
             }
 
             swipe_refresh.isRefreshing = false

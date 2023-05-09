@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -42,6 +43,7 @@ class Profile : AppCompatActivity() {
 
     var projects: ArrayList<ProjectModelData> = ArrayList()
     var projectsPage: Int = 1
+    var project_hasNextPage: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +93,14 @@ class Profile : AppCompatActivity() {
             startActivity(Intent(this@Profile, MyAccount::class.java))
         }
 
+        loadmore_btn.isVisible = false
+        loadmore_btn.setOnClickListener {
+            if (project_hasNextPage) {
+                projectsPage += 1
+                getProjects()
+            }
+        }
+
         getProfileData()
         getProjects()
 
@@ -113,6 +123,9 @@ class Profile : AppCompatActivity() {
                 }
 
                 projectsAdapter.filterList(projects)
+
+                loadmore_btn.isVisible = res.nextPage != null
+                project_hasNextPage = res.nextPage != null
             }
 
             swipe_refresh.isRefreshing = false

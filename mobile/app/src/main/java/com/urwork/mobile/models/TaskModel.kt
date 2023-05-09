@@ -9,6 +9,12 @@ data class TaskModel(
 
 data class TaskModelList(
     @SerializedName("msg") var msg: String,
+    @SerializedName("totalDocs") var totalDocs: Int? = 0,
+    @SerializedName("limit") var limit: Int? = 0,
+    @SerializedName("totalPages") var totalPages: Int? = 0,
+    @SerializedName("page") var page: Int? = 0,
+    @SerializedName("prevPage") var prevPage: Int? = null,
+    @SerializedName("nextPage") var nextPage: Int? = null,
     @SerializedName("data") var data: ArrayList<TaskModelData>?
 )
 

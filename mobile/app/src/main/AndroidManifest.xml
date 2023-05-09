@@ -33,6 +33,7 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".Profile"/>
         <activity android:name=".MyAccount"/>
+        <activity android:name=".EditProject" android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

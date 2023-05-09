@@ -1,4 +1,3 @@
 BACKEND TODO
 1. membuat entitas notif
-2. menambahkan return first name dan profile photo saat LOGIN
-fjesihfileja
+2. menambah field duration_start dan duration_end
