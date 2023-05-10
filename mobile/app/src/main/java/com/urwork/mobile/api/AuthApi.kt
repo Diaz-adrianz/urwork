@@ -19,6 +19,13 @@ interface AuthApi {
     @GET("/users/my")
     fun userinfo(): Call<UserModel>
 
+    @GET("/users")
+    fun getUsers(
+        @Query("search") search: String = "",
+        @Query("page") page: Int = 1,
+        @Query("limit") limit: Int = 20
+    ): Call<UserModelList>
+
     @Headers("Content-Type: application/json")
     @PUT("/users/my")
     fun updateAccount(@Body model: UpdateUserModelData): Call<UserModel>

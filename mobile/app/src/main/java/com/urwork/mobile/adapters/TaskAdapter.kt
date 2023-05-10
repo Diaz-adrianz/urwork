@@ -14,7 +14,11 @@ import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.models.TaskModel
 import com.urwork.mobile.models.TaskModelData
 
-class TaskAdapter (private  val ctx: Context, private  var subtitleIsBy: Boolean = false, private var mList: ArrayList<TaskModelData>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(
+    private val ctx: Context,
+    private var subtitleIsBy: Boolean = false,
+    private var mList: ArrayList<TaskModelData>
+) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun filterList(filterlist: ArrayList<TaskModelData>) {
@@ -33,12 +37,13 @@ class TaskAdapter (private  val ctx: Context, private  var subtitleIsBy: Boolean
         val item: TaskModelData = mList[position]
 
         holder.title.text = item.title.toString()
-        holder.subtitle.text = if (subtitleIsBy) "Completed by ${item.completedBy?.firstName}" else "Proyek: ${item.projectId?.title}"
+        holder.subtitle.text =
+            if (subtitleIsBy) "Completed by ${item.completedBy?.firstName}" else "Project: ${item.projectId?.title}"
 
-        if (item.completedDate != "") {
-            holder.title.setTextColor(ContextCompat.getColor(ctx, R.color.silver))
-            holder.subtitle.setTextColor(ContextCompat.getColor(ctx, R.color.silver))
-            holder.statusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.gray))
+        if (item.completedDate != null) {
+//            holder.title.setTextColor(ContextCompat.getColor(ctx, R.color.silver))
+//            holder.subtitle.setTextColor(ContextCompat.getColor(ctx, R.color.silver))
+//            holder.statusIcon.setColorFilter(ContextCompat.getColor(ctx, R.color.gray))
             holder.statusIcon.setImageResource(R.drawable.ic_round_check_box_24)
         }
     }

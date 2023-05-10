@@ -38,6 +38,7 @@
         android:textColor="@color/black" />
 
     <TextView
+        android:id="@+id/new_tag_add_btn"
         style="@style/textnormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

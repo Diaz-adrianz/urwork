@@ -10,7 +10,6 @@
         android:id="@+id/profil_photo"
         android:layout_width="32dp"
         android:layout_height="32dp"
-
         android:layout_gravity="center_horizontal"
         android:src="@drawable/blank_profilepic"
         app:shapeAppearanceOverlay="@style/circleImageView" />

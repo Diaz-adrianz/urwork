@@ -3,6 +3,9 @@ package com.urwork.mobile.pagers
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -19,6 +22,8 @@ import com.urwork.mobile.models.TaskModel
 import com.urwork.mobile.models.TaskModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -37,6 +42,7 @@ class Tasks : Fragment() {
 
     lateinit var swipe_refresh: SwipeRefreshLayout
     lateinit var loadmore_btn: Button
+    lateinit var task_type_rg: RadioGroup
 
     lateinit var prefs: TinyDB
     lateinit var TaskServ: TaskApi
@@ -48,6 +54,11 @@ class Tasks : Fragment() {
     var search_hasNextPage = false
     var search_value: String = ""
     var search_page: Int = 1
+
+    lateinit var placeholder_iv: ImageView
+    lateinit var placeholder_tv: TextView
+
+    var MODE: String = "ONGOING"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +76,9 @@ class Tasks : Fragment() {
 
         val v: View = inflater.inflate(R.layout.tasks, container, false)
 
+        placeholder_iv = v.findViewById(R.id.placeholder_image)
+        placeholder_tv = v.findViewById(R.id.placeholder_msg)
+
         prefs = TinyDB(requireContext())
         TaskServ = ApiBuilder.buildService(
             TaskApi::class.java,
@@ -73,6 +87,7 @@ class Tasks : Fragment() {
 
         swipe_refresh = v.findViewById(R.id.swiperefresh)
         loadmore_btn = v.findViewById(R.id.load_more)
+        task_type_rg = v.findViewById(R.id.task_type)
 
         taskAdapter = TaskAdapter(requireContext(), false, tasks)
 
@@ -85,11 +100,32 @@ class Tasks : Fragment() {
         swipe_refresh.setOnRefreshListener { }
 
         loadmore_btn.isVisible = false
-        loadmore_btn.setOnClickListener{
+        loadmore_btn.setOnClickListener {
             if (search_hasNextPage) {
                 search_page += 1
                 getTasks()
             }
+        }
+
+        task_type_rg.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.task_type_ongoing -> MODE = "ONGOING"
+                R.id.task_type_done -> MODE = "DONE"
+            }
+
+            search_page = 1
+            tasks.clear()
+            taskAdapter.filterList(tasks)
+
+            getTasks()
+        }
+
+        swipe_refresh.setOnRefreshListener {
+            search_page = 1
+            tasks.clear()
+            taskAdapter.filterList(tasks)
+
+            getTasks()
         }
 
         getTasks()
@@ -102,8 +138,12 @@ class Tasks : Fragment() {
 
         ApiEnqueue.enqueue(
             requireContext(),
-            TaskServ.myTasks(search_value, search_page)
+            TaskServ.myTasks(MODE.lowercase(), search_value, search_page)
         ) { res, code, err ->
+            placeholder_tv.text = res?.msg ?: "Something wrong"
+            placeholder_tv.isVisible = true
+            placeholder_iv.isVisible = true
+
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> tasks.add(d) }
 
@@ -111,6 +151,9 @@ class Tasks : Fragment() {
 
                 loadmore_btn.isVisible = res.nextPage != null
                 search_hasNextPage = res.nextPage != null
+
+                placeholder_tv.isVisible = res.data?.isEmpty() == true
+                placeholder_iv.isVisible = res.data?.isEmpty() == true
             }
 
             swipe_refresh.isRefreshing = false

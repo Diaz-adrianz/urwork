@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.urwork.mobile.R
 import com.urwork.mobile.adapters.Project1
+import com.urwork.mobile.adapters.ProjectAdapter
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.ProjectApi
 import com.urwork.mobile.models.ProjectModelData
@@ -52,7 +54,7 @@ class Schedule : Fragment() {
     lateinit var ProjServ: ProjectApi
 
     lateinit var projects_rv: RecyclerView
-    lateinit var projectsAdapter: Project1
+    lateinit var projectsAdapter: ProjectAdapter
 
     lateinit var startDate: String
     lateinit var endDate: String
@@ -63,6 +65,9 @@ class Schedule : Fragment() {
     var search_value: String = ""
 
     val calendar = Calendar.getInstance()
+
+    lateinit var placeholder_iv: ImageView
+    lateinit var placeholder_tv: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +86,9 @@ class Schedule : Fragment() {
 
         val v: View = inflater.inflate(R.layout.schedule, container, false)
 
+        placeholder_iv = v.findViewById(R.id.placeholder_image)
+        placeholder_tv = v.findViewById(R.id.placeholder_msg)
+
         prefs = TinyDB(requireContext())
         ProjServ = ApiBuilder.buildService(
             ProjectApi::class.java,
@@ -91,7 +99,7 @@ class Schedule : Fragment() {
         loadmore_btn = v.findViewById(R.id.projects_more)
         datePicker_tv = v.findViewById(R.id.schedule_datepicker)
 
-        projectsAdapter = Project1(requireContext(), false, projects)
+        projectsAdapter = ProjectAdapter(requireContext(), R.layout.item_project_2, projects)
 
         projects_rv = v.findViewById(R.id.projects_result)
         projects_rv.layoutManager =
@@ -99,7 +107,7 @@ class Schedule : Fragment() {
         projects_rv.setHasFixedSize(true)
         projects_rv.adapter = projectsAdapter
 
-        projectsAdapter.setOnItemClickListener(object : Project1.onItemClickListener {
+        projectsAdapter.setOnItemClickListener(object : ProjectAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.e("CLICKED", projects.get(position).title.toString())
             }
@@ -140,30 +148,20 @@ class Schedule : Fragment() {
             requireContext(),
             ProjServ.getProjects(search_page, search_value, startDate, endDate)
         ) { res, code, err ->
+            placeholder_tv.text = res?.msg ?: "Something wrong with app"
+            placeholder_tv.isVisible = true
+            placeholder_iv.isVisible = true
+
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> projects.add(d) }
 
                 projectsAdapter.filterList(projects)
 
-                if (res.nextPage != null) {
-                    search_hasNextPage = true
-                    loadmore_btn.setTextColor(R.color.white)
-                    loadmore_btn.setBackgroundTintList(
-                        ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.primary
-                        )
-                    )
-                } else {
-                    search_hasNextPage = false
-                    loadmore_btn.setTextColor(R.color.gray)
-                    loadmore_btn.setBackgroundTintList(
-                        ContextCompat.getColorStateList(
-                            requireContext(),
-                            R.color.silver
-                        )
-                    )
-                }
+                loadmore_btn.isVisible = res.nextPage != null
+                search_hasNextPage =  res.nextPage !=null
+
+                placeholder_tv.isVisible = res.data?.isEmpty() == true
+                placeholder_iv.isVisible = res.data?.isEmpty() == true
             }
 
             swipe_refresh.isRefreshing = false

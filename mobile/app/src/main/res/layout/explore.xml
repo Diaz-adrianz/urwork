@@ -61,6 +61,13 @@
                 android:paddingTop="32dp"
                 android:layout_marginHorizontal="16dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/users_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/projects_result"
+                android:paddingTop="32dp"
+                android:layout_marginHorizontal="16dp" />
 
             <Button
                 android:id="@+id/projects_more"
@@ -68,7 +75,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/projects_result"
+                android:layout_below="@id/users_result"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/primary"
                 android:text="Load More"

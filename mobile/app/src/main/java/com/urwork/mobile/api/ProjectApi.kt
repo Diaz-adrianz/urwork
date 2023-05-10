@@ -1,9 +1,10 @@
 package com.urwork.mobile.api
 
+import com.urwork.mobile.models.CreateProjectModel
+import com.urwork.mobile.models.ProjectModel
 import com.urwork.mobile.models.ProjectModelList
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ProjectApi {
 
@@ -18,4 +19,10 @@ interface ProjectApi {
         @Query("end") end: String = ""
     ): Call<ProjectModelList>
 
+    @GET("/projects/ongoing")
+    fun myOngoingProjects(@Query("limit") limit: Int = 10) : Call<ProjectModelList>
+
+    @Headers("Content-Type: application/json")
+    @POST("/projects")
+    fun createProject(@Body model: CreateProjectModel): Call<ProjectModel>
 }

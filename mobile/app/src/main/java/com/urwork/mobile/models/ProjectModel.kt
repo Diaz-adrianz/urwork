@@ -27,9 +27,20 @@ data class ProjectModelData(
     @SerializedName("images") var images: List<String>?,
     @SerializedName("tags") var tags: String? = "",
     @SerializedName("stars") var stars: List<String>?,
+    @SerializedName("duration_start") var durationStart: String? = "",
+    @SerializedName("duration_end") var durationEnd: String? = "",
     @SerializedName("completed_date") var completedDate: String? = "",
     @SerializedName("is_blocked") var isBlocked: Boolean? = false,
     @SerializedName("createdAt") var createdAt: String? = "",
     @SerializedName("updatedAt") var updatedAt: String? = "",
-    @SerializedName("precentage") var percentage: Int? = 0,
+    @SerializedName("percentage") var percentage: Int? = 0,
+)
+
+data class CreateProjectModel(
+    @SerializedName("title") var title: String? = "",
+    @SerializedName("description") var description: String? = "",
+    @SerializedName("collaborators") var collaborators: ArrayList<String?>,
+    @SerializedName("tags") var tags: ArrayList<String>?,
+    @SerializedName("duration_start") var durationStart: String? = "",
+    @SerializedName("duration_end") var durationEnd: String? = "",
 )

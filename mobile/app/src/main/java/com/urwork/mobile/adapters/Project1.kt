@@ -2,6 +2,7 @@ package com.urwork.mobile.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,11 +53,19 @@ class Project1(private val ctx: Context, private var topTitleisProgress: Boolean
 
         val item = mList[position]
 
-        holder.toptitle_tv.text = if (topTitleisProgress) "On progress" else "${item.author?.firstName} and ${item.collaborators?.size} people"
+        val tagAdapter = item.tags?.let { Tag(ctx, it.split(", ")  ) }
+
+        holder.toptitle_tv.text = if (topTitleisProgress) "On progress" else "${item.author?.firstName} and ${item.collaborators?.size} collaborators"
         holder.title_tv.text = item.title
         holder.subtitle_tv.text = item.description
         holder.tags.layoutManager = LinearLayoutManager(ctx, LinearLayoutManager.HORIZONTAL, false)
-        holder.tags.adapter = item.tags?.let { Tag(ctx, it.split(", ")  ) }
+        holder.tags.adapter = tagAdapter
+
+        tagAdapter?.setOnItemClickListener(object: Tag.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.i("SKIP", "NOTHING")
+            }
+        })
     }
 
     override fun getItemCount(): Int {

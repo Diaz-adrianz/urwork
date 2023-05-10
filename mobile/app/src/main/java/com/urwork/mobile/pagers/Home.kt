@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuView
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide
 import com.urwork.mobile.Profile
 import com.urwork.mobile.R
 import com.urwork.mobile.adapters.Project1
+import com.urwork.mobile.adapters.ProjectAdapter
 import com.urwork.mobile.adapters.TaskAdapter
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.ProjectApi
@@ -57,7 +59,7 @@ class Home : Fragment() {
     lateinit var projects_rv: RecyclerView
     lateinit var tasks_rv: RecyclerView
 
-    lateinit var projectsAdapter: Project1
+    lateinit var projectsAdapter: ProjectAdapter
     lateinit var tasksAdapter: TaskAdapter
 
     lateinit var prefs: TinyDB
@@ -91,7 +93,10 @@ class Home : Fragment() {
             TaskApi::class.java,
             prefs.getString(R.string.tokenname.toString())
         )
-
+        ProjServ = ApiBuilder.buildService(
+            ProjectApi::class.java,
+            prefs.getString(R.string.tokenname.toString())
+        )
 
         go_all_projects_tv = v.findViewById(R.id.home_section_project_seeall)
         go_all_tasks_tv = v.findViewById(R.id.home_section_task_seeall)
@@ -102,25 +107,59 @@ class Home : Fragment() {
         swipe_refresh = v.findViewById(R.id.swiperefresh)
 
         tasksAdapter = TaskAdapter(requireContext(), false, tasks)
+        projectsAdapter = ProjectAdapter(requireContext(), R.layout.item_project_3, projects)
 
         tasks_rv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         tasks_rv.setHasFixedSize(true)
         tasks_rv.adapter = tasksAdapter
 
+        projects_rv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        projects_rv.setHasFixedSize(true)
+        projects_rv.adapter = projectsAdapter
+
+        projectsAdapter.setOnItemClickListener(object : ProjectAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(requireContext(), projects.get(position).title, Toast.LENGTH_SHORT)
+                    .show()
+            }
+        })
+
+        swipe_refresh.setOnRefreshListener {
+            getMyTasks()
+            getOngoingProjects()
+        }
+
         getMyTasks()
+
+        getOngoingProjects()
 
         return v
     }
 
     private fun getMyTasks() {
+
         swipe_refresh.isRefreshing = true
 
-        ApiEnqueue.enqueue(requireContext(), TaskServ.myTasks()) { res, code, err ->
+        ApiEnqueue.enqueue(requireContext(), TaskServ.myTasks("ongoing")) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> tasks.add(d) }
 
                 tasksAdapter.filterList(tasks)
+            }
+
+            swipe_refresh.isRefreshing = false
+        }
+    }
+
+    private fun getOngoingProjects() {
+        swipe_refresh.isRefreshing = true
+
+        ApiEnqueue.enqueue(requireContext(), ProjServ.myOngoingProjects()) { res, code, err ->
+            if (code == 200 && res != null) {
+                res.data?.forEach { d -> projects.add(d) }
+                projectsAdapter.filterList(projects)
             }
 
             swipe_refresh.isRefreshing = false
@@ -154,7 +193,7 @@ class Home : Fragment() {
                     .into(photo_iv);
             }
 
-            photo_iv.setOnClickListener{
+            photo_iv.setOnClickListener {
                 startActivity(Intent(requireContext(), Profile::class.java))
             }
         }

@@ -4,47 +4,47 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/task_status_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginVertical="16dp"
-        android:src="@drawable/ic_round_check_box_outline_blank_24"
-        app:tint="@color/primary" />
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/item_image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="12dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/blank_profilepic"
+        app:shapeAppearanceOverlay="@style/circleImageView" />
 
     <TextView
-        android:id="@+id/task_title"
+        android:id="@+id/item_title"
         style="@style/textnormal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="8dp"
-        android:layout_toRightOf="@id/task_status_icon"
+        android:layout_toRightOf="@id/item_image"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="Bikin Mockup"
+        android:text="-"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/task_subtitle"
+        android:id="@+id/item_subtitle"
         style="@style/textmini"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/task_title"
+        android:layout_below="@id/item_title"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/task_status_icon"
+        android:layout_toRightOf="@id/item_image"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Bikin Mockup"
+        android:text="-"
         android:textColor="@color/gray" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:layout_below="@id/task_subtitle"
+        android:layout_below="@id/item_subtitle"
         android:background="@color/silver"
         android:paddingTop="8dp" />
 </RelativeLayout>

@@ -15,6 +15,15 @@
         android:text="Add Collaborators"
         android:textColor="@color/black" />
 
+    <ProgressBar
+        android:id="@+id/loaderr"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:indeterminate="true"
+        android:layout_marginLeft="8dp"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_toRightOf="@id/title" />
+
     <ImageButton
         android:id="@+id/close_btn"
         android:layout_width="wrap_content"
@@ -35,6 +44,8 @@
         android:hint="Search here"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
+        android:inputType="text"
+        android:imeOptions="actionGo"
         android:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView

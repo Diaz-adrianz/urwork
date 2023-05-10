@@ -24,19 +24,6 @@
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/task_type_done"
-                    style="@style/textnormal"
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/radio_flat_selector"
-                    android:button="@android:color/transparent"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="Done"
-                    android:textColor="@color/radio_flat_text_selector" />
-
-                <RadioButton
                     android:id="@+id/task_type_ongoing"
                     style="@style/textnormal"
                     android:layout_width="80dp"
@@ -46,7 +33,21 @@
                     android:button="@android:color/transparent"
                     android:gravity="center"
                     android:text="Ongoing"
+                    android:checked="true"
                     android:textColor="@color/radio_flat_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/task_type_done"
+                    style="@style/textnormal"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_flat_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="Done"
+                    android:textColor="@color/radio_flat_text_selector" />
+
 
             </RadioGroup>
 
