@@ -3,11 +3,20 @@ import moment from 'moment';
 import TASKS from './model.js';
 import ApiView from '../common/apiview.js';
 import NOTIFS from '../Notifs/model.js';
+import PROJECTS from '../Projects/model.js';
 
 export const ListTask = async (req, res) => {
-	const filter = req.path == '/my' ? {} : { project_id: req.project?._id },
-		API = new ApiView(TASKS, filter, req.query);
+	const filter = req.path.includes('/my') ? {} : { project_id: req.project?._id };
 
+	if (req.path.includes('/my')) {
+		if (req.params.status == 'done') {
+			filter['completed_date'] = { $ne: null };
+		} else if (req.params.status == 'ongoing') {
+			filter['completed_date'] = null;
+		}
+	}
+
+	const API = new ApiView(TASKS, filter, req.query);
 	API.addPopulate('project_id', 'title collaborators author');
 	API.addPopulate('completed_by', '_id first_name');
 

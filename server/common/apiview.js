@@ -5,7 +5,7 @@ export default class ApiView {
 	constructor(MODEL, filters = {}, query = {}, deselects = '') {
 		this.MODEL = MODEL;
 		this.modelName = MODEL.collection.collectionName.substring(0, MODEL.collection.collectionName.length - 1);
-		this.filters = { ...filters, ...query };
+		this.filters = { ...filters, ...Object.fromEntries(Object.entries(query).filter(([key, value]) => value != '')) };
 		this.deselects =
 			deselects +
 			' ' +

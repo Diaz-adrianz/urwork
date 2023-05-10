@@ -17,6 +17,7 @@ const router = exp.Router();
 
 router.get('/', ListProj);
 router.get('/my', protect, ListProj);
+router.get('/ongoing', protect, ListProj);
 
 router.get('/starit/:key/:option', protect, StarringProj);
 router.get('/:key', protect, DetailProj);

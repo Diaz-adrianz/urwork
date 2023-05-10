@@ -4,15 +4,24 @@ import PROJECTS from './model.js';
 import ApiView from '../common/apiview.js';
 import TASKS from '../Tasks/model.js';
 import NOTIFS from '../Notifs/model.js';
+import moment from 'moment';
 
 export const ListProj = async (req, res) => {
-	const filter =
-		req.path == '/my'
-			? {
-					$or: [{ author: req.user._id }, { collaborators: { $in: [req.user._id] } }],
-					is_blocked: false,
-			  }
-			: { is_blocked: false };
+	let filter = { is_blocked: false };
+
+	if (req.path == '/my') {
+		filter = {
+			$or: [{ author: req.user._id }, { collaborators: { $in: [req.user._id] } }],
+			is_blocked: false,
+		};
+	} else if (req.path == '/ongoing') {
+		filter = {
+			$or: [{ author: req.user._id }, { collaborators: { $in: [req.user._id] } }],
+			duration_start: { $lte: moment() },
+			duration_end: { $gte: moment() },
+			is_blocked: false,
+		};
+	}
 	const API = new ApiView(PROJECTS, filter, req.query, '');
 
 	API.addPopulate('author', '_id first_name');
@@ -22,23 +31,25 @@ export const ListProj = async (req, res) => {
 		API.list(req.query.search, ['title', 'tags'], req.query.start, req.query.end, req.query.page)
 	);
 
-	data.data = await Promise.all(
-		data.data.map(async (dat) => {
-			const obj = dat.toObject();
-			const projectTasks = new ApiView(TASKS, { project_id: dat._id, completed_date: { $ne: null } }),
-				completedTasks = await projectTasks.exec(projectTasks.count());
+	if (status == 200) {
+		data.data = await Promise.all(
+			data.data.map(async (dat) => {
+				const obj = dat.toObject();
+				const projectTasks = new ApiView(TASKS, { project_id: dat._id, completed_date: { $ne: null } }),
+					completedTasks = await projectTasks.exec(projectTasks.count());
 
-			projectTasks.filters = { project_id: dat._id, completed_date: null };
-			const uncompletedTasks = await projectTasks.exec(projectTasks.count());
+				projectTasks.filters = { project_id: dat._id, completed_date: null };
+				const uncompletedTasks = await projectTasks.exec(projectTasks.count());
 
-			if (uncompletedTasks.status == 200 && completedTasks.status == 200) {
-				const totalTasks = completedTasks.data + uncompletedTasks.data;
-				const percentage = (completedTasks.data / totalTasks) * 100;
-				obj['percentage'] = percentage;
-			}
-			return obj;
-		})
-	);
+				if (uncompletedTasks.status == 200 && completedTasks.status == 200) {
+					const totalTasks = completedTasks.data + uncompletedTasks.data;
+					const percentage = (completedTasks.data / totalTasks) * 100;
+					obj['percentage'] = percentage;
+				}
+				return obj;
+			})
+		);
+	}
 
 	return res.status(status).json({ msg, ...data });
 };

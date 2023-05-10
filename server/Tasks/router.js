@@ -5,7 +5,7 @@ import { CompleteTask, CreateTask, DeleteTask, ListTask, UpdateTask } from './co
 
 const router = exp.Router();
 
-router.get('/my', protect, ListTask);
+router.get('/my/:status', protect, ListTask);
 router.get('/:project_id', protect, ProjectCheck, ListTask);
 router.get('/:project_id/:key/complete', protect, ProjectCheck, CompleteTask);
 
