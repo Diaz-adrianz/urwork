@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swiperefresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="32dp"
+            android:paddingHorizontal="16dp">
+
+            <TextView
+                android:id="@+id/proj_status"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="On Progress"
+                android:textColor="@color/gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/proj_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/proj_status"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/proj_title"
+                style="@style/textheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_status"
+                android:layout_marginTop="16dp"
+                android:text="Bikin Web Blogging Baru Pake React JS"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/proj_desc_title"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_title"
+                android:layout_marginTop="24dp"
+                android:text="Description"
+                android:textColor="@color/gray" />
+
+            <TextView
+                android:id="@+id/proj_desc"
+                style="@style/textnormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_desc_title"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis molestie mauris urna, in interdum leo tempus in. Nulla velit neque, sodales vel augue at, dapibus vehicula ligula"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/proj_author_title"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_desc"
+                android:layout_marginTop="24dp"
+                android:text="Author"
+                android:textColor="@color/gray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/proj_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_author_title" />
+
+            <LinearLayout
+                android:id="@+id/proj_box_collabs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_author"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    style="@style/textmini"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_round_keyboard_arrow_up_24"
+                    android:drawablePadding="16dp"
+                    android:drawableTint="@color/gray"
+                    android:gravity="center_vertical"
+                    android:text="Collaborators"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/proj_count_collabs"
+                    style="@style/textsubheader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="@color/yellow" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/proj_box_tasks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_author"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_toRightOf="@id/proj_box_collabs"
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    style="@style/textmini"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_round_keyboard_arrow_up_24"
+                    android:drawablePadding="16dp"
+                    android:drawableTint="@color/gray"
+                    android:gravity="center_vertical"
+                    android:text="Tasks progress"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/proj_count_percentage"
+                    style="@style/textsubheader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="70%"
+                    android:textColor="@color/primary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/proj_box_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_box_collabs"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    style="@style/textmini"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Start at"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/proj_start"
+                    style="@style/textsubheader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="150dp"
+                    android:text="Monday, 2 May 2023"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/proj_box_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_box_collabs"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@id/proj_box_start"
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    style="@style/textmini"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Deadline"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/proj_deadline"
+                    style="@style/textsubheader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monday, 2 May 2023"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/proj_images"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/proj_box_start"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/proj_images_1"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border"
+                    android:backgroundTint="@color/silver2"
+                    android:src="@drawable/image_pick" />
+
+                <ImageView
+                    android:id="@+id/proj_images_2"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border"
+                    android:backgroundTint="@color/silver2"
+                    android:src="@drawable/image_pick" />
+
+                <ImageView
+                    android:id="@+id/proj_images_3"
+                    android:layout_width="0dp"
+                    android:layout_height="110dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/border"
+                    android:backgroundTint="@color/silver2"
+                    android:src="@drawable/image_pick"
+                    tools:ignore="DuplicateIds" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

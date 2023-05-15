@@ -34,6 +34,7 @@
         <activity android:name=".Profile"/>
         <activity android:name=".MyAccount"/>
         <activity android:name=".Notifications"/>
+        <activity android:name=".DetailProject"/>
         <activity android:name=".EditProject" android:windowSoftInputMode="adjustResize"/>
     </application>
 

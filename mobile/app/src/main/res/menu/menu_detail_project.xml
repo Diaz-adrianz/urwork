@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_starring"
+        android:icon="@drawable/ic_round_notifications_24"
+        android:title="Stars"
+        app:actionLayout="@layout/item_star_project"
+        app:iconTint="@color/white"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_edit_proj"
+        android:title="Edit"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_delete_proj"
+        android:title="delete"
+        app:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/action_report_proj"
+        android:title="Report"
+        app:showAsAction="collapseActionView" />
+</menu>
