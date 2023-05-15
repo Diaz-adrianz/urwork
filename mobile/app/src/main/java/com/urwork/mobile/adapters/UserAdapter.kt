@@ -2,6 +2,7 @@ package com.urwork.mobile.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.urwork.mobile.Profile
 import com.urwork.mobile.R
 import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.models.TaskModel
@@ -54,9 +56,18 @@ class UserAdapter (private  val ctx: Context, private var mList: ArrayList<UserM
             .error(R.drawable.blank_profilepic)
             .centerCrop()
             .into(holder.image);
+
+//        NEED TEST!!!
+        holder.parentView.setOnClickListener {
+            val intent = Intent(ctx, Profile::class.java)
+            intent.putExtra("USER_ID", item.Id)
+
+            ctx.startActivity(intent)
+        }
     }
 
     class ViewHolder(ItemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(ItemView) {
+        val parentView: View = itemView
         val image: ImageView = itemView.findViewById(R.id.item_image)
         val title: TextView = itemView.findViewById(R.id.item_title)
         val subtitle: TextView = itemView.findViewById(R.id.item_subtitle)

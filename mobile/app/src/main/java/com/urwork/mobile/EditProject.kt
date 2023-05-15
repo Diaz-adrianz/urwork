@@ -1,6 +1,7 @@
 package com.urwork.mobile
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -80,9 +81,10 @@ class EditProject : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         initialize()
+        setupRecylerViews()
+
         getData()
 
-        setupRecylerViews()
         setupListeners()
         BottomSheet_addCollaborators()
         BottomSheet_addTags()
@@ -93,6 +95,9 @@ class EditProject : AppCompatActivity() {
 
         supportActionBar!!.title = if (_id == null) "Create Project" else "Edit Project"
 
+        if (_id != null) {
+
+        }
     }
 
     private fun initialize() {
@@ -222,8 +227,9 @@ class EditProject : AppCompatActivity() {
                     result_users.clear()
                     result_adapter.filterList(result_users)
                     bs.dismiss()
-                }else {
-                    Toast.makeText(this@EditProject, "User already added", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this@EditProject, "User already added", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
@@ -313,14 +319,33 @@ class EditProject : AppCompatActivity() {
 
         val body = CreateProjectModel(_title, _desc, _collaborators, _tags, _start, _end)
 
-        Log.e("BODY", body.toString())
-//        ApiEnqueue.enqueue(
-//            this@EditProject
-//        , ProjServ.createProject(body)
-//        ) {res, code, err -> {
-//            if (res != null && code == 200) {
-//
-//            }
-//        }}
+        swipe_refresh.isRefreshing = true
+
+//        NEED TEST!!!
+        ApiEnqueue.enqueue(
+            this@EditProject, ProjServ.createProject(body)
+        ) { res, code, err ->
+
+            if (res != null && code == 200) {
+                if (res.data != null) {
+                    Toast.makeText(
+                        this@EditProject,
+                        "New project added succes!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val intent = Intent(this@EditProject, EditProject::class.java)
+                    intent.putExtra("PROJECT_ID", res.data?.Id)
+
+                    startActivity(intent)
+                }
+            } else {
+                Toast.makeText(this@EditProject, res?.msg, Toast.LENGTH_SHORT).show()
+            }
+
+            swipe_refresh.isRefreshing = false
+        }
+//        NEED TEST!!!
+
     }
 }

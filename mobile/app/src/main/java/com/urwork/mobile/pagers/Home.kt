@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.menu.MenuView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,12 +26,14 @@ import com.urwork.mobile.adapters.Project1
 import com.urwork.mobile.adapters.ProjectAdapter
 import com.urwork.mobile.adapters.TaskAdapter
 import com.urwork.mobile.api.ApiBuilder
+import com.urwork.mobile.api.NotifApi
 import com.urwork.mobile.api.ProjectApi
 import com.urwork.mobile.api.TaskApi
 import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.models.TaskModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
+import kotlinx.coroutines.runBlocking
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -65,9 +68,12 @@ class Home : Fragment() {
     lateinit var prefs: TinyDB
     lateinit var ProjServ: ProjectApi
     lateinit var TaskServ: TaskApi
+    lateinit var NotifsServ: NotifApi
 
     var projects: ArrayList<ProjectModelData> = ArrayList()
     var tasks: ArrayList<TaskModelData> = ArrayList()
+
+    var countNotif: Int = 0
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -95,6 +101,10 @@ class Home : Fragment() {
         )
         ProjServ = ApiBuilder.buildService(
             ProjectApi::class.java,
+            prefs.getString(R.string.tokenname.toString())
+        )
+        NotifsServ = ApiBuilder.buildService(
+            NotifApi::class.java,
             prefs.getString(R.string.tokenname.toString())
         )
 
@@ -131,39 +141,59 @@ class Home : Fragment() {
             getOngoingProjects()
         }
 
-        getMyTasks()
-
-        getOngoingProjects()
+        getDatas()
 
         return v
     }
 
+    private fun getDatas() {
+//        NEED TEST
+        runBlocking {
+            swipe_refresh.isRefreshing = true
+
+            getMyTasks()
+            getOngoingProjects()
+            countMyNotifs()
+
+            swipe_refresh.isRefreshing = false
+        }
+//        NEED TEST
+    }
+
     private fun getMyTasks() {
-
-        swipe_refresh.isRefreshing = true
-
         ApiEnqueue.enqueue(requireContext(), TaskServ.myTasks("ongoing")) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> tasks.add(d) }
 
                 tasksAdapter.filterList(tasks)
             }
-
-            swipe_refresh.isRefreshing = false
         }
     }
 
     private fun getOngoingProjects() {
-        swipe_refresh.isRefreshing = true
-
         ApiEnqueue.enqueue(requireContext(), ProjServ.myOngoingProjects()) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> projects.add(d) }
                 projectsAdapter.filterList(projects)
             }
-
-            swipe_refresh.isRefreshing = false
         }
+    }
+
+    private fun countMyNotifs() {
+//        NEED TEST
+        ApiEnqueue.enqueue(requireContext(), NotifsServ.countMyNotifs()) {res, code, err ->
+            if (code == 200 && res != null) {
+                countNotif = res.data!!
+
+                if (countNotif != 0) {
+                    notifcount_tv.text = countNotif.toString()
+                } else {
+                    notifcount_tv.isVisible = false
+                }
+            }
+        }
+//        NEED TEST
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -196,6 +226,7 @@ class Home : Fragment() {
             photo_iv.setOnClickListener {
                 startActivity(Intent(requireContext(), Profile::class.java))
             }
+
         }
 
         return super.onPrepareOptionsMenu(menu)

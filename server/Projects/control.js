@@ -22,6 +22,16 @@ export const ListProj = async (req, res) => {
 			is_blocked: false,
 		};
 	}
+
+	if (req.query.author) {
+		const subfilter = {
+			$or: [{ author: req.query.author }, { collaborators: { $in: [req.query.author] } }],
+		};
+		filter = { ...filter, ...subfilter };
+
+		delete req.query.author;
+	}
+
 	const API = new ApiView(PROJECTS, filter, req.query, '');
 
 	API.addPopulate('author', '_id first_name');

@@ -16,7 +16,8 @@ interface ProjectApi {
         @Query("page") page: Int,
         @Query("search") search: String,
         @Query("start") start: String = "",
-        @Query("end") end: String = ""
+        @Query("end") end: String = "",
+        @Query("author") author: String = ""
     ): Call<ProjectModelList>
 
     @GET("/projects/ongoing")

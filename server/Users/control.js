@@ -24,7 +24,8 @@ export const ListUser = async (req, res) => {
 };
 
 export const UserInfo = async (req, res) => {
-	const API = new ApiView(USERS, { is_blocked: false, _id: req.user._id }, {}, '-is_blocked -password -role'),
+	const filter = req.params.key == 'my' ? { _id: req.user._id } : { _id: req.params.key },
+		API = new ApiView(USERS, { is_blocked: false, ...filter }, {}, '-is_blocked -password -role'),
 		{ status, msg, data } = await API.exec(API.detail());
 
 	return res.status(status).json({ msg, data });

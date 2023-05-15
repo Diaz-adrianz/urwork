@@ -16,8 +16,8 @@ interface AuthApi {
     @POST("/auth/signin")
     fun signin(@Body model: UserModelData): Call<UserModel>
 
-    @GET("/users/my")
-    fun userinfo(): Call<UserModel>
+    @GET("/users/{type}")
+    fun userinfo(@Path("type") type: String = "my"): Call<UserModel>
 
     @GET("/users")
     fun getUsers(

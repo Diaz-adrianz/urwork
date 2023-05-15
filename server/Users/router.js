@@ -6,7 +6,7 @@ import { ListUser, UpdatePhotoProfile, UpdateProfile, UserInfo } from './control
 const router = exp.Router();
 
 router.get('/', protect, ListUser);
-router.get('/my', protect, UserInfo);
+router.get('/:key', protect, UserInfo);
 router.put('/my', protect, UpdateProfile);
 
 router.put('/my/photo', protect, UPLOAD.single('photo'), fileValidationIsError, UpdatePhotoProfile);

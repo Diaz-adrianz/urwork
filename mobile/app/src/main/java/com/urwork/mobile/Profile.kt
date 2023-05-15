@@ -13,6 +13,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,8 +25,11 @@ import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
 import com.urwork.mobile.api.ProjectApi
 import com.urwork.mobile.models.ProjectModelData
+import com.urwork.mobile.models.ProjectModelList
+import com.urwork.mobile.models.UserModel
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
+import retrofit2.Call
 
 class Profile : AppCompatActivity() {
     lateinit var swipe_refresh: SwipeRefreshLayout
@@ -41,6 +46,8 @@ class Profile : AppCompatActivity() {
     lateinit var projects_rv: RecyclerView
     lateinit var projectsAdapter: Project1
 
+    var userId: String = ""
+
     var projects: ArrayList<ProjectModelData> = ArrayList()
     var projectsPage: Int = 1
     var project_hasNextPage: Boolean = false
@@ -51,6 +58,10 @@ class Profile : AppCompatActivity() {
 
         supportActionBar!!.title = "Profile";
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+//        NEED TEST!!!
+        userId = intent.getStringExtra("USER_ID").toString()
+//        NEED TEST!!!
 
         prefs = TinyDB(this)
         AuthServ = ApiBuilder.buildService(
@@ -106,7 +117,15 @@ class Profile : AppCompatActivity() {
     fun getProjects() {
         swipe_refresh.isRefreshing = true
 
-        ApiEnqueue.enqueue(this@Profile, ProjServ.myProjects(projectsPage)) { res, code, err ->
+//        NEED TEST!!!
+        var calling: Call<ProjectModelList> = ProjServ.myProjects(projectsPage)
+
+        if (userId != "") {
+            calling = ProjServ.getProjects(projectsPage, "", "", "", userId)
+        }
+//        NEED TEST!!!
+
+        ApiEnqueue.enqueue(this@Profile, calling) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d ->
                     projects.add(d)
@@ -126,7 +145,15 @@ class Profile : AppCompatActivity() {
     fun getProfileData() {
         swipe_refresh.isRefreshing = true
 
-        ApiEnqueue.enqueue(this@Profile, AuthServ.userinfo()) { res, code, err ->
+//        NEED TEST!!!
+        var calling: Call<UserModel> = AuthServ.userinfo()
+
+        if (userId != "") {
+            calling = AuthServ.userinfo(userId)
+        }
+//        NEED TEST!!!
+
+        ApiEnqueue.enqueue(this@Profile, calling) { res, code, err ->
             if (code == 200 && res != null) {
                 name_tv.text = res.data?.firstName + " " + res.data?.lastName
                 about_tv.text = res.data?.about
@@ -155,7 +182,16 @@ class Profile : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_setting -> {
-                startActivity(Intent(this@Profile, MyAccount::class.java))
+//        NEED TEST!!!
+                if (userId == "") {
+                    startActivity(Intent(this@Profile, MyAccount::class.java))
+                } else {
+                    item.icon?.let { icon ->
+                        DrawableCompat.setTint(icon, ContextCompat.getColor(this, R.color.primary))
+                    }
+                }
+//        NEED TEST!!!
+
                 true
             }
             android.R.id.home -> {

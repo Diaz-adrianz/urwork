@@ -1,3 +1,18 @@
 BACKEND TODO
+- (DONE) users/router tambah get("/:key", user)
+- (DONE) notifs/control belom pake API.exec bang
 
 FRONTEND TODO
+- (NEED TEST) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)
+- (NEED TEST) intent ke profile page user lain (dari adapter aja intent nya)
+- (NEED TEST) notif page dan count notif di home page
+- intent ke view, edit, delete project melalui bottom sheet jika user login adalah author
+- intent dari "see all" ongoing project ke fragment schedule
+- intent dari "see all" today task ke fragment task
+- dialog box complete task (jika belum), info task (jika sudah)
+- detail page projects
+- intent ke detail page projects
+- ubah photo profile di profile page user login
+- put mode edit project (sudah bisa bikin/hapus task dan ubah gambar)
+
+
