@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.AbsListView.RecyclerListener
 import android.widget.Button
 import android.widget.ImageButton
@@ -20,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.urwork.mobile.adapters.Project1
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
@@ -39,6 +42,8 @@ class Profile : AppCompatActivity() {
     lateinit var about_tv: TextView
     lateinit var photo_iv: ImageView
 
+    lateinit var gosetting_btn: MenuItem
+
     lateinit var prefs: TinyDB
     lateinit var AuthServ: AuthApi
     lateinit var ProjServ: ProjectApi
@@ -46,7 +51,8 @@ class Profile : AppCompatActivity() {
     lateinit var projects_rv: RecyclerView
     lateinit var projectsAdapter: Project1
 
-    var userId: String = ""
+
+    var userId: String? = ""
 
     var projects: ArrayList<ProjectModelData> = ArrayList()
     var projectsPage: Int = 1
@@ -60,7 +66,7 @@ class Profile : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
 //        NEED TEST!!!
-        userId = intent.getStringExtra("USER_ID").toString()
+        userId = intent.getStringExtra("USER_ID")
 //        NEED TEST!!!
 
         prefs = TinyDB(this)
@@ -120,8 +126,8 @@ class Profile : AppCompatActivity() {
 //        NEED TEST!!!
         var calling: Call<ProjectModelList> = ProjServ.myProjects(projectsPage)
 
-        if (userId != "") {
-            calling = ProjServ.getProjects(projectsPage, "", "", "", userId)
+        if (userId != null) {
+            calling = ProjServ.getProjects(projectsPage, "", "", "", userId!!)
         }
 //        NEED TEST!!!
 
@@ -148,8 +154,9 @@ class Profile : AppCompatActivity() {
 //        NEED TEST!!!
         var calling: Call<UserModel> = AuthServ.userinfo()
 
-        if (userId != "") {
-            calling = AuthServ.userinfo(userId)
+        if (userId != null) {
+            calling = AuthServ.userinfo(userId!!)
+
         }
 //        NEED TEST!!!
 
@@ -166,8 +173,10 @@ class Profile : AppCompatActivity() {
                     .centerCrop()
                     .into(photo_iv);
 
-                prefs.putString("first_name", res.data?.firstName)
-                prefs.putString("photo", res.data?.photo)
+                if (userId != null) {
+                    prefs.putString("first_name", res.data?.firstName)
+                    prefs.putString("photo", res.data?.photo)
+                }
             }
 
             swipe_refresh.isRefreshing = false
@@ -179,16 +188,27 @@ class Profile : AppCompatActivity() {
         return true
     }
 
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (menu != null) {
+            gosetting_btn = menu.findItem(R.id.action_setting)
+
+            if (userId != null) {
+                gosetting_btn.icon?.let { icon ->
+                    DrawableCompat.setTint(icon, ContextCompat.getColor(this, R.color.primary))
+                }
+            }
+        }
+
+        return super.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_setting -> {
 //        NEED TEST!!!
-                if (userId == "") {
+                if (userId == null) {
                     startActivity(Intent(this@Profile, MyAccount::class.java))
-                } else {
-                    item.icon?.let { icon ->
-                        DrawableCompat.setTint(icon, ContextCompat.getColor(this, R.color.primary))
-                    }
                 }
 //        NEED TEST!!!
 

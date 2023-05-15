@@ -1,5 +1,6 @@
 package com.urwork.mobile.api
 
+import com.urwork.mobile.models.TaskModelData
 import com.urwork.mobile.models.TaskModelList
 import com.urwork.mobile.models.UserModel
 import retrofit2.Call
@@ -14,4 +15,10 @@ interface TaskApi {
         @Query("search") search: String = "",
         @Query("page") page: Int = 1
     ): Call<TaskModelList>
+
+    @GET("/tasks/{project_id}/{key}/complete")
+    fun completeTask(
+        @Path("project_id") project_id: String? = "",
+        @Path("key") key: String? = ""
+    ): Call<TaskModelData>
 }

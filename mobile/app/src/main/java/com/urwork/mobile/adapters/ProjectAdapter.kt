@@ -67,6 +67,8 @@ class ProjectAdapter(
         holder.progressBar.progress = if(item.percentage != null) item.percentage!! else 0
         holder.collabs.text = "${item.collaborators?.size} collaborators"
         holder.percentage.text = "${if (item.percentage != null) item.percentage else 0}%"
+
+
     }
 
     override fun getItemCount(): Int {
@@ -75,6 +77,7 @@ class ProjectAdapter(
 
     class ViewHolder(ItemView: View, listener: onItemClickListener) :
         RecyclerView.ViewHolder(ItemView) {
+        val parentView: View =itemView
         val title: TextView = ItemView.findViewById(R.id.item_project_title)
         val subtitle: TextView = ItemView.findViewById(R.id.item_project_subtitle)
         val progressBar: ProgressBar = ItemView.findViewById(R.id.item_project_progress)

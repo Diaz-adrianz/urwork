@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/textnormal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/close_btn"
+        android:text="-"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black" />
+
+    <ImageButton
+        android:id="@+id/close_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_round_close_24"
+        app:tint="@color/black" />
+
+    <TextView
+        android:id="@+id/click_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:text="View"
+        style="@style/textsubheader"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_round_visibility_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/primary"
+        android:background="@drawable/border"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        />
+
+    <TextView
+        android:id="@+id/click_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/click_view"
+        android:text="Edit"
+        style="@style/textsubheader"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_round_edit_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/yellow"
+        android:background="@drawable/border"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        />
+
+    <TextView
+        android:id="@+id/click_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/click_edit"
+        android:text="Delete"
+        style="@style/textsubheader"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_round_delete_forever_24"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/danger"
+        android:background="@drawable/border"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        />
+
+
+</RelativeLayout>

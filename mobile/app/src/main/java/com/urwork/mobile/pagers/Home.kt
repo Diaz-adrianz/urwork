@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
+import com.urwork.mobile.MainActivity
+import com.urwork.mobile.Notifications
 import com.urwork.mobile.Profile
 import com.urwork.mobile.R
 import com.urwork.mobile.adapters.Project1
@@ -33,6 +35,7 @@ import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.models.TaskModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
+import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
 private const val ARG_PARAM1 = "param1"
@@ -137,8 +140,18 @@ class Home : Fragment() {
         })
 
         swipe_refresh.setOnRefreshListener {
-            getMyTasks()
-            getOngoingProjects()
+            initialState()
+            getDatas()
+        }
+
+        go_all_tasks_tv.setOnClickListener {
+            val parentActivity = activity as? MainActivity
+            parentActivity?.loadFragment(Tasks(), R.id.nav_tasks)
+        }
+
+        go_all_projects_tv.setOnClickListener {
+            val parentAct = activity as? MainActivity
+            parentAct?.loadFragment(Schedule(), R.id.nav_schedule)
         }
 
         getDatas()
@@ -146,42 +159,56 @@ class Home : Fragment() {
         return v
     }
 
+    private fun initialState() {
+        projects.clear()
+        projectsAdapter.filterList(projects)
+        tasks.clear()
+        tasksAdapter.filterList(tasks)
+
+        countNotif = 0
+    }
+
     private fun getDatas() {
 //        NEED TEST
-        runBlocking {
-            swipe_refresh.isRefreshing = true
-
-            getMyTasks()
-            getOngoingProjects()
-            countMyNotifs()
-
-            swipe_refresh.isRefreshing = false
-        }
+        getOngoingProjects()
+        getMyTasks()
+        countMyNotifs()
 //        NEED TEST
     }
 
     private fun getMyTasks() {
+        swipe_refresh.isRefreshing = true
+
         ApiEnqueue.enqueue(requireContext(), TaskServ.myTasks("ongoing")) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> tasks.add(d) }
 
                 tasksAdapter.filterList(tasks)
             }
+
+            swipe_refresh.isRefreshing = false
         }
     }
 
     private fun getOngoingProjects() {
+        swipe_refresh.isRefreshing = true
+
         ApiEnqueue.enqueue(requireContext(), ProjServ.myOngoingProjects()) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> projects.add(d) }
                 projectsAdapter.filterList(projects)
             }
+
+            swipe_refresh.isRefreshing = false
+
         }
     }
 
     private fun countMyNotifs() {
 //        NEED TEST
-        ApiEnqueue.enqueue(requireContext(), NotifsServ.countMyNotifs()) {res, code, err ->
+        swipe_refresh.isRefreshing = true
+
+        ApiEnqueue.enqueue(requireContext(), NotifsServ.countMyNotifs()) { res, code, err ->
             if (code == 200 && res != null) {
                 countNotif = res.data!!
 
@@ -191,6 +218,8 @@ class Home : Fragment() {
                     notifcount_tv.isVisible = false
                 }
             }
+
+            swipe_refresh.isRefreshing = false
         }
 //        NEED TEST
 
@@ -227,6 +256,10 @@ class Home : Fragment() {
                 startActivity(Intent(requireContext(), Profile::class.java))
             }
 
+            menuNotifItemView.setOnClickListener {
+                startActivity(Intent(requireContext(), Notifications::class.java))
+            }
+
         }
 
         return super.onPrepareOptionsMenu(menu)
@@ -235,7 +268,7 @@ class Home : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_notif -> {
-
+                startActivity(Intent(requireContext(), Notifications::class.java))
                 return false
             }
             R.id.action_account -> {

@@ -13,12 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.urwork.mobile.Profile
 import com.urwork.mobile.R
-import com.urwork.mobile.models.ProjectModelData
-import com.urwork.mobile.models.TaskModel
-import com.urwork.mobile.models.TaskModelData
-import com.urwork.mobile.models.UserModelData
+import com.urwork.mobile.models.*
+import com.urwork.mobile.services.formatDate
 
-class UserAdapter (private  val ctx: Context, private var mList: ArrayList<UserModelData>, private var onClickToProfile: Boolean = true) : RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+class NotifAdapter (private  val ctx: Context, private var mList: ArrayList<NotifModelData>) : RecyclerView.Adapter<NotifAdapter.ViewHolder>() {
 
     private lateinit var mListener : onItemClickListener
 
@@ -31,7 +29,7 @@ class UserAdapter (private  val ctx: Context, private var mList: ArrayList<UserM
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun filterList(filterlist: ArrayList<UserModelData>) {
+    fun filterList(filterlist: ArrayList<NotifModelData>) {
         mList = filterlist
         notifyDataSetChanged()
     }
@@ -44,27 +42,17 @@ class UserAdapter (private  val ctx: Context, private var mList: ArrayList<UserM
 
     @SuppressLint("SetTextI18n", "ResourceAsColor")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item: UserModelData = mList[position]
+        val item: NotifModelData = mList[position]
 
-        holder.title.text = item.firstName + " " + item.lastName
-        holder.subtitle.text = item.about
+        holder.title.text = item.title
+        holder.subtitle.text = item.message + " • " + item.createdAt?.let { formatDate(it, "dd MMMM yyyy") }
 
-        Glide
-            .with(ctx)
-            .load(item.photo)
-            .placeholder(R.drawable.loading)
-            .error(R.drawable.blank_profilepic)
-            .centerCrop()
-            .into(holder.image);
+        holder.image.setImageResource(R.drawable.ic_round_mark_email_unread_24)
+        holder.image.imageTintList = ContextCompat.getColorStateList(ctx, R.color.primary)
 
-//        NEED TEST!!!
-        if (onClickToProfile) {
-            holder.parentView.setOnClickListener {
-                val intent = Intent(ctx, Profile::class.java)
-                intent.putExtra("USER_ID", item.Id)
-
-                ctx.startActivity(intent)
-            }
+        if (item.isRead!!) {
+            holder.image.imageTintList = ContextCompat.getColorStateList(ctx, R.color.gray)
+            holder.title.setTextColor(ContextCompat.getColorStateList(ctx, R.color.gray))
         }
     }
 

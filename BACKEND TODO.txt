@@ -3,16 +3,43 @@ BACKEND TODO
 - (DONE) notifs/control belom pake API.exec bang
 
 FRONTEND TODO
-- (NEED TEST) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)
-- (NEED TEST) intent ke profile page user lain (dari adapter aja intent nya)
-- (NEED TEST) notif page dan count notif di home page
+- (DONE) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)
+- (DONE) intent ke profile page user lain (dari adapter aja intent nya)
+- (DONE) notif page dan count notif di home page
 - intent ke view, edit, delete project melalui bottom sheet jika user login adalah author
-- intent dari "see all" ongoing project ke fragment schedule
-- intent dari "see all" today task ke fragment task
-- dialog box complete task (jika belum), info task (jika sudah)
+- (DONE) intent dari "see all" ongoing project ke fragment schedule
+- (DONE) intent dari "see all" today task ke fragment task
+- (DONE) dialog box complete task (jika belum), info task (jika sudah)
 - detail page projects
 - intent ke detail page projects
 - ubah photo profile di profile page user login
 - put mode edit project (sudah bisa bikin/hapus task dan ubah gambar)
 
+
+- PDIP menang pilpres 2024
+- waduh menjadi presiden indonesia tahun 2024 
+- ambatukam ternyata keturunuan pki 
+- aku harus bagaimana cara melakukan kegiatan ini tolong mamamamama
+- manusia-manusia menjadi debu o;eh thanos 
+- how to be homo 
+- bismillah akbar sukses 
+- aku ingin menjadi sesuatu
+- viral ikan mengejek presiden indonesia 
+- bagaimana cara menjadi manusia 
+- apakah alien ke bumi
+- apakah ternyata joe biden adalah penguasa 
+- napakah kita itu sudah diatur sama megawati 
+- apa yang terjadi jika tidak ada pdip 
+- apakah megawati cuman numpang nama bapanya 
+- dpr bubar tahun 2024 
+- ingin kaya menjadi pejabat aja 
+- apakah saya bisa menghadapi sekolah ini
+- mamah aku takut 
+- what the hellll omagah
+- bagaimana cara menggulingkan karpet pdip 
+- partai psi menjadi masalah utama hahaha
+- amabatukam itu suatu bahasa yang digunakan zaman yunani kuno untuk mengungkapkan rasa kasih sayang terhadap kekasih 
+- omagot menjadi suatu masalah pada saat ini bahasa itu digunakan hal-hal yang tidak berguna 
+- dimas ke bali merupakan peningkatan dalam sektor ekonomi di indonesia hahahhahahahahahaha
+- bagaimana cara supaya bisa dimasukin sama mas ukin 
 

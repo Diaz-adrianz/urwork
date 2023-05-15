@@ -187,7 +187,7 @@ class EditProject : AppCompatActivity() {
         val result_rv: RecyclerView = v.findViewById(R.id.search_result)
         val result_users: ArrayList<UserModelData> = ArrayList()
 
-        val result_adapter: UserAdapter = UserAdapter(this@EditProject, result_users)
+        val result_adapter: UserAdapter = UserAdapter(this@EditProject, result_users, false)
         result_rv.layoutManager =
             LinearLayoutManager(this@EditProject, LinearLayoutManager.VERTICAL, false)
         result_rv.setHasFixedSize(true)
@@ -338,6 +338,7 @@ class EditProject : AppCompatActivity() {
                     intent.putExtra("PROJECT_ID", res.data?.Id)
 
                     startActivity(intent)
+                    finish()
                 }
             } else {
                 Toast.makeText(this@EditProject, res?.msg, Toast.LENGTH_SHORT).show()
