@@ -34,9 +34,13 @@ export const ListTask = async (req, res) => {
 	}
 
 	data.data = data.data.map((dat) => {
-		dat.project_id.author = undefined;
-		dat.project_id.collaborators = undefined;
-		return dat;
+		let tempDat = dat.toObject();
+
+		tempDat['is_mine'] = dat.project_id.author == req.user._id || dat.project_id.collaborators.includes(req.user._id);
+
+		tempDat.project_id.author = undefined;
+		tempDat.project_id.collaborators = undefined;
+		return tempDat;
 	});
 
 	return res.status(status).json({ msg, ...data });

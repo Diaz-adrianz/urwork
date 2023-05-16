@@ -1,10 +1,10 @@
 BACKEND TODO
 - (DONE) users/router tambah get("/:key", user)
 - (DONE) notifs/control belom pake API.exec bang
-- auth/login tambah return id user, token pindahin ke field lastname
-- tambah is_my di list task
-- bulatkan persentase project
-- tambah auth google
+- (DONE) auth/login tambah return id user, token pindahin ke field lastname
+- (DONE) tambah is_mine di list task
+- (DONE) bulatkan persentase project
+- (DONE) tambah auth google
 
 FRONTEND TODO
 - (DONE) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)

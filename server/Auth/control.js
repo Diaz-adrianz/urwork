@@ -27,7 +27,7 @@ export const Gauth = async (req, res) => {
 
 		const existUser = await USERS.findOne({ email });
 
-		let uId, action;
+		let uId, action, firstname, photo;
 
 		if (!existUser) {
 			const createUser = await USERS.create({
@@ -38,9 +38,11 @@ export const Gauth = async (req, res) => {
 			});
 
 			uId = createUser._id;
+			firstname = createUser.first_name;
+			photo = createUser.photo;
 			action = 'Sign up';
 		} else {
-			(uId = existUser._id), (action = 'Sign in');
+			(uId = existUser._id), (firstname = existUser.first_name), (photo = existUser.photo), (action = 'Sign in');
 		}
 
 		const token = jwt.sign(
@@ -62,7 +64,7 @@ export const Gauth = async (req, res) => {
 
 		res.status(200).json({
 			msg: action + ' with google success',
-			data: { _id: token },
+			data: { _id: uId, first_name: firstname, photo: photo, last_name: token },
 		});
 	} catch (error) {
 		let err = handleErrors(error);
@@ -134,7 +136,7 @@ export const Login = async (req, res) => {
 
 		return res.status(user.status).json({
 			msg: 'Login success',
-			data: { _id: token, first_name: user.data.first_name, photo: user.data.photo },
+			data: { _id: user.data._id, first_name: user.data.first_name, photo: user.data.photo, last_name: token },
 		});
 	} catch (error) {
 		let err = handleErrors(error);

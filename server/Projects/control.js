@@ -54,7 +54,7 @@ export const ListProj = async (req, res) => {
 				if (uncompletedTasks.status == 200 && completedTasks.status == 200) {
 					const totalTasks = completedTasks.data + uncompletedTasks.data;
 					const percentage = (completedTasks.data / totalTasks) * 100;
-					obj['percentage'] = percentage;
+					obj['percentage'] = Math.round(percentage);
 				}
 				return obj;
 			})
@@ -84,7 +84,7 @@ export const DetailProj = async (req, res) => {
 		if (uncompletedTasks.status == 200 && completedTasks.status == 200) {
 			const totalTasks = completedTasks.data + uncompletedTasks.data;
 			const percentage = (completedTasks.data / totalTasks) * 100;
-			data['percentage'] = percentage;
+			data['percentage'] = Math.round(percentage);
 		}
 	}
 
