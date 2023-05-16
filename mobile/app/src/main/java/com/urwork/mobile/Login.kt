@@ -41,7 +41,7 @@ class Login : AppCompatActivity() {
         _gauth_btn = findViewById(R.id.login_btn_google)
         _goregis_btn = findViewById(R.id.login_btn_donthaveaccount)
 
-        _goregis_btn.setOnClickListener{
+        _goregis_btn.setOnClickListener {
             startActivity(Intent(this@Login, Register::class.java))
             finish()
         }
@@ -63,7 +63,8 @@ class Login : AppCompatActivity() {
             AuthServ.signin(body)
         ) { res, code, err ->
             if (res != null && code == 200) {
-                prefs.putString(R.string.tokenname.toString(), res.data?.Id)
+                prefs.putString(R.string.tokenname.toString(), res.data?.lastName)
+                prefs.putString("user_id", res.data?.Id)
                 prefs.putString("first_name", res.data?.firstName)
                 prefs.putString("photo", res.data?.photo)
 

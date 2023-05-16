@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/placeholder_image"
                 android:layout_centerHorizontal="true"
-                android:text="Here are your tasks"
+                android:text="Here are your notifications"
                 android:textColor="@color/black" />
         </RelativeLayout>
     </ScrollView>

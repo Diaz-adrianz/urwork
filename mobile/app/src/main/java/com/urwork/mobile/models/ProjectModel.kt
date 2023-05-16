@@ -34,6 +34,7 @@ data class ProjectModelData(
     @SerializedName("createdAt") var createdAt: String? = "",
     @SerializedName("updatedAt") var updatedAt: String? = "",
     @SerializedName("percentage") var percentage: Int? = 0,
+    @SerializedName("is_mine") var isMine: Boolean? = false
 )
 
 data class CreateProjectModel(

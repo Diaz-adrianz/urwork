@@ -20,6 +20,11 @@ interface ProjectApi {
         @Query("author") author: String = ""
     ): Call<ProjectModelList>
 
+    @GET("/projects/{key}")
+    fun getProject(
+        @Path("key") key: String? = "0"
+    ): Call<ProjectModel>
+
     @GET("/projects/ongoing")
     fun myOngoingProjects(@Query("limit") limit: Int = 10) : Call<ProjectModelList>
 

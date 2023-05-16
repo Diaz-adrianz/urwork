@@ -3,6 +3,7 @@ package com.urwork.mobile.adapters
 import android.annotation.SuppressLint
 import android.content.ClipData.Item
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.urwork.mobile.DetailProject
 import com.urwork.mobile.R
 import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.services.formatDate
@@ -68,7 +70,12 @@ class ProjectAdapter(
         holder.collabs.text = "${item.collaborators?.size} collaborators"
         holder.percentage.text = "${if (item.percentage != null) item.percentage else 0}%"
 
+        holder.parentView.setOnClickListener {
+            val intent = Intent(ctx, DetailProject::class.java)
+            intent.putExtra("PROJECT_ID", item.Id)
 
+            ctx.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

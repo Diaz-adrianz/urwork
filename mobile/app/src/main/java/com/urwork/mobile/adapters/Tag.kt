@@ -23,7 +23,7 @@ class Tag(private val ctx: Context, private var mList: List<String>) : RecyclerV
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun filterList(filterlist: ArrayList<String>) {
+    fun filterList(filterlist: List<String>) {
         mList = filterlist
         notifyDataSetChanged()
     }

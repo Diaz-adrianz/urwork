@@ -1,6 +1,10 @@
 BACKEND TODO
 - (DONE) users/router tambah get("/:key", user)
 - (DONE) notifs/control belom pake API.exec bang
+- auth/login tambah return id user, token pindahin ke field lastname
+- tambah is_my di list task
+- bulatkan persentase project
+- tambah auth google
 
 FRONTEND TODO
 - (DONE) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)
@@ -10,11 +14,11 @@ FRONTEND TODO
 - (DONE) intent dari "see all" ongoing project ke fragment schedule
 - (DONE) intent dari "see all" today task ke fragment task
 - (DONE) dialog box complete task (jika belum), info task (jika sudah)
-- detail page projects
-- intent ke detail page projects
+- (DONE) detail page projects
+- (DONE) intent ke detail page projects
 - ubah photo profile di profile page user login
 - put mode edit project (sudah bisa bikin/hapus task dan ubah gambar)
-
+- read notif api integration
 
 - PDIP menang pilpres 2024
 - waduh menjadi presiden indonesia tahun 2024 

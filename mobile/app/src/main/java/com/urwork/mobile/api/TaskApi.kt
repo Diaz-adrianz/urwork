@@ -16,6 +16,11 @@ interface TaskApi {
         @Query("page") page: Int = 1
     ): Call<TaskModelList>
 
+    @GET("/tasks/{project_id}")
+    fun getTasksInProject(
+        @Path("project_id") project_id: String? = "0"
+    ): Call<TaskModelList>
+
     @GET("/tasks/{project_id}/{key}/complete")
     fun completeTask(
         @Path("project_id") project_id: String? = "",
