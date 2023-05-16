@@ -20,7 +20,7 @@
                 style="@style/textmini"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="On Progress"
+                android:text="-"
                 android:textColor="@color/gray" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/proj_status"
                 android:layout_marginTop="16dp"
-                android:text="Bikin Web Blogging Baru Pake React JS"
+                android:text="-"
                 android:textColor="@color/black" />
 
             <TextView
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/proj_desc_title"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis molestie mauris urna, in interdum leo tempus in. Nulla velit neque, sodales vel augue at, dapibus vehicula ligula"
+                android:text="-"
                 android:textColor="@color/black" />
 
             <TextView
@@ -104,7 +104,7 @@
                     style="@style/textsubheader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3"
+                    android:text="-"
                     android:textColor="@color/yellow" />
             </LinearLayout>
 
@@ -138,7 +138,7 @@
                     style="@style/textsubheader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="70%"
+                    android:text="-%"
                     android:textColor="@color/primary" />
             </LinearLayout>
 
@@ -167,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxWidth="150dp"
-                    android:text="Monday, 2 May 2023"
+                    android:text="-"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -197,7 +197,7 @@
                     style="@style/textsubheader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Monday, 2 May 2023"
+                    android:text="-"
                     android:textColor="@color/black" />
             </LinearLayout>
 

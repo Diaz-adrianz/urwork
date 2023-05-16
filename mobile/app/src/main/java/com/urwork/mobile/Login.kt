@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
 import com.urwork.mobile.models.UserModelData
@@ -20,6 +22,7 @@ class Login : AppCompatActivity() {
     lateinit var _login_btn: Button
     lateinit var _gauth_btn: Button
     lateinit var _goregis_btn: TextView
+    lateinit var _loader: ProgressBar
 
     lateinit var AuthServ: AuthApi
     lateinit var prefs: TinyDB
@@ -40,6 +43,8 @@ class Login : AppCompatActivity() {
         _login_btn = findViewById(R.id.login_btn_go)
         _gauth_btn = findViewById(R.id.login_btn_google)
         _goregis_btn = findViewById(R.id.login_btn_donthaveaccount)
+        _loader = findViewById(R.id.loaderr)
+        _loader.isVisible = false
 
         _goregis_btn.setOnClickListener {
             startActivity(Intent(this@Login, Register::class.java))
@@ -58,6 +63,7 @@ class Login : AppCompatActivity() {
         body.email = _email
         body.password = _password
 
+        _loader.isVisible = true
         ApiEnqueue.enqueue(
             this,
             AuthServ.signin(body)
@@ -71,6 +77,8 @@ class Login : AppCompatActivity() {
                 startActivity(Intent(this@Login, MainActivity::class.java))
                 finish()
             }
+
+            _loader.isVisible = false
         }
     }
 }

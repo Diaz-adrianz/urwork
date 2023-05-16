@@ -73,6 +73,7 @@ class EditProject : AppCompatActivity() {
     //    BOTTOMSHEETS
     lateinit var add_collabs_btn: TextView
     lateinit var add_tags_btn: TextView
+    lateinit var add_task_btn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +89,7 @@ class EditProject : AppCompatActivity() {
         setupListeners()
         BottomSheet_addCollaborators()
         BottomSheet_addTags()
+        BottomSheet_addTask()
     }
 
     private fun getData() {
@@ -96,7 +98,7 @@ class EditProject : AppCompatActivity() {
         supportActionBar!!.title = if (_id == null) "Create Project" else "Edit Project"
 
         if (_id != null) {
-
+            mode = "EDIT"
         }
     }
 
@@ -129,6 +131,7 @@ class EditProject : AppCompatActivity() {
 
         add_collabs_btn = findViewById(R.id.project_collaborators_add)
         add_tags_btn = findViewById(R.id.project_tags_add)
+        add_task_btn = findViewById(R.id.project_tasks_add)
     }
 
     private fun setupListeners() {
@@ -233,6 +236,26 @@ class EditProject : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun BottomSheet_addTask() {
+        val v: View = layoutInflater.inflate(R.layout.bottom_sheet_add_task, null)
+        val bs: BottomSheetDialog = BottomSheetDialog(this@EditProject)
+        bs.setContentView(v)
+
+        bs.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        add_task_btn.setOnClickListener {
+            if (_id == null)
+                Toast.makeText(
+                    this@EditProject,
+                    "Add task only work in edit project",
+                    Toast.LENGTH_SHORT
+                ).show()
+            else
+                bs.show()
+        }
+
     }
 
     @SuppressLint("MissingInflatedId")

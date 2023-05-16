@@ -51,7 +51,7 @@ class TaskAdapter(
 
         holder.title.text = item.title.toString()
         holder.subtitle.text =
-            if (subtitleIsBy) "Completed by ${item.completedBy?.firstName}" else "Project: ${item.projectId?.title}"
+            if (subtitleIsBy) "Completed by ${if (item.completedBy?.firstName == null) "-" else item.completedBy?.firstName }" else "Project: ${item.projectId?.title}"
 
         if (item.completedDate != null) {
             holder.title.setTextColor(ContextCompat.getColor(ctx, R.color.gray))
@@ -82,6 +82,10 @@ class TaskAdapter(
                     )
                 }" else "you will complete the task '${item.title}' in the '${item.projectId?.title}' project. Remember this action will cannot be performed again."
 
+            bs.setOnShowListener { dialog ->
+                positive_btn.isVisible = item.completedDate == null
+            }
+
             positive_btn.setOnClickListener {
                 if (item.completedDate == null) {
                     completeTask(position)
@@ -94,7 +98,13 @@ class TaskAdapter(
                 bs.dismiss()
             }
 
-            bs.show()
+//            if (item.completedDate != null || item.isMine == false) bs.show()
+////
+            if (item.completedDate == null) {
+                if (item.isMine == true) bs.show()
+            } else {
+                bs.show()
+            }
         }
     }
 
@@ -122,7 +132,7 @@ class TaskAdapter(
             ctx,
             taskServ.completeTask(mList[pos].projectId?.Id, mList[pos].Id)
         ) { res, code, err ->
-            if (res != null && code ==200) {
+            if (res != null && code == 200) {
                 val mList2: ArrayList<TaskModelData> = mList
 
                 mList2.removeAt(pos)

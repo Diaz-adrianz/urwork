@@ -61,7 +61,7 @@ class Project1(
 
         val item = mList[position]
 
-        val tagAdapter = item.tags?.let { Tag(ctx, it.split(", ")) }
+        val tagAdapter = item.tags?.let { Tag(ctx, if (it != "") it.split(", ") else listOf()) }
 
         holder.toptitle_tv.text =
             if (topTitleisProgress) "On progress" else "${item.author?.firstName} and ${item.collaborators?.size} collaborators"
@@ -82,8 +82,6 @@ class Project1(
 
             ctx.startActivity(intent)
         }
-
-
     }
 
     override fun getItemCount(): Int {

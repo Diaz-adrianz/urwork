@@ -42,7 +42,7 @@ class Profile : AppCompatActivity() {
     lateinit var about_tv: TextView
     lateinit var photo_iv: ImageView
 
-    lateinit var gosetting_btn: MenuItem
+    var gosetting_btn: MenuItem? = null
 
     lateinit var prefs: TinyDB
     lateinit var AuthServ: AuthApi
@@ -194,9 +194,7 @@ class Profile : AppCompatActivity() {
             gosetting_btn = menu.findItem(R.id.action_setting)
 
             if (userId != null) {
-                gosetting_btn.icon?.let { icon ->
-                    DrawableCompat.setTint(icon, ContextCompat.getColor(this, R.color.primary))
-                }
+                gosetting_btn?.icon?.let { DrawableCompat.setTint(it, ContextCompat.getColor(this, R.color.primary)) }
             }
         }
 

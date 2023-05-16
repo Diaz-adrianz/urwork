@@ -1,13 +1,16 @@
 package com.urwork.mobile
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
 import com.urwork.mobile.models.UserModelData
@@ -19,6 +22,7 @@ class Register : AppCompatActivity() {
     lateinit var _email_et: EditText
     lateinit var _password_et: EditText
     lateinit var _confpassword_et: EditText
+    lateinit var _loader: ProgressBar
 
     lateinit var _regis_btn: Button
     lateinit var _gauth_btn: Button
@@ -26,6 +30,7 @@ class Register : AppCompatActivity() {
 
     lateinit var AuthServ: AuthApi
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
@@ -43,6 +48,8 @@ class Register : AppCompatActivity() {
         _regis_btn = findViewById(R.id.regis_go_btn)
         _gauth_btn = findViewById(R.id.login_btn_google)
         _gologin_btn = findViewById(R.id.regis_btn_haveaccount)
+        _loader = findViewById(R.id.loaderr)
+        _loader.isVisible = false
 
         _gologin_btn.setOnClickListener {
             startActivity(Intent(this@Register, Login::class.java))
@@ -72,17 +79,19 @@ class Register : AppCompatActivity() {
         body.email = _email
         body.password = _password
 
+        _loader.isVisible = true
         ApiEnqueue.enqueue(
             this,
             AuthServ.signup(body),
             true
         ) { res, code, err ->
             if (res != null && code == 200) {
-                Toast.makeText(this@Register, res.msg,  Toast.LENGTH_SHORT ).show()
+                Toast.makeText(this@Register, res.msg, Toast.LENGTH_SHORT).show()
 
                 startActivity(Intent(this@Register, Login::class.java))
                 finish()
             }
+            _loader.isVisible = false
         }
     }
 

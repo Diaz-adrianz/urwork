@@ -1,17 +1,16 @@
 package com.urwork.mobile
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -49,8 +48,8 @@ class DetailProject : AppCompatActivity() {
     lateinit var image1_iv: ImageView
     lateinit var image2_iv: ImageView
     lateinit var image3_iv: ImageView
-    lateinit var star_icon: ImageView
-    lateinit var stars_tv: TextView
+    var star_icon: ImageView? = null
+    var stars_tv: TextView? = null
     lateinit var tags_rv: RecyclerView
     lateinit var author_rv: RecyclerView
     lateinit var collabs_rv: RecyclerView
@@ -71,6 +70,7 @@ class DetailProject : AppCompatActivity() {
     var _collabs: ArrayList<UserModelData> = ArrayList()
     var _tasks: ArrayList<TaskModelData> = ArrayList()
     var _starCount: Int = 0
+    var _stars: List<String> = listOf()
 
     lateinit var bs_collabs: BottomSheetDialog
     lateinit var bs_tasks: BottomSheetDialog
@@ -92,6 +92,22 @@ class DetailProject : AppCompatActivity() {
         getData()
     }
 
+    private fun initialState() {
+        _tags = listOf()
+        tagsAdapter.filterList(_tags)
+
+        _authors.clear()
+        authAdapter.filterList(_authors)
+
+        _collabs.clear()
+        collabsAdapter.filterList(_collabs)
+
+        _tasks.clear()
+        taskAdapter.filterList(_tasks)
+
+        _stars = listOf()
+    }
+
     private fun prepareListeners() {
         tasks_box.setOnClickListener { bs_tasks.show() }
         collabs_box.setOnClickListener { bs_collabs.show() }
@@ -111,8 +127,28 @@ class DetailProject : AppCompatActivity() {
                 Log.i("SKIP", _tags[position])
             }
         })
+
+        swipe_refresh.setOnRefreshListener {
+            initialState()
+            getData()
+        }
+
+        btn_edit?.setOnMenuItemClickListener{
+            val intent = Intent(this@DetailProject, EditProject::class.java)
+            intent.putExtra("PROJECT_ID", _id)
+
+            startActivity(intent)
+            finish()
+            true
+        }
+
+        btn_delete?.setOnMenuItemClickListener {
+            Toast.makeText(this@DetailProject, _id, Toast.LENGTH_SHORT).show()
+            true
+        }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getData() {
         ProjServ = ApiBuilder.buildService(
             ProjectApi::class.java,
@@ -127,28 +163,37 @@ class DetailProject : AppCompatActivity() {
 
         ApiEnqueue.enqueue(this@DetailProject, ProjServ.getProject(_id)) { res, code, err ->
             if (res != null && code == 200) {
+                progress_tv.text = if (res.data?.percentage == 100) "Completed" else "On progress"
                 title_tv.text = res.data?.title
                 desc_tv.text = res.data?.description
-                count_percentage_tv.text = "${res.data?.percentage}%"
+                count_percentage_tv.text = "${if (res.data?.percentage == null) "-" else res.data?.percentage}%"
                 count_collabs_tv.text = res.data?.collaborators?.size.toString()
                 startat_tv.text =
                     res.data?.durationStart?.let { formatDate(it, "EEEE, dd MMMM yyyy") }
                 deadline_tv.text =
                     res.data?.durationEnd?.let { formatDate(it, "EEEE, dd MMMM yyyy") }
 
-                _tags = res.data?.tags?.split(", ")!!
+                if (res.data?.tags != "") {
+                    _tags = res.data?.tags?.split(", ")!!
+                }
                 res.data?.author?.let { _authors.add(it) }
                 _collabs = res.data?.collaborators as ArrayList<UserModelData>
+                _stars = res.data?.stars!!
+
+                stars_tv?.text = res.data?.stars?.size.toString()
+                if (res.data?.stars?.contains(prefs.getString("user_id")) == true) {
+                    star_icon?.imageTintList =
+                        ContextCompat.getColorStateList(this@DetailProject, R.color.yellow)
+                } else {
+                    star_icon?.imageTintList =
+                        ContextCompat.getColorStateList(this@DetailProject, R.color.silver)
+                }
 
                 tagsAdapter.filterList(_tags)
                 authAdapter.filterList(_authors)
                 collabsAdapter.filterList(_collabs)
 
-                Log.e("ISAUTHOR", prefs.getString("first_name").toString())
-                Log.e("ISAUTHOR1", res.data?.author?.firstName.toString())
-                Log.e("ISAUTHOR2", (prefs.getString("first_name").toString() == res.data?.author?.firstName).toString())
-
-                if (prefs.getString("first_name") == res.data?.author?.firstName) {
+                if (prefs.getString("user_id") != res.data?.author?.Id) {
                     options_menu.removeItem(R.id.action_delete_proj)
                     options_menu.removeItem(R.id.action_edit_proj)
                 }
@@ -165,6 +210,25 @@ class DetailProject : AppCompatActivity() {
             }
 
             swipe_refresh.setRefreshing(false)
+        }
+    }
+
+    private fun starProjects() {
+        val option: String = if (_stars.contains(prefs.getString("user_id"))) "no" else "yes"
+
+        swipe_refresh.isRefreshing = true
+        Log.e("STAR", option)
+        ApiEnqueue.enqueue(this@DetailProject, ProjServ.giveStar(_id, option)) { res, code, err ->
+            if (res != null && code == 200) {
+                val _prevcount = stars_tv?.text.toString().toInt()
+                stars_tv?.text =
+                    if (option == "yes") (_prevcount + 1).toString() else (_prevcount - 1).toString()
+                star_icon?.imageTintList = ContextCompat.getColorStateList(
+                    this@DetailProject,
+                    if (option == "yes") R.color.yellow else R.color.silver
+                )
+            }
+            swipe_refresh.isRefreshing = false
         }
     }
 
@@ -242,7 +306,7 @@ class DetailProject : AppCompatActivity() {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         if (menu != null) {
             val menuStarItem: MenuItem = menu.findItem(R.id.action_starring)
-            val menuStarItem_v: View? = menuStarItem.actionView
+            val menuStarItem_v : View?= menuStarItem.actionView
 
             options_menu = menu
             btn_edit = menu.findItem(R.id.action_edit_proj)
@@ -252,6 +316,10 @@ class DetailProject : AppCompatActivity() {
             if (menuStarItem_v != null) {
                 stars_tv = menuStarItem_v.findViewById(R.id.star_counter)
                 star_icon = menuStarItem_v.findViewById(R.id.star_icon)
+
+                menuStarItem_v.setOnClickListener {
+                    starProjects()
+                }
             }
         }
         return super.onPrepareOptionsMenu(menu)
@@ -268,9 +336,15 @@ class DetailProject : AppCompatActivity() {
                 true
             }
             R.id.action_edit_proj -> {
+                val intent = Intent(this@DetailProject, EditProject::class.java)
+                intent.putExtra("PROJECT_ID", _id)
+
+                startActivity(intent)
+                finish()
                 true
             }
             R.id.action_delete_proj -> {
+                Toast.makeText(this@DetailProject, _id, Toast.LENGTH_SHORT).show()
                 true
             }
             R.id.action_report_proj -> {

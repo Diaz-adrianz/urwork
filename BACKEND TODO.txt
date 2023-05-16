@@ -20,6 +20,9 @@ FRONTEND TODO
 - put mode edit project (sudah bisa bikin/hapus task dan ubah gambar)
 - read notif api integration
 
+NULLERS
+- taskAdapter completed by
+
 - PDIP menang pilpres 2024
 - waduh menjadi presiden indonesia tahun 2024 
 - ambatukam ternyata keturunuan pki 

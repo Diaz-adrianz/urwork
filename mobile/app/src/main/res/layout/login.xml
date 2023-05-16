@@ -24,13 +24,15 @@
         android:text="Let's explore the world full of creativity"
         android:textColor="@color/gray" />
 
-    <ImageView
-        android:id="@+id/login_help_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ProgressBar
+        android:id="@+id/loaderr"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_outline_help_outline_24"
-        app:tint="@color/gray" />
+        android:layout_marginLeft="8dp"
+        android:indeterminate="true" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_inputwrap_email"

@@ -26,9 +26,15 @@ interface ProjectApi {
     ): Call<ProjectModel>
 
     @GET("/projects/ongoing")
-    fun myOngoingProjects(@Query("limit") limit: Int = 10) : Call<ProjectModelList>
+    fun myOngoingProjects(@Query("limit") limit: Int = 10): Call<ProjectModelList>
 
     @Headers("Content-Type: application/json")
     @POST("/projects")
     fun createProject(@Body model: CreateProjectModel): Call<ProjectModel>
+
+    @GET("/projects/starit/{key}/{option}")
+    fun giveStar(
+        @Path("key") key: String? = "0",
+        @Path("option") option: String? = "yes"
+    ): Call<ProjectModel>
 }
