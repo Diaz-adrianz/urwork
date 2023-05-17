@@ -45,3 +45,7 @@ data class CreateProjectModel(
     @SerializedName("duration_start") var durationStart: String? = "",
     @SerializedName("duration_end") var durationEnd: String? = "",
 )
+
+data class removeImageModel(
+    @SerializedName("image_url") var imageUri: String? = "",
+)

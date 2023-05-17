@@ -201,43 +201,16 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/proj_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/proj_box_start"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_image"
+                android:layout_marginBottom="16dp" />
 
-                <ImageView
-                    android:id="@+id/proj_images_1"
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border"
-                    android:backgroundTint="@color/silver2"
-                    android:src="@drawable/image_pick" />
-
-                <ImageView
-                    android:id="@+id/proj_images_2"
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border"
-                    android:backgroundTint="@color/silver2"
-                    android:src="@drawable/image_pick" />
-
-                <ImageView
-                    android:id="@+id/proj_images_3"
-                    android:layout_width="0dp"
-                    android:layout_height="110dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border"
-                    android:backgroundTint="@color/silver2"
-                    android:src="@drawable/image_pick"
-                    tools:ignore="DuplicateIds" />
-            </LinearLayout>
 
         </RelativeLayout>
     </ScrollView>

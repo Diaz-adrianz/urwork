@@ -31,6 +31,7 @@ import com.urwork.mobile.models.UserModel
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.FileUtils
 import com.urwork.mobile.services.TinyDB
+import com.urwork.mobile.services.getMimeType
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -115,14 +116,11 @@ class Profile : AppCompatActivity() {
         }
 
         photo_iv.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-//            intent.type = "image/*"
-//            startActivityForResult(intent, 1)
-            //            i.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("jpg", "jpeg", "png"))
-
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 1)
+            if (userId == null || userId == "") {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                startActivityForResult(intent, 1)
+            }
         }
 
         getProfileData()
@@ -138,8 +136,9 @@ class Profile : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            val selectedImage: Uri? = data.data
 
-            if (data.data != null) {
+            if (selectedImage != null) {
                 val image = FileUtils.getFile(this@Profile, data.data)
                 changePhoto(image)
             }
@@ -147,11 +146,7 @@ class Profile : AppCompatActivity() {
     }
 
     fun changePhoto(file: File) {
-
-        Log.e("file", file.toString())
-
-//        var requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        var requestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file);
+        var requestBody = file.asRequestBody(getMimeType(file)?.toMediaTypeOrNull());
         var body = MultipartBody.Part.createFormData("photo", file.name, requestBody)
 
         swipe_refresh.isRefreshing = true
@@ -167,13 +162,11 @@ class Profile : AppCompatActivity() {
     }
 
     fun getProjects() {
-//        NEED TEST!!!
         var calling: Call<ProjectModelList> = ProjServ.myProjects(projectsPage)
 
         if (userId != null) {
             calling = ProjServ.getProjects(projectsPage, "", "", "", userId!!)
         }
-//        NEED TEST!!!
 
         ApiEnqueue.enqueue(this@Profile, calling) { res, code, err ->
             if (code == 200 && res != null) {
@@ -195,14 +188,11 @@ class Profile : AppCompatActivity() {
     fun getProfileData() {
         swipe_refresh.isRefreshing = true
 
-//        NEED TEST!!!
         var calling: Call<UserModel> = AuthServ.userinfo()
 
         if (userId != null) {
             calling = AuthServ.userinfo(userId!!)
-
         }
-//        NEED TEST!!!
 
         ApiEnqueue.enqueue(this@Profile, calling) { res, code, err ->
             if (code == 200 && res != null) {
@@ -212,7 +202,7 @@ class Profile : AppCompatActivity() {
                 Glide
                     .with(this@Profile)
                     .load(res.data?.photo)
-                    .placeholder(R.drawable.blank_profilepic)
+                    .placeholder(R.drawable.loading)
                     .error(R.drawable.blank_profilepic)
                     .centerCrop()
                     .into(photo_iv);
@@ -238,7 +228,12 @@ class Profile : AppCompatActivity() {
             gosetting_btn = menu.findItem(R.id.action_setting)
 
             if (userId != null) {
-                gosetting_btn?.icon?.let { DrawableCompat.setTint(it, ContextCompat.getColor(this, R.color.primary)) }
+                gosetting_btn?.icon?.let {
+                    DrawableCompat.setTint(
+                        it,
+                        ContextCompat.getColor(this, R.color.primary)
+                    )
+                }
             }
         }
 

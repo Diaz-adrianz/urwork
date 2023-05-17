@@ -2,6 +2,7 @@ package com.urwork.mobile
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -17,27 +18,25 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.urwork.mobile.adapters.Tag
-import com.urwork.mobile.adapters.TaskAdapter
-import com.urwork.mobile.adapters.UserAdapter
-import com.urwork.mobile.adapters.UserPhotoAdapter
+import com.urwork.mobile.adapters.*
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
 import com.urwork.mobile.api.ProjectApi
 import com.urwork.mobile.api.TaskApi
-import com.urwork.mobile.models.CreateProjectModel
-import com.urwork.mobile.models.CreateTaskModel
-import com.urwork.mobile.models.TaskModelData
-import com.urwork.mobile.models.UserModelData
-import com.urwork.mobile.services.ApiEnqueue
-import com.urwork.mobile.services.TinyDB
-import com.urwork.mobile.services.formatDate
+import com.urwork.mobile.models.*
+import com.urwork.mobile.services.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.internal.concurrent.Task
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,6 +44,7 @@ import kotlin.collections.ArrayList
 class EditProject : AppCompatActivity() {
     lateinit var swipe_refresh: SwipeRefreshLayout
     lateinit var task_loader: ProgressBar
+    lateinit var image_loader: ProgressBar
 
     lateinit var title_et: EditText
     lateinit var desc_et: EditText
@@ -53,11 +53,10 @@ class EditProject : AppCompatActivity() {
     lateinit var collaborators_rv: RecyclerView
     lateinit var tags_rv: RecyclerView
     lateinit var tasks_rv: RecyclerView
-    lateinit var images_1_iv: ImageView
-    lateinit var images_2_iv: ImageView
-    lateinit var images_3_iv: ImageView
+    lateinit var images_rv: RecyclerView
 
     var tags: ArrayList<String> = ArrayList()
+    var imagess: ArrayList<String> = ArrayList()
     var collaborators: ArrayList<UserModelData> = ArrayList()
     var tasks: ArrayList<TaskModelData> = ArrayList()
 
@@ -69,6 +68,7 @@ class EditProject : AppCompatActivity() {
     lateinit var collab_adapter: UserPhotoAdapter
     lateinit var tags_adapter: Tag
     lateinit var task_adapte: TaskAdapter
+    lateinit var images_adapter: ImageListAdapter
 
     //    MODE
     var mode: String = "CREATE"
@@ -79,6 +79,7 @@ class EditProject : AppCompatActivity() {
     lateinit var add_collabs_btn: TextView
     lateinit var add_tags_btn: TextView
     lateinit var add_task_btn: TextView
+    lateinit var add_image_btn: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +155,7 @@ class EditProject : AppCompatActivity() {
 
     private fun getProject() {
         swipe_refresh.isRefreshing = true
+        image_loader.isVisible = true
 
         ApiEnqueue.enqueue(this@EditProject, ProjServ.getProject(_id))
         { res, code, err ->
@@ -173,12 +175,16 @@ class EditProject : AppCompatActivity() {
                 }
 
                 collaborators = res.data?.collaborators as ArrayList<UserModelData>
+                imagess = res.data?.images as ArrayList<String>
 
                 tags_adapter.filterList(tags)
                 collab_adapter.filterList(collaborators)
+                images_adapter.filterList(imagess)
             }
 
             swipe_refresh.isRefreshing = false
+            image_loader.isVisible = false
+
         }
     }
 
@@ -200,6 +206,8 @@ class EditProject : AppCompatActivity() {
         swipe_refresh = findViewById(R.id.swiperefresh)
         task_loader = findViewById(R.id.task_loaderr)
         task_loader.isVisible = false
+        image_loader = findViewById(R.id.image_loaderr)
+        image_loader.isVisible = false
         title_et = findViewById(R.id.project_title)
         desc_et = findViewById(R.id.project_desc)
         duration_start_tv = findViewById(R.id.project_duration_start)
@@ -207,16 +215,18 @@ class EditProject : AppCompatActivity() {
         collaborators_rv = findViewById(R.id.project_collaborators)
         tags_rv = findViewById(R.id.project_tags)
         tasks_rv = findViewById(R.id.project_tasks)
-        images_1_iv = findViewById(R.id.project_images_1)
-        images_2_iv = findViewById(R.id.project_images_2)
-        images_3_iv = findViewById(R.id.project_images_3)
+        images_rv = findViewById(R.id.project_images)
+
 
         add_collabs_btn = findViewById(R.id.project_collaborators_add)
         add_tags_btn = findViewById(R.id.project_tags_add)
         add_task_btn = findViewById(R.id.project_tasks_add)
+        add_image_btn = findViewById(R.id.project_images_add)
     }
 
     private fun setupListeners() {
+        swipe_refresh.setOnRefreshListener { getData() }
+
         duration_start_tv.setOnClickListener { setDateRange() }
 
         duration_end_tv.setOnClickListener { setDateRange() }
@@ -240,6 +250,78 @@ class EditProject : AppCompatActivity() {
                 deleteTask(position)
             }
         })
+
+        images_adapter.setOnItemClickListener(object : ImageListAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                removeImage(position)
+            }
+        })
+
+        add_image_btn.setOnClickListener {
+            if (_id == null) {
+                Toast.makeText(
+                    this@EditProject,
+                    "Add image only work in edit project",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
+
+            if (imagess.size == 4) {
+                Toast.makeText(this@EditProject, "Image exceeds the limit of 4", Toast.LENGTH_SHORT)
+                    .show()
+
+                return@setOnClickListener
+            }
+
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 1)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+            val selectedImage: Uri? = data.data
+
+            if (selectedImage != null) {
+                val image = FileUtils.getFile(this@EditProject, data.data)
+                addImage(image)
+            }
+        }
+    }
+
+    private fun addImage(file: File) {
+        var requestBody = file.asRequestBody(getMimeType(file)?.toMediaTypeOrNull());
+        var body = MultipartBody.Part.createFormData("image", file.name, requestBody)
+
+        image_loader.isVisible = true
+
+        ApiEnqueue.enqueue(this@EditProject, ProjServ.addImage(_id, body))
+        { res, code, err ->
+            if (res != null && code == 200) {
+                getProject()
+            }
+            image_loader.isVisible = false
+        }
+    }
+
+    private fun removeImage(pos: Int) {
+        image_loader.isVisible = true
+
+        ApiEnqueue.enqueue(
+            this@EditProject,
+            ProjServ.removeImage(_id, removeImageModel(imagess[pos]))
+        )
+        { res, code, err ->
+            if (res != null && code == 200) {
+                getProject()
+            }
+
+            image_loader.isVisible = false
+        }
     }
 
     private fun setDateRange() {
@@ -413,6 +495,11 @@ class EditProject : AppCompatActivity() {
         collaborators_rv.layoutManager =
             LinearLayoutManager(this@EditProject, LinearLayoutManager.HORIZONTAL, false)
         collaborators_rv.adapter = collab_adapter
+
+        images_adapter =
+            ImageListAdapter(this@EditProject, imagess, true, R.drawable.ic_round_image_upload_24)
+        images_rv.layoutManager = GridLayoutManager(this@EditProject, 2)
+        images_rv.adapter = images_adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -442,6 +529,11 @@ class EditProject : AppCompatActivity() {
         val _collaborators = ArrayList(collaborators.map { it.Id })
         val _start = duration_start_tv.text.toString()
         val _end = duration_end_tv.text.toString()
+
+        if (_start == "yyyy-MM-dd" || _end == "yyyy-MM-dd" || _title == "" || _desc == "") {
+            Toast.makeText(this@EditProject, "Some field cannot be blank", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val body = CreateProjectModel(_title, _desc, _collaborators, _tags, _start, _end)
 

@@ -34,8 +34,8 @@ interface AuthApi {
     @DELETE("/auth/signout")
     fun signout(): Call<UserModel>
 
-    @Multipart
     @PUT("/users/my/photo")
+    @Multipart
     fun setPhoto(@Part photo: MultipartBody.Part): Call<UserModel>
 
 }

@@ -51,7 +51,7 @@ class Home : Fragment() {
 
     lateinit var photo_iv: ImageView
 
-    lateinit var notifcount_tv: TextView
+    var notifcount_tv: TextView? = null
 
     lateinit var go_all_projects_tv: TextView
     lateinit var go_all_tasks_tv: TextView
@@ -204,9 +204,9 @@ class Home : Fragment() {
                 countNotif = res.data!!
 
                 if (countNotif != 0) {
-                    notifcount_tv.text = countNotif.toString()
+                    notifcount_tv?.text  = countNotif.toString()
                 } else {
-                    notifcount_tv.isVisible = false
+                    notifcount_tv?.isVisible = false
                 }
             }
 

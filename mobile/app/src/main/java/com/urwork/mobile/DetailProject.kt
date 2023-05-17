@@ -11,14 +11,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.urwork.mobile.adapters.Tag
-import com.urwork.mobile.adapters.TaskAdapter
-import com.urwork.mobile.adapters.UserAdapter
-import com.urwork.mobile.adapters.UserPhotoAdapter
+import com.urwork.mobile.adapters.*
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.NotifApi
 import com.urwork.mobile.api.ProjectApi
@@ -45,26 +43,26 @@ class DetailProject : AppCompatActivity() {
     lateinit var tasks_box: LinearLayout
     lateinit var startat_tv: TextView
     lateinit var deadline_tv: TextView
-    lateinit var image1_iv: ImageView
-    lateinit var image2_iv: ImageView
-    lateinit var image3_iv: ImageView
     var star_icon: ImageView? = null
     var stars_tv: TextView? = null
     lateinit var tags_rv: RecyclerView
     lateinit var author_rv: RecyclerView
     lateinit var collabs_rv: RecyclerView
     lateinit var tasks_rv: RecyclerView
+    lateinit var images_rv: RecyclerView
     var btn_edit: MenuItem? = null
     var btn_delete: MenuItem? = null
     var btn_report: MenuItem? = null
-    lateinit var options_menu: Menu
+    var options_menu: Menu? = null
 
     lateinit var tagsAdapter: Tag
     lateinit var authAdapter: UserAdapter
     lateinit var collabsAdapter: UserAdapter
     lateinit var taskAdapter: TaskAdapter
+    lateinit var imageAdapter: ImageListAdapter
 
     var _id: String? = ""
+    var _images: List<String> = listOf()
     var _tags: List<String> = listOf()
     var _authors: ArrayList<UserModelData> = ArrayList()
     var _collabs: ArrayList<UserModelData> = ArrayList()
@@ -127,9 +125,16 @@ class DetailProject : AppCompatActivity() {
                 Log.i("SKIP", _tags[position])
             }
         })
-        taskAdapter.setOnItemClickListener(object: TaskAdapter.onItemClickListener {
+        taskAdapter.setOnItemClickListener(object : TaskAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("SKIP", "none")
+            }
+        })
+
+        imageAdapter.setOnItemClickListener(object : ImageListAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.i("SKIP", "image rv click item")
+
             }
         })
 
@@ -138,7 +143,7 @@ class DetailProject : AppCompatActivity() {
             getData()
         }
 
-        btn_edit?.setOnMenuItemClickListener{
+        btn_edit?.setOnMenuItemClickListener {
             val intent = Intent(this@DetailProject, EditProject::class.java)
             intent.putExtra("PROJECT_ID", _id)
 
@@ -171,7 +176,8 @@ class DetailProject : AppCompatActivity() {
                 progress_tv.text = if (res.data?.percentage == 100) "Completed" else "On progress"
                 title_tv.text = res.data?.title
                 desc_tv.text = res.data?.description
-                count_percentage_tv.text = "${if (res.data?.percentage == null) "-" else res.data?.percentage}%"
+                count_percentage_tv.text =
+                    "${if (res.data?.percentage == null) "-" else res.data?.percentage}%"
                 count_collabs_tv.text = res.data?.collaborators?.size.toString()
                 startat_tv.text =
                     res.data?.durationStart?.let { formatDate(it, "EEEE, dd MMMM yyyy") }
@@ -184,6 +190,7 @@ class DetailProject : AppCompatActivity() {
                 res.data?.author?.let { _authors.add(it) }
                 _collabs = res.data?.collaborators as ArrayList<UserModelData>
                 _stars = res.data?.stars!!
+                _images = res.data?.images as ArrayList<String>
 
                 stars_tv?.text = res.data?.stars?.size.toString()
                 if (res.data?.stars?.contains(prefs.getString("user_id")) == true) {
@@ -197,10 +204,11 @@ class DetailProject : AppCompatActivity() {
                 tagsAdapter.filterList(_tags)
                 authAdapter.filterList(_authors)
                 collabsAdapter.filterList(_collabs)
+                imageAdapter.filterList(_images)
 
                 if (prefs.getString("user_id") != res.data?.author?.Id) {
-                    options_menu.removeItem(R.id.action_delete_proj)
-                    options_menu.removeItem(R.id.action_edit_proj)
+                    options_menu?.removeItem(R.id.action_delete_proj)
+                    options_menu?.removeItem(R.id.action_edit_proj)
                 }
             }
 
@@ -242,11 +250,13 @@ class DetailProject : AppCompatActivity() {
         authAdapter = UserAdapter(this@DetailProject, _authors)
         collabsAdapter = UserAdapter(this@DetailProject, _collabs)
         taskAdapter = TaskAdapter(this@DetailProject, true, _tasks)
+        imageAdapter = ImageListAdapter(this@DetailProject, _images)
 
         tags_rv.adapter = tagsAdapter
         author_rv.adapter = authAdapter
         collabs_rv.adapter = collabsAdapter
         tasks_rv.adapter = taskAdapter
+        images_rv.adapter = imageAdapter
     }
 
     @SuppressLint("CutPasteId", "SetTextI18n")
@@ -262,9 +272,6 @@ class DetailProject : AppCompatActivity() {
         tasks_box = findViewById(R.id.proj_box_tasks)
         startat_tv = findViewById(R.id.proj_start)
         deadline_tv = findViewById(R.id.proj_deadline)
-        image1_iv = findViewById(R.id.proj_images_1)
-        image2_iv = findViewById(R.id.proj_images_2)
-        image3_iv = findViewById(R.id.proj_images_3)
 
         tags_rv = findViewById(R.id.proj_tags)
         tags_rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -273,6 +280,9 @@ class DetailProject : AppCompatActivity() {
         author_rv = findViewById(R.id.proj_author)
         author_rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         author_rv.setHasFixedSize(true)
+
+        images_rv = findViewById(R.id.proj_images)
+        images_rv.layoutManager = GridLayoutManager(this@DetailProject, 2)
 
         val bs_collabs_v: View = layoutInflater.inflate(R.layout.bottom_sheet_simple_list, null)
         val bs_tasks_v: View = layoutInflater.inflate(R.layout.bottom_sheet_simple_list, null)
@@ -296,6 +306,7 @@ class DetailProject : AppCompatActivity() {
         tasks_rv.layoutManager =
             LinearLayoutManager(this@DetailProject, LinearLayoutManager.VERTICAL, false)
 
+
         title_collabs_v.text = "Collaborators"
         title_tasks_v.text = "Tasks progress"
 
@@ -311,7 +322,7 @@ class DetailProject : AppCompatActivity() {
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         if (menu != null) {
             val menuStarItem: MenuItem = menu.findItem(R.id.action_starring)
-            val menuStarItem_v : View?= menuStarItem.actionView
+            val menuStarItem_v: View? = menuStarItem.actionView
 
             options_menu = menu
             btn_edit = menu.findItem(R.id.action_edit_proj)

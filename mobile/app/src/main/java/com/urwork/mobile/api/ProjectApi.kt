@@ -3,6 +3,8 @@ package com.urwork.mobile.api
 import com.urwork.mobile.models.CreateProjectModel
 import com.urwork.mobile.models.ProjectModel
 import com.urwork.mobile.models.ProjectModelList
+import com.urwork.mobile.models.removeImageModel
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -37,4 +39,18 @@ interface ProjectApi {
         @Path("key") key: String? = "0",
         @Path("option") option: String? = "yes"
     ): Call<ProjectModel>
+
+    @POST("/projects/{key}/images")
+    @Multipart
+    fun addImage(
+        @Path("key") key: String? = "0",
+        @Part image: MultipartBody.Part
+    ): Call<ProjectModel>
+
+    @PUT("/projects/{key}/images")
+    fun removeImage(
+        @Path("key") key: String? = "0",
+        @Body model: removeImageModel
+    ): Call<ProjectModel>
+
 }

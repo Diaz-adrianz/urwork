@@ -204,44 +204,35 @@
                 android:text="Images"
                 android:textColor="@color/gray" />
 
-            <LinearLayout
+            <ProgressBar
+                android:id="@+id/image_loaderr"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:indeterminate="true"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@id/project_tasks"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_toRightOf="@id/project_images_title" />
 
-                android:id="@+id/project_wrap_images"
+            <TextView
+                android:id="@+id/project_images_add"
+                style="@style/textmini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/project_tasks"
+                android:layout_alignParentRight="true"
+                android:text="+ add"
+                android:textColor="@color/primary" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/project_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/project_images_title"
                 android:layout_marginTop="8dp"
-                android:gravity="start"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/project_images_1"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border"
-                    android:backgroundTint="@color/silver2"
-                    android:src="@drawable/image_pick"/>
-
-                <ImageView
-                    android:id="@+id/project_images_2"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/border"
-                    android:backgroundTint="@color/silver2"
-                    android:src="@drawable/image_pick"/>
-
-                <ImageView
-                    android:id="@+id/project_images_3"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/border"
-                    android:backgroundTint="@color/silver2"
-                    android:src="@drawable/image_pick"/>
-            </LinearLayout>
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_image"
+                android:layout_marginBottom="16dp" />
 
         </RelativeLayout>
     </ScrollView>
