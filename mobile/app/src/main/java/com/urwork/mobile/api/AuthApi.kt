@@ -1,6 +1,7 @@
 package com.urwork.mobile.api
 
 import com.urwork.mobile.models.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -32,4 +33,9 @@ interface AuthApi {
 
     @DELETE("/auth/signout")
     fun signout(): Call<UserModel>
+
+    @Multipart
+    @PUT("/users/my/photo")
+    fun setPhoto(@Part photo: MultipartBody.Part): Call<UserModel>
+
 }

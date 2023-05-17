@@ -81,13 +81,12 @@ class Notifications: AppCompatActivity(){
 
         notifAdapter.setOnItemClickListener(object: NotifAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
-                Toast.makeText(this@Notifications, notifs.get(position).title, Toast.LENGTH_SHORT).show()
+                readNotif(position)
             }
         })
 
         swipe_refresh.setOnRefreshListener {
             initialState()
-            getNotifs()
         }
     }
 
@@ -97,6 +96,8 @@ class Notifications: AppCompatActivity(){
 
         hasNextPage = false
         page = 1
+
+        getNotifs()
     }
 
     private fun getNotifs() {
@@ -117,6 +118,20 @@ class Notifications: AppCompatActivity(){
 
                 placeholder_tv.isVisible = res.data?.isEmpty() == true
                 placeholder_iv.isVisible = res.data?.isEmpty() == true
+            }
+
+            swipe_refresh.isRefreshing = false
+        }
+    }
+
+    private fun readNotif(pos: Int){
+        swipe_refresh.isRefreshing = true
+
+        ApiEnqueue.enqueue(this@Notifications, NotifServ.readNotif(notifs[pos].Id))
+        { res, code, err ->
+            if (res != null && code == 200) {
+                initialState()
+                Toast.makeText(this@Notifications, "Notif has been read", Toast.LENGTH_SHORT).show()
             }
 
             swipe_refresh.isRefreshing = false

@@ -31,16 +31,20 @@ import com.urwork.mobile.api.AuthApi
 import com.urwork.mobile.api.ProjectApi
 import com.urwork.mobile.api.TaskApi
 import com.urwork.mobile.models.CreateProjectModel
+import com.urwork.mobile.models.CreateTaskModel
 import com.urwork.mobile.models.TaskModelData
 import com.urwork.mobile.models.UserModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
+import com.urwork.mobile.services.formatDate
+import okhttp3.internal.concurrent.Task
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class EditProject : AppCompatActivity() {
     lateinit var swipe_refresh: SwipeRefreshLayout
+    lateinit var task_loader: ProgressBar
 
     lateinit var title_et: EditText
     lateinit var desc_et: EditText
@@ -69,6 +73,7 @@ class EditProject : AppCompatActivity() {
     //    MODE
     var mode: String = "CREATE"
     var _id: String? = null
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     //    BOTTOMSHEETS
     lateinit var add_collabs_btn: TextView
@@ -99,6 +104,81 @@ class EditProject : AppCompatActivity() {
 
         if (_id != null) {
             mode = "EDIT"
+            getProject()
+            getTasks()
+        }
+    }
+
+    private fun deleteTask(pos: Int) {
+        task_loader.isVisible = true
+
+        ApiEnqueue.enqueue(this@EditProject, TaskServ.deleteTask(_id, tasks[pos].Id))
+        { res, code, err ->
+            if (res != null && code == 204) {
+                getTasks()
+                Toast.makeText(this@EditProject, res.msg, Toast.LENGTH_SHORT).show()
+            }
+
+            task_loader.isVisible = false
+        }
+    }
+
+    private fun createTask(title: String) {
+        task_loader.isVisible = true
+
+        val body: CreateTaskModel = CreateTaskModel(title, "yellow")
+        ApiEnqueue.enqueue(this@EditProject, TaskServ.createTask(_id, body))
+        { res, code, err ->
+            if (res != null && code == 200) {
+                getTasks()
+                Toast.makeText(this@EditProject, res.msg, Toast.LENGTH_SHORT).show()
+            }
+
+            task_loader.isVisible = false
+        }
+    }
+
+    private fun getTasks() {
+        task_loader.isVisible = true
+
+        ApiEnqueue.enqueue(this@EditProject, TaskServ.getTasksInProject(_id))
+        { res, code, err ->
+            if (code == 200 && res != null) {
+                tasks = res.data!!
+                task_adapte.filterList(tasks)
+            }
+
+            task_loader.isVisible = false
+        }
+    }
+
+    private fun getProject() {
+        swipe_refresh.isRefreshing = true
+
+        ApiEnqueue.enqueue(this@EditProject, ProjServ.getProject(_id))
+        { res, code, err ->
+            if (res != null && code == 200) {
+                title_et.setText(res.data?.title)
+                desc_et.setText(res.data?.description)
+                duration_start_tv.text = res.data?.durationStart?.let {
+                    formatDate(
+                        it,
+                        "yyyy-MM-dd"
+                    )
+                }
+                duration_end_tv.text = res.data?.durationEnd?.let { formatDate(it, "yyyy-MM-dd") }
+
+                if (res.data?.tags != "") {
+                    tags = ArrayList(res.data?.tags?.split(",")!!)
+                }
+
+                collaborators = res.data?.collaborators as ArrayList<UserModelData>
+
+                tags_adapter.filterList(tags)
+                collab_adapter.filterList(collaborators)
+            }
+
+            swipe_refresh.isRefreshing = false
         }
     }
 
@@ -118,6 +198,8 @@ class EditProject : AppCompatActivity() {
         )
 
         swipe_refresh = findViewById(R.id.swiperefresh)
+        task_loader = findViewById(R.id.task_loaderr)
+        task_loader.isVisible = false
         title_et = findViewById(R.id.project_title)
         desc_et = findViewById(R.id.project_desc)
         duration_start_tv = findViewById(R.id.project_duration_start)
@@ -152,6 +234,12 @@ class EditProject : AppCompatActivity() {
                 tags_adapter.filterList(tags)
             }
         })
+
+        task_adapte.setOnItemClickListener(object : TaskAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                deleteTask(position)
+            }
+        })
     }
 
     private fun setDateRange() {
@@ -159,8 +247,6 @@ class EditProject : AppCompatActivity() {
         val picker = datePickerBuilder.build()
 
         picker.addOnPositiveButtonClickListener { selection ->
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
             duration_start_tv.text = dateFormat.format(selection.first)
             duration_end_tv.text = dateFormat.format(selection.second)
         }
@@ -256,6 +342,23 @@ class EditProject : AppCompatActivity() {
                 bs.show()
         }
 
+        val btn_close: ImageButton = v.findViewById(R.id.close_btn)
+        btn_close.setOnClickListener {
+            bs.dismiss()
+        }
+
+        val input_et: EditText = v.findViewById(R.id.new_task_input)
+        val input_add_btn: TextView = v.findViewById(R.id.new_task_add_btn)
+
+        input_add_btn.setOnClickListener {
+            val value: String = input_et.text.toString()
+
+            if (value != "") {
+                bs.dismiss()
+                createTask(value)
+            }
+        }
+
     }
 
     @SuppressLint("MissingInflatedId")
@@ -301,7 +404,7 @@ class EditProject : AppCompatActivity() {
             LinearLayoutManager(this@EditProject, LinearLayoutManager.HORIZONTAL, false)
         tags_rv.adapter = tags_adapter
 
-        task_adapte = TaskAdapter(this@EditProject, true, tasks)
+        task_adapte = TaskAdapter(this@EditProject, true, tasks, true)
         tasks_rv.layoutManager =
             LinearLayoutManager(this@EditProject, LinearLayoutManager.VERTICAL, false)
         tasks_rv.adapter = task_adapte

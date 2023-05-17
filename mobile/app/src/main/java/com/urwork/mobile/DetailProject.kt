@@ -127,6 +127,11 @@ class DetailProject : AppCompatActivity() {
                 Log.i("SKIP", _tags[position])
             }
         })
+        taskAdapter.setOnItemClickListener(object: TaskAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.i("SKIP", "none")
+            }
+        })
 
         swipe_refresh.setOnRefreshListener {
             initialState()

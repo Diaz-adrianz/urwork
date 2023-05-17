@@ -10,15 +10,16 @@ FRONTEND TODO
 - (DONE) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)
 - (DONE) intent ke profile page user lain (dari adapter aja intent nya)
 - (DONE) notif page dan count notif di home page
-- intent ke view, edit, delete project melalui bottom sheet jika user login adalah author
+- (DONE) intent ke edit page di detail page jika dia author
 - (DONE) intent dari "see all" ongoing project ke fragment schedule
 - (DONE) intent dari "see all" today task ke fragment task
 - (DONE) dialog box complete task (jika belum), info task (jika sudah)
 - (DONE) detail page projects
 - (DONE) intent ke detail page projects
-- ubah photo profile di profile page user login
-- put mode edit project (sudah bisa bikin/hapus task dan ubah gambar)
-- read notif api integration
+- ganti photo profile di profile page user login
+- upload gambar project
+- (DONE) put mode edit project (sudah bisa bikin/hapus task)
+- (NEED TEST) read notif api integration
 
 NULLERS
 - taskAdapter completed by

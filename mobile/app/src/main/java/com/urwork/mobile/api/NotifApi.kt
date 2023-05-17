@@ -5,6 +5,7 @@ import com.urwork.mobile.models.NotifModel
 import com.urwork.mobile.models.NotifModelList
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface NotifApi {
     @GET("/notifs")
@@ -14,5 +15,7 @@ interface NotifApi {
     fun countMyNotifs(): Call<CountModel>
 
     @GET("/notifs/{key}/read")
-    fun readNotif(): Call<NotifModel>
+    fun readNotif(
+        @Path("key") key: String? = "0"
+    ): Call<NotifModel>
 }

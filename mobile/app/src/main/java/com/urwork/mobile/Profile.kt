@@ -1,16 +1,16 @@
 package com.urwork.mobile
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.media.Image
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.AbsListView.RecyclerListener
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.urwork.mobile.adapters.Project1
 import com.urwork.mobile.api.ApiBuilder
 import com.urwork.mobile.api.AuthApi
@@ -31,8 +29,16 @@ import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.models.ProjectModelList
 import com.urwork.mobile.models.UserModel
 import com.urwork.mobile.services.ApiEnqueue
+import com.urwork.mobile.services.FileUtils
 import com.urwork.mobile.services.TinyDB
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
+import java.io.File
+
 
 class Profile : AppCompatActivity() {
     lateinit var swipe_refresh: SwipeRefreshLayout
@@ -108,21 +114,59 @@ class Profile : AppCompatActivity() {
             }
         }
 
+        photo_iv.setOnClickListener {
+//            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+//            intent.type = "image/*"
+//            startActivityForResult(intent, 1)
+            //            i.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("jpg", "jpeg", "png"))
+
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 1)
+        }
+
         getProfileData()
-        getProjects()
 
         swipe_refresh.setOnRefreshListener {
             projects.clear()
             projectsPage = 1
 
             getProfileData()
-            getProjects()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+
+            if (data.data != null) {
+                val image = FileUtils.getFile(this@Profile, data.data)
+                changePhoto(image)
+            }
+        }
+    }
+
+    fun changePhoto(file: File) {
+
+        Log.e("file", file.toString())
+
+//        var requestBody = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        var requestBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file);
+        var body = MultipartBody.Part.createFormData("photo", file.name, requestBody)
+
+        swipe_refresh.isRefreshing = true
+
+        ApiEnqueue.enqueue(this@Profile, AuthServ.setPhoto(body))
+        { res, code, err ->
+            if (res != null && code == 200) {
+                getProfileData()
+
+            }
+            swipe_refresh.isRefreshing = false
         }
     }
 
     fun getProjects() {
-        swipe_refresh.isRefreshing = true
-
 //        NEED TEST!!!
         var calling: Call<ProjectModelList> = ProjServ.myProjects(projectsPage)
 
@@ -179,7 +223,7 @@ class Profile : AppCompatActivity() {
                 }
             }
 
-            swipe_refresh.isRefreshing = false
+            getProjects()
         }
     }
 

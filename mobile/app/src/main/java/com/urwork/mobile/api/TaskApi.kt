@@ -1,12 +1,8 @@
 package com.urwork.mobile.api
 
-import com.urwork.mobile.models.TaskModelData
-import com.urwork.mobile.models.TaskModelList
-import com.urwork.mobile.models.UserModel
+import com.urwork.mobile.models.*
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface TaskApi {
     @GET("/tasks/my/{status}")
@@ -25,5 +21,19 @@ interface TaskApi {
     fun completeTask(
         @Path("project_id") project_id: String? = "",
         @Path("key") key: String? = ""
-    ): Call<TaskModelData>
+    ): Call<TaskModel>
+
+    @Headers("Content-Type: application/json")
+    @POST("/tasks/{project_id}")
+    fun createTask(
+        @Path("project_id") project_id: String? = "0",
+        @Body model: CreateTaskModel
+    ): Call<TaskModel>
+
+    @DELETE("/tasks/{project_id}/{key}")
+    fun deleteTask(
+        @Path("project_id") project_id: String? = "",
+        @Path("key") key: String? = ""
+    ): Call<TaskModel>
+
 }

@@ -1,6 +1,7 @@
 package com.urwork.mobile.pagers
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -106,6 +107,12 @@ class Tasks : Fragment() {
                 getTasks()
             }
         }
+
+        taskAdapter.setOnItemClickListener(object: TaskAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.i("SKIP", "none")
+            }
+        })
 
         task_type_rg.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {

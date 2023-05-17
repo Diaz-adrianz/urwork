@@ -167,6 +167,16 @@
                 android:text="Tasks"
                 android:textColor="@color/gray" />
 
+            <ProgressBar
+                android:id="@+id/task_loaderr"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:indeterminate="true"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@id/project_tags"
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_toRightOf="@id/project_tasks_title" />
+
             <TextView
                 android:id="@+id/project_tasks_add"
                 style="@style/textmini"

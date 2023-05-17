@@ -5,15 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.FrameLayout
-import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.menu.MenuView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +20,6 @@ import com.urwork.mobile.MainActivity
 import com.urwork.mobile.Notifications
 import com.urwork.mobile.Profile
 import com.urwork.mobile.R
-import com.urwork.mobile.adapters.Project1
 import com.urwork.mobile.adapters.ProjectAdapter
 import com.urwork.mobile.adapters.TaskAdapter
 import com.urwork.mobile.api.ApiBuilder
@@ -35,8 +30,7 @@ import com.urwork.mobile.models.ProjectModelData
 import com.urwork.mobile.models.TaskModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -139,6 +133,12 @@ class Home : Fragment() {
             }
         })
 
+        tasksAdapter.setOnItemClickListener(object: TaskAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Log.i("SKIP", "none")
+            }
+        })
+
         swipe_refresh.setOnRefreshListener {
             initialState()
             getDatas()
@@ -170,15 +170,12 @@ class Home : Fragment() {
 
     private fun getDatas() {
 //        NEED TEST
+        swipe_refresh.isRefreshing = true
         getOngoingProjects()
-        getMyTasks()
-        countMyNotifs()
 //        NEED TEST
     }
 
     private fun getMyTasks() {
-        swipe_refresh.isRefreshing = true
-
         ApiEnqueue.enqueue(requireContext(), TaskServ.myTasks("ongoing")) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> tasks.add(d) }
@@ -190,24 +187,18 @@ class Home : Fragment() {
         }
     }
 
-    private fun getOngoingProjects() {
-        swipe_refresh.isRefreshing = true
-
+    private fun getOngoingProjects  () {
         ApiEnqueue.enqueue(requireContext(), ProjServ.myOngoingProjects()) { res, code, err ->
             if (code == 200 && res != null) {
                 res.data?.forEach { d -> projects.add(d) }
                 projectsAdapter.filterList(projects)
             }
 
-            swipe_refresh.isRefreshing = false
-
+            countMyNotifs()
         }
     }
 
     private fun countMyNotifs() {
-//        NEED TEST
-        swipe_refresh.isRefreshing = true
-
         ApiEnqueue.enqueue(requireContext(), NotifsServ.countMyNotifs()) { res, code, err ->
             if (code == 200 && res != null) {
                 countNotif = res.data!!
@@ -219,10 +210,8 @@ class Home : Fragment() {
                 }
             }
 
-            swipe_refresh.isRefreshing = false
+            getMyTasks()
         }
-//        NEED TEST
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

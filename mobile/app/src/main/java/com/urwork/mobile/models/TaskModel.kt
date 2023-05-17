@@ -30,3 +30,8 @@ data class TaskModelData(
     @SerializedName("is_mine") var isMine: Boolean? = false
 )
 
+data class CreateTaskModel(
+    @SerializedName("title") var title: String? = "",
+    @SerializedName("label") var label: String? = "",
+)
+
