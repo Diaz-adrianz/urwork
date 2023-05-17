@@ -24,7 +24,7 @@ export const ListTask = async (req, res) => {
 		API.list(req.query.search, ['title'], req.query.start, req.query.end, req.query.page)
 	);
 
-	if (req.path == '/my') {
+	if (req.path.includes('my')) {
 		data.data = data.data.filter((dat) => {
 			return (
 				(dat.project_id != null || dat.project_id != {}) &&

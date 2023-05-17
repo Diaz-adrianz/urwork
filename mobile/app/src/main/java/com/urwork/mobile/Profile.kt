@@ -96,7 +96,6 @@ class Profile : AppCompatActivity() {
         projects_rv = findViewById(R.id.profil_projects)
         projects_rv.layoutManager =
             LinearLayoutManager(this@Profile, LinearLayoutManager.VERTICAL, false)
-        projects_rv.setHasFixedSize(true)
         projectsAdapter =
             Project1(this, false, projects)
         projects_rv.adapter = projectsAdapter

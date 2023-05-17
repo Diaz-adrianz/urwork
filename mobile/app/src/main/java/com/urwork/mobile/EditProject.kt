@@ -115,8 +115,8 @@ class EditProject : AppCompatActivity() {
 
         ApiEnqueue.enqueue(this@EditProject, TaskServ.deleteTask(_id, tasks[pos].Id))
         { res, code, err ->
-            if (res != null && code == 204) {
-                getTasks()
+            getTasks()
+            if (res != null) {
                 Toast.makeText(this@EditProject, res.msg, Toast.LENGTH_SHORT).show()
             }
 
@@ -437,6 +437,7 @@ class EditProject : AppCompatActivity() {
 
             if (value != "") {
                 bs.dismiss()
+                input_et.setText("")
                 createTask(value)
             }
         }
@@ -531,7 +532,8 @@ class EditProject : AppCompatActivity() {
         val _end = duration_end_tv.text.toString()
 
         if (_start == "yyyy-MM-dd" || _end == "yyyy-MM-dd" || _title == "" || _desc == "") {
-            Toast.makeText(this@EditProject, "Some field cannot be blank", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@EditProject, "Some field cannot be blank", Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
