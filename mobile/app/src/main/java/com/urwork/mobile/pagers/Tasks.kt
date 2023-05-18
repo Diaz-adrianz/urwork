@@ -90,12 +90,13 @@ class Tasks : Fragment() {
         loadmore_btn = v.findViewById(R.id.load_more)
         task_type_rg = v.findViewById(R.id.task_type)
 
-        taskAdapter = TaskAdapter(requireContext(), false, tasks)
+        taskAdapter = TaskAdapter(requireContext(), false, tasks, false, true)
 
         result_rv = v.findViewById(R.id.result)
         result_rv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         result_rv.setHasFixedSize(true)
+        result_rv.isNestedScrollingEnabled = false
         result_rv.adapter = taskAdapter
 
         swipe_refresh.setOnRefreshListener { }
@@ -129,6 +130,7 @@ class Tasks : Fragment() {
 
         swipe_refresh.setOnRefreshListener {
             search_page = 1
+            search_value = ""
             tasks.clear()
             taskAdapter.filterList(tasks)
 
@@ -147,7 +149,6 @@ class Tasks : Fragment() {
             requireContext(),
             TaskServ.myTasks(MODE.lowercase(), search_value, search_page)
         ) { res, code, err ->
-            placeholder_tv.text = res?.msg ?: "Something wrong"
             placeholder_tv.isVisible = true
             placeholder_iv.isVisible = true
 

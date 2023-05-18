@@ -114,12 +114,14 @@ class Explore : Fragment() {
         projects_rv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         projects_rv.setHasFixedSize(true)
+        projects_rv.isNestedScrollingEnabled = false
         projects_rv.adapter = projectsAdapter
 
         users_rv = v.findViewById(R.id.users_result)
         users_rv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         users_rv.setHasFixedSize(true)
+        users_rv.isNestedScrollingEnabled = false
         users_rv.adapter = usersAdapter
 
         projectsAdapter.setOnItemClickListener(object : Project1.onItemClickListener {

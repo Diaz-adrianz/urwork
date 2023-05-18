@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="colorControlActivated">@color/primary</item>
     </style>
 
     <style name="bottomsheet" parent="Theme.Design.Light.BottomSheetDialog">

@@ -39,6 +39,16 @@ interface ProjectApi {
     @POST("/projects")
     fun createProject(@Body model: CreateProjectModel): Call<ProjectModel>
 
+    @Headers("Content-Type: application/json")
+    @PUT("/projects/{key}")
+    fun updateProject(
+        @Path("key") key: String = "",
+        @Body model: CreateProjectModel
+    ): Call<ProjectModel>
+
+    @DELETE("/projects/{key}")
+    fun deleteProject(@Path("key") key: String = ""): Call<ProjectModel>
+
     @GET("/projects/starit/{key}/{option}")
     fun giveStar(
         @Path("key") key: String? = "0",

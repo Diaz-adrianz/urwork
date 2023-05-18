@@ -166,7 +166,6 @@
                     style="@style/textsubheader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="150dp"
                     android:text="-"
                     android:textColor="@color/black" />
             </LinearLayout>
@@ -206,7 +205,7 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_image"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="32dp" />
 
 
         </RelativeLayout>

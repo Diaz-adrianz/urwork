@@ -100,5 +100,5 @@ export const CompleteTask = async (req, res) => {
 
 	const { status, msg, data } = await API.exec(API.update({ completed_by: req.user._id, completed_date: moment() }));
 
-	return res.status(status).json({ msg: 'hehe', data: 1 });
+	return res.status(status).json({ msg, data });
 };

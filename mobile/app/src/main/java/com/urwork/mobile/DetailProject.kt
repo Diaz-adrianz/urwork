@@ -230,7 +230,6 @@ class DetailProject : AppCompatActivity() {
         val option: String = if (_stars.contains(prefs.getString("user_id"))) "no" else "yes"
 
         swipe_refresh.isRefreshing = true
-        Log.e("STAR", option)
         ApiEnqueue.enqueue(this@DetailProject, ProjServ.giveStar(_id, option)) { res, code, err ->
             if (res != null && code == 200) {
                 val _prevcount = stars_tv?.text.toString().toInt()
@@ -249,7 +248,7 @@ class DetailProject : AppCompatActivity() {
         tagsAdapter = Tag(this@DetailProject, _tags)
         authAdapter = UserAdapter(this@DetailProject, _authors)
         collabsAdapter = UserAdapter(this@DetailProject, _collabs)
-        taskAdapter = TaskAdapter(this@DetailProject, true, _tasks)
+        taskAdapter = TaskAdapter(this@DetailProject, true, _tasks, false, true)
         imageAdapter = ImageListAdapter(this@DetailProject, _images)
 
         tags_rv.adapter = tagsAdapter
@@ -279,10 +278,12 @@ class DetailProject : AppCompatActivity() {
 
         author_rv = findViewById(R.id.proj_author)
         author_rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        author_rv.setHasFixedSize(true)
+        author_rv.isNestedScrollingEnabled = false
 
         images_rv = findViewById(R.id.proj_images)
         images_rv.layoutManager = GridLayoutManager(this@DetailProject, 2)
+        images_rv.setHasFixedSize(true)
+        images_rv.isNestedScrollingEnabled = false
 
         val bs_collabs_v: View = layoutInflater.inflate(R.layout.bottom_sheet_simple_list, null)
         val bs_tasks_v: View = layoutInflater.inflate(R.layout.bottom_sheet_simple_list, null)
@@ -301,11 +302,12 @@ class DetailProject : AppCompatActivity() {
         collabs_rv = bs_collabs_v.findViewById(R.id.result)
         collabs_rv.layoutManager =
             LinearLayoutManager(this@DetailProject, LinearLayoutManager.VERTICAL, false)
+        collabs_rv.isNestedScrollingEnabled = false
 
         tasks_rv = bs_tasks_v.findViewById(R.id.result)
         tasks_rv.layoutManager =
             LinearLayoutManager(this@DetailProject, LinearLayoutManager.VERTICAL, false)
-
+        tasks_rv.isNestedScrollingEnabled = false
 
         title_collabs_v.text = "Collaborators"
         title_tasks_v.text = "Tasks progress"
@@ -360,7 +362,21 @@ class DetailProject : AppCompatActivity() {
                 true
             }
             R.id.action_delete_proj -> {
-                Toast.makeText(this@DetailProject, _id, Toast.LENGTH_SHORT).show()
+                if (_id != null) {
+                    ApiEnqueue.enqueue(this@DetailProject, ProjServ.deleteProject(_id!!))
+                    { res, code, err ->
+                        if (code == 204) {
+                            Toast.makeText(
+                                this@DetailProject,
+                                "Project deleted!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onBackPressedDispatcher.onBackPressed()
+                            finish()
+                        }
+                    }
+                }
+
                 true
             }
             R.id.action_report_proj -> {

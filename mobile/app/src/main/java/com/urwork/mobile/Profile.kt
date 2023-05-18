@@ -96,6 +96,8 @@ class Profile : AppCompatActivity() {
         projectsAdapter =
             Project1(this, false, projects)
         projects_rv.adapter = projectsAdapter
+        projects_rv.setHasFixedSize(true)
+        projects_rv.isNestedScrollingEnabled = false
 
         projectsAdapter.setOnItemClickListener(object : Project1.onItemClickListener {
             override fun onItemClick(position: Int) {

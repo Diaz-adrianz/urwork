@@ -36,6 +36,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.internal.concurrent.Task
+import retrofit2.Call
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -362,6 +363,7 @@ class EditProject : AppCompatActivity() {
         result_rv.layoutManager =
             LinearLayoutManager(this@EditProject, LinearLayoutManager.VERTICAL, false)
         result_rv.setHasFixedSize(true)
+        result_rv.isNestedScrollingEnabled = false
         result_rv.adapter = result_adapter
 
         loader_this.isVisible = false
@@ -487,10 +489,11 @@ class EditProject : AppCompatActivity() {
             LinearLayoutManager(this@EditProject, LinearLayoutManager.HORIZONTAL, false)
         tags_rv.adapter = tags_adapter
 
-        task_adapte = TaskAdapter(this@EditProject, true, tasks, true)
+        task_adapte = TaskAdapter(this@EditProject, true, tasks, true, false)
         tasks_rv.layoutManager =
             LinearLayoutManager(this@EditProject, LinearLayoutManager.VERTICAL, false)
         tasks_rv.adapter = task_adapte
+        tasks_rv.isNestedScrollingEnabled = false
 
         collab_adapter = UserPhotoAdapter(this@EditProject, true, collaborators)
         collaborators_rv.layoutManager =
@@ -501,6 +504,7 @@ class EditProject : AppCompatActivity() {
             ImageListAdapter(this@EditProject, imagess, true, R.drawable.ic_round_image_upload_24)
         images_rv.layoutManager = GridLayoutManager(this@EditProject, 2)
         images_rv.adapter = images_adapter
+        images_rv.isNestedScrollingEnabled = false
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -539,18 +543,26 @@ class EditProject : AppCompatActivity() {
 
         val body = CreateProjectModel(_title, _desc, _collaborators, _tags, _start, _end)
 
+        var calling: Call<ProjectModel> = ProjServ.createProject(body)
+        var resText = "New project added!"
+
+        if (_id != null) {
+            calling = ProjServ.updateProject(_id!!, body)
+            resText = "Project updated!"
+        }
+
         swipe_refresh.isRefreshing = true
 
 //        NEED TEST!!!
         ApiEnqueue.enqueue(
-            this@EditProject, ProjServ.createProject(body)
+            this@EditProject, calling
         ) { res, code, err ->
 
             if (res != null && code == 200) {
                 if (res.data != null) {
                     Toast.makeText(
                         this@EditProject,
-                        "New project added succes!",
+                        resText,
                         Toast.LENGTH_SHORT
                     ).show()
 

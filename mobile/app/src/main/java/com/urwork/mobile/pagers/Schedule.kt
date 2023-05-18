@@ -105,6 +105,7 @@ class Schedule : Fragment() {
         projects_rv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         projects_rv.setHasFixedSize(true)
+        projects_rv.isNestedScrollingEnabled = false
         projects_rv.adapter = projectsAdapter
 
         projectsAdapter.setOnItemClickListener(object : ProjectAdapter.onItemClickListener {
@@ -113,7 +114,10 @@ class Schedule : Fragment() {
             }
         })
 
-        swipe_refresh.setOnRefreshListener { }
+        swipe_refresh.setOnRefreshListener {
+            initialState()
+            getProjects()
+        }
 
         loadmore_btn.isVisible = false
         loadmore_btn.setOnClickListener {
@@ -126,6 +130,15 @@ class Schedule : Fragment() {
             pickTheDate()
         }
 
+        initialState()
+        getProjects()
+
+        return v
+    }
+
+    private fun initialState() {
+        search_page = 1
+        search_value = ""
         startDate = "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH) + 1}-${
             calendar.get(Calendar.DAY_OF_MONTH)
         }"
@@ -135,9 +148,8 @@ class Schedule : Fragment() {
 
         datePicker_tv.text = formatDate(startDate, "dd MMMM yyyy")
 
-        getProjects()
-
-        return v
+        projects.clear()
+        projectsAdapter.filterList(projects)
     }
 
     @SuppressLint("ResourceAsColor")

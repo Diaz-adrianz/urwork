@@ -113,12 +113,13 @@ class Home : Fragment() {
 
         swipe_refresh = v.findViewById(R.id.swiperefresh)
 
-        tasksAdapter = TaskAdapter(requireContext(), false, tasks)
+        tasksAdapter = TaskAdapter(requireContext(), false, tasks, false, false)
         projectsAdapter = ProjectAdapter(requireContext(), R.layout.item_project_3, projects)
 
         tasks_rv.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         tasks_rv.setHasFixedSize(true)
+        tasks_rv.isNestedScrollingEnabled = false
         tasks_rv.adapter = tasksAdapter
 
         projects_rv.layoutManager =

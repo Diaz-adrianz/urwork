@@ -118,6 +118,9 @@ class MyAccount : AppCompatActivity() {
                 finishAffinity()
 
                 prefs.remove(R.string.tokenname.toString())
+                prefs.remove("first_name")
+                prefs.remove("user_id")
+                prefs.remove("photo")
             }
         }
     }

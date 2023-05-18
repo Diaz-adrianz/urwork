@@ -26,7 +26,8 @@ class TaskAdapter(
     private val ctx: Context,
     private var subtitleIsBy: Boolean = false,
     private var mList: ArrayList<TaskModelData>,
-    private val clickToDelete: Boolean = false
+    private val clickToDelete: Boolean = false,
+    private val clickToUpdate: Boolean = true
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
     lateinit var prefs: TinyDB
@@ -71,9 +72,9 @@ class TaskAdapter(
             holder.statusIcon.setImageResource(R.drawable.ic_round_check_box_outline_blank_24)
         }
 
-        holder.delIcon.isVisible = clickToDelete
+        holder.delIcon.isVisible = clickToDelete && !clickToUpdate
 
-        if (!clickToDelete) {
+        if (!clickToDelete && clickToUpdate) {
             holder.parentView.setOnClickListener {
                 val v: View =
                     LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_task, null, false)
