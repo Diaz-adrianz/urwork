@@ -6,7 +6,7 @@ import NOTIFS from '../Notifs/model.js';
 import PROJECTS from '../Projects/model.js';
 
 export const ListTask = async (req, res) => {
-	const filter = req.path.includes('/my') ? {} : { project_id: req.project?._id };
+	const filter = req.path.includes('/my') ? {} : { project_id: req.params.project_id };
 
 	if (req.path.includes('/my')) {
 		if (req.params.status == 'done') {

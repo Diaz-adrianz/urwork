@@ -144,7 +144,7 @@
 
             <LinearLayout
                 android:id="@+id/proj_box_start"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/proj_box_collabs"
                 android:layout_marginTop="16dp"
@@ -173,13 +173,10 @@
 
             <LinearLayout
                 android:id="@+id/proj_box_end"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/proj_box_collabs"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="16dp"
+                android:layout_below="@id/proj_box_start"
                 android:layout_marginTop="16dp"
-                android:layout_toRightOf="@id/proj_box_start"
                 android:background="@drawable/border"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
@@ -205,7 +202,7 @@
                 android:id="@+id/proj_images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/proj_box_start"
+                android:layout_below="@id/proj_box_end"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 tools:listitem="@layout/item_image"

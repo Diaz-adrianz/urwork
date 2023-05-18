@@ -18,7 +18,7 @@ import com.urwork.mobile.models.NotifModelData
 import com.urwork.mobile.services.ApiEnqueue
 import com.urwork.mobile.services.TinyDB
 
-class Notifications: AppCompatActivity(){
+class Notifications : AppCompatActivity() {
 
     lateinit var swipe_refresh: SwipeRefreshLayout
     lateinit var loadmore_btn: Button
@@ -30,7 +30,7 @@ class Notifications: AppCompatActivity(){
     lateinit var notifAdapter: NotifAdapter
 
     var notifs: ArrayList<NotifModelData> = ArrayList()
-     var hasNextPage: Boolean = false
+    var hasNextPage: Boolean = false
     var page: Int = 1
 
     lateinit var placeholder_iv: ImageView
@@ -42,7 +42,6 @@ class Notifications: AppCompatActivity(){
 
         supportActionBar!!.title = "Notifications"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
 
         initializeVars()
         setupListener()
@@ -66,20 +65,21 @@ class Notifications: AppCompatActivity(){
         loadmore_btn = findViewById(R.id.load_more)
 
         result_rv = findViewById(R.id.result_notifs)
-        result_rv.layoutManager = LinearLayoutManager(this@Notifications, LinearLayoutManager.VERTICAL, false)
+        result_rv.layoutManager =
+            LinearLayoutManager(this@Notifications, LinearLayoutManager.VERTICAL, false)
         result_rv.setHasFixedSize(true)
         result_rv.adapter = notifAdapter
     }
 
     private fun setupListener() {
         loadmore_btn.isVisible = false
-        loadmore_btn.setOnClickListener{
+        loadmore_btn.setOnClickListener {
             if (hasNextPage) {
                 page += 1
             }
         }
 
-        notifAdapter.setOnItemClickListener(object: NotifAdapter.onItemClickListener{
+        notifAdapter.setOnItemClickListener(object : NotifAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
                 readNotif(position)
             }
@@ -103,7 +103,7 @@ class Notifications: AppCompatActivity(){
     private fun getNotifs() {
         swipe_refresh.isRefreshing = true
 
-        ApiEnqueue.enqueue(this@Notifications, NotifServ.myNotifs()) {res, code, err ->
+        ApiEnqueue.enqueue(this@Notifications, NotifServ.myNotifs()) { res, code, err ->
             placeholder_tv.text = res?.msg ?: "Something wrong"
             placeholder_tv.isVisible = true
             placeholder_iv.isVisible = true
@@ -124,7 +124,7 @@ class Notifications: AppCompatActivity(){
         }
     }
 
-    private fun readNotif(pos: Int){
+    private fun readNotif(pos: Int) {
         swipe_refresh.isRefreshing = true
 
         ApiEnqueue.enqueue(this@Notifications, NotifServ.readNotif(notifs[pos].Id))

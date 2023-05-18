@@ -146,7 +146,7 @@ class Schedule : Fragment() {
 
         ApiEnqueue.enqueue(
             requireContext(),
-            ProjServ.getProjects(search_page, search_value, startDate, endDate)
+            ProjServ.myProjects(search_page, search_value, startDate, endDate)
         ) { res, code, err ->
             placeholder_tv.text = res?.msg ?: "Something wrong with app"
             placeholder_tv.isVisible = true

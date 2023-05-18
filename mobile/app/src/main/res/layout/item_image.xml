@@ -9,14 +9,14 @@
     android:layout_marginBottom="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_weight="1"
         android:scaleType="centerCrop"
-        android:background="@drawable/border"
-        android:backgroundTint="@color/silver2"
+        android:background="@color/silver2"
+        app:shapeAppearanceOverlay="@style/borderRadius"
         android:src="@drawable/ic_round_image_24" />
 
     <TextView

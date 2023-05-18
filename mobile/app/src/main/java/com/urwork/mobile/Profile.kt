@@ -58,7 +58,6 @@ class Profile : AppCompatActivity() {
     lateinit var projects_rv: RecyclerView
     lateinit var projectsAdapter: Project1
 
-
     var userId: String? = ""
 
     var projects: ArrayList<ProjectModelData> = ArrayList()
@@ -72,9 +71,7 @@ class Profile : AppCompatActivity() {
         supportActionBar!!.title = "Profile";
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-//        NEED TEST!!!
         userId = intent.getStringExtra("USER_ID")
-//        NEED TEST!!!
 
         prefs = TinyDB(this)
         AuthServ = ApiBuilder.buildService(
@@ -227,12 +224,7 @@ class Profile : AppCompatActivity() {
             gosetting_btn = menu.findItem(R.id.action_setting)
 
             if (userId != null) {
-                gosetting_btn?.icon?.let {
-                    DrawableCompat.setTint(
-                        it,
-                        ContextCompat.getColor(this, R.color.primary)
-                    )
-                }
+                menu.removeItem(R.id.action_setting)
             }
         }
 
@@ -242,11 +234,9 @@ class Profile : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_setting -> {
-//        NEED TEST!!!
                 if (userId == null) {
                     startActivity(Intent(this@Profile, MyAccount::class.java))
                 }
-//        NEED TEST!!!
 
                 true
             }
