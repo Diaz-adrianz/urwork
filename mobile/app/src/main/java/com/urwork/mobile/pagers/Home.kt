@@ -113,7 +113,7 @@ class Home : Fragment() {
 
         swipe_refresh = v.findViewById(R.id.swiperefresh)
 
-        tasksAdapter = TaskAdapter(requireContext(), false, tasks, false, false)
+        tasksAdapter = TaskAdapter(requireContext(), false, tasks, false, true)
         projectsAdapter = ProjectAdapter(requireContext(), R.layout.item_project_3, projects)
 
         tasks_rv.layoutManager =

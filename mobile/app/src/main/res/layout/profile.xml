@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="100"
+                        android:text="0"
                         android:textColor="@color/primary" />
 
                     <TextView
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="69"
+                        android:text="0"
                         android:textColor="@color/primary" />
 
                     <TextView
@@ -117,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_vertical"
-                        android:text="89%"
+                        android:text="0%"
                         android:textColor="@color/primary" />
 
                     <TextView
