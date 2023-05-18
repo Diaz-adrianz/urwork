@@ -5,6 +5,7 @@ BACKEND TODO
 - (DONE) tambah is_mine di list task
 - (DONE) bulatkan persentase project
 - (DONE) tambah auth google
+- my project
 
 FRONTEND TODO
 - (DONE) post mode create project (tidak bisa bikin/hapus task dan ubah gambar)
@@ -16,10 +17,11 @@ FRONTEND TODO
 - (DONE) dialog box complete task (jika belum), info task (jika sudah)
 - (DONE) detail page projects
 - (DONE) intent ke detail page projects
-- ganti photo profile di profile page user login
-- upload gambar project
+- (DONE) ganti photo profile di profile page user login
+- (DONE) upload gambar project
 - (DONE) put mode edit project (sudah bisa bikin/hapus task)
-- (NEED TEST) read notif api integration
+- (DONE) read notif api integration
+- fetch api di schedule page salah
 
 NULLERS
 - taskAdapter completed by

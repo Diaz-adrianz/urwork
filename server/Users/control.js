@@ -4,12 +4,7 @@ import ApiView from '../common/apiview.js';
 import { v2 as cloudinary } from 'cloudinary';
 
 export const ListUser = async (req, res) => {
-	const API = new ApiView(
-			USERS,
-			{ is_blocked: false },
-			req.query,
-			'-email -password -role -is_blocked -createdAt -updatedAt -__v'
-		),
+	const API = new ApiView(USERS, { is_blocked: false }, req.query, '-email -password -role -is_blocked -__v'),
 		{ status, msg, data } = await API.exec(
 			API.list(
 				req.query.search,
