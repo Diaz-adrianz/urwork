@@ -103,15 +103,17 @@ export const CreateProj = async (req, res) => {
 
 	const APInotifs = new ApiView(NOTIFS);
 
-	Promise.all(
-		payload.collaborators.map(async (collaborator) => {
-			await APInotifs.create({
-				user_id: collaborator,
-				title: 'Project invitation',
-				message: `You are added in the '${payload.title}' project!`,
-			});
-		})
-	);
+	if (payload.collaborators) {
+		Promise.all(
+			payload.collaborators.map(async (collaborator) => {
+				await APInotifs.create({
+					user_id: collaborator,
+					title: 'Project invitation',
+					message: `You are added in the '${payload.title}' project!`,
+				});
+			})
+		);
+	}
 
 	return res.status(status).json({ msg, data });
 };
@@ -195,6 +197,12 @@ export const RemoveImage = async (req, res) => {
 export const DeleteProj = async (req, res) => {
 	const API = new ApiView(PROJECTS, { _id: req.params.key }),
 		{ status, msg, data } = await API.exec(API.delete());
+
+	if (status == 204) {
+		const APItask = new ApiView(TASKS, { project_id: req.params.key });
+
+		await APItask.exec(APItask.delete());
+	}
 
 	return res.status(status).json({ msg, data });
 };
